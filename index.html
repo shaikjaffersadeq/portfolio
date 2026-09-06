@@ -1,639 +1,638 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
-    <title>Shaik Jaffer Sadeq | Cybersecurity Portfolio</title>
+<title>Shaik Jaffer Sadeq | SOC Analyst Portfolio</title>
 
-    <meta name="description"
-        content="Shaik Jaffer Sadeq - Cybersecurity and SOC Analyst portfolio.">
+<style>
 
-    <link rel="stylesheet" href="style.css">
+*{
+box-sizing:border-box;
+scroll-behavior:smooth;
+}
+
+body{
+margin:0;
+background:#0b1020;
+color:#e8eefc;
+font:16px/1.6 Arial,sans-serif;
+}
+
+main{
+max-width:1100px;
+margin:auto;
+padding:40px 24px 80px;
+}
+
+/* NAVIGATION */
+
+nav{
+position:sticky;
+top:0;
+z-index:100;
+background:#0b1020;
+border-bottom:1px solid #293653;
+padding:18px 24px;
+}
+
+.nav-container{
+max-width:1100px;
+margin:auto;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.logo{
+color:#62d6ff;
+font-size:22px;
+font-weight:bold;
+}
+
+nav a{
+color:#aab5ca;
+text-decoration:none;
+margin-left:24px;
+font-weight:bold;
+}
+
+nav a:hover{
+color:#62d6ff;
+}
+
+/* HERO */
+
+.hero{
+padding:90px 0 70px;
+border-bottom:1px solid #293653;
+}
+
+.hero h1{
+font-size:58px;
+line-height:1.05;
+margin:15px 0;
+}
+
+.hero-title{
+font-size:25px;
+color:#62d6ff;
+font-weight:bold;
+}
+
+.muted{
+color:#aab5ca;
+}
+
+.accent{
+color:#62d6ff;
+font-weight:bold;
+letter-spacing:1px;
+}
+
+/* SECTIONS */
+
+section{
+padding:70px 0;
+}
+
+h2{
+font-size:34px;
+margin-bottom:25px;
+}
+
+h3{
+font-size:21px;
+margin-top:30px;
+}
+
+/* CARD */
+
+.card{
+background:#121a2d;
+border:1px solid #293653;
+border-radius:18px;
+padding:32px;
+transition:transform .2s ease,border-color .2s ease;
+}
+
+.card:hover{
+transform:translateY(-4px);
+border-color:#62d6ff;
+}
+
+.status{
+color:#65e6a5;
+}
+
+/* GRID */
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+gap:15px;
+margin:25px 0;
+}
+
+.box{
+padding:18px;
+border:1px solid #293653;
+border-radius:12px;
+background:#0e1628;
+}
+
+/* TAGS */
+
+.tag{
+display:inline-block;
+border:1px solid #293653;
+border-radius:20px;
+padding:6px 12px;
+margin:4px;
+color:#aab5ca;
+font-size:13px;
+}
+
+/* BUTTONS */
+
+.buttons{
+margin-top:30px;
+display:flex;
+gap:12px;
+flex-wrap:wrap;
+}
+
+.btn{
+display:inline-block;
+padding:12px 20px;
+border-radius:8px;
+text-decoration:none;
+font-weight:bold;
+border:1px solid #62d6ff;
+color:#62d6ff;
+transition:.2s;
+}
+
+.btn:hover{
+background:#62d6ff;
+color:#0b1020;
+}
+
+.btn-primary{
+background:#62d6ff;
+color:#0b1020;
+}
+
+/* FOOTER */
+
+footer{
+border-top:1px solid #293653;
+padding-top:30px;
+text-align:center;
+color:#aab5ca;
+}
+
+code{
+color:#bfeaff;
+background:#0e1628;
+padding:2px 5px;
+border-radius:4px;
+}
+
+/* MOBILE */
+
+@media(max-width:700px){
+
+.hero h1{
+font-size:42px;
+}
+
+nav{
+position:relative;
+}
+
+.nav-container{
+flex-direction:column;
+gap:15px;
+}
+
+nav a{
+margin:0 8px;
+font-size:14px;
+}
+
+}
+
+</style>
 </head>
+
 
 <body>
 
-    <!-- NAVIGATION -->
-    <nav>
-        <div class="nav-container">
 
-            <a href="#home" class="logo">SJS</a>
+<!-- NAVIGATION -->
 
-            <div class="nav-links">
-                <a href="#home">Home</a>
-                <a href="#about">About</a>
-                <a href="#skills">Skills</a>
-                <a href="#projects">Projects</a>
-                <a href="#resume">Resume</a>
-                <a href="#contact">Contact</a>
-            </div>
+<nav>
 
-        </div>
-    </nav>
+<div class="nav-container">
 
+<div class="logo">
+SJS
+</div>
 
-    <!-- HERO -->
-    <header id="home">
+<div>
 
-        <div class="hero-content">
+<a href="#home">Home</a>
+<a href="#about">About</a>
+<a href="#skills">Skills</a>
+<a href="#projects">Projects</a>
+<a href="#contact">Contact</a>
 
-            <p class="eyebrow">
-                CYBERSECURITY • SOC • DEFENSIVE SECURITY
-            </p>
+</div>
 
-            <h1>Shaik Jaffer Sadeq</h1>
+</div>
 
-            <h2>Aspiring SOC Analyst</h2>
+</nav>
 
-            <p class="hero-description">
-                BCA student focused on cybersecurity, security monitoring,
-                threat detection, incident investigation and developing
-                practical defensive security skills.
-            </p>
 
-            <div class="hero-buttons">
 
-                <a href="#projects" class="button">
-                    View Projects
-                </a>
+<main>
 
-                <a href="#contact" class="button secondary-button">
-                    Contact Me
-                </a>
 
-            </div>
+<!-- HOME -->
 
-        </div>
+<section id="home" class="hero">
 
-    </header>
+<p class="accent">
+CYBERSECURITY • SOC • DEFENSIVE SECURITY
+</p>
 
+<h1>
+Shaik Jaffer Sadeq.
+</h1>
 
-    <!-- ABOUT -->
-    <section id="about">
+<p class="hero-title">
+Aspiring SOC Analyst
+</p>
 
-        <div class="section-heading">
-            <p class="section-label">01 — ABOUT</p>
-            <h2>About Me</h2>
-        </div>
+<p class="muted">
+BCA student focused on cybersecurity, security monitoring,
+threat detection, incident investigation and developing
+practical defensive security skills.
+</p>
 
-        <div class="about-content">
+<div class="buttons">
 
-            <div class="about-main">
+<a class="btn btn-primary" href="#projects">
+View Projects
+</a>
 
-                <p>
-                    I am a BCA student focused on building a career in
-                    cybersecurity and Security Operations Center (SOC)
-                    operations.
-                </p>
+<a class="btn" href="#contact">
+Contact Me
+</a>
 
-                <p>
-                    My current focus is on security monitoring, log analysis,
-                    network traffic investigation, incident response and
-                    threat detection. I enjoy learning through hands-on
-                    labs and building practical cybersecurity projects that
-                    simulate real-world security operations.
-                </p>
+</div>
 
-                <p>
-                    I am continuously developing my technical skills with
-                    the goal of becoming a capable SOC Analyst who can
-                    investigate security alerts, identify indicators of
-                    compromise and support effective incident response.
-                </p>
+</section>
 
-            </div>
 
 
-            <div class="about-cards">
+<!-- ABOUT -->
 
-                <div class="info-card">
+<section id="about">
 
-                    <span class="card-number">01</span>
+<h2>About Me</h2>
 
-                    <h3>Career Goal</h3>
+<div class="card">
 
-                    <p>
-                        Begin my professional career in a SOC environment
-                        and contribute to security monitoring,
-                        investigation and incident response.
-                    </p>
+<p>
+I am a BCA student building practical skills in Security
+Operations Center (SOC) analysis and defensive cybersecurity.
+</p>
 
-                </div>
+<p>
+My portfolio focuses on hands-on investigations involving
+network traffic analysis, threat detection, incident
+investigation, IOC identification and security documentation.
+</p>
 
+<p>
+My goal is to develop the technical and analytical skills
+required for an entry-level SOC Analyst role.
+</p>
 
-                <div class="info-card">
+</div>
 
-                    <span class="card-number">02</span>
+</section>
 
-                    <h3>Current Focus</h3>
 
-                    <p>
-                        SOC operations, network analysis, log analysis,
-                        threat detection and practical cybersecurity
-                        projects.
-                    </p>
 
-                </div>
+<!-- SKILLS -->
 
-            </div>
+<section id="skills">
 
-        </div>
+<h2>Skills</h2>
 
-    </section>
+<div class="grid">
 
+<div class="box">
+<strong>Network Security</strong>
+<p class="muted">
+TCP/IP, HTTP, network reconnaissance and traffic analysis
+</p>
+</div>
 
-    <!-- SKILLS -->
-    <section id="skills">
+<div class="box">
+<strong>Security Monitoring</strong>
+<p class="muted">
+Detection logic, suspicious activity analysis and investigation
+</p>
+</div>
 
-        <div class="section-heading">
-            <p class="section-label">02 — EXPERTISE</p>
-            <h2>Technical Skills</h2>
-        </div>
+<div class="box">
+<strong>Incident Response</strong>
+<p class="muted">
+Incident timelines, evidence handling and SOC reporting
+</p>
+</div>
 
-        <p class="section-intro">
-            Areas of cybersecurity and technology I am currently
-            learning and practicing through hands-on work.
-        </p>
+<div class="box">
+<strong>Security Tools</strong>
+<p class="muted">
+Wireshark, tcpdump, Nmap, Kali Linux and curl
+</p>
+</div>
 
+</div>
 
-        <div class="skills-categories">
+</section>
 
 
-            <!-- SECURITY OPERATIONS -->
-            <div class="skill-category">
 
-                <div class="category-header">
+<!-- PROJECTS -->
 
-                    <span class="category-number">01</span>
+<section id="projects">
 
-                    <h3>Security Operations</h3>
+<h2>Projects</h2>
 
-                </div>
 
-                <div class="skill-list">
+<!-- PROJECT 01 -->
 
-                    <span>Security Monitoring</span>
-                    <span>Log Analysis</span>
-                    <span>Incident Investigation</span>
-                    <span>Incident Response</span>
-                    <span>Threat Detection</span>
-                    <span>IOC Analysis</span>
+<div class="card">
 
-                </div>
+<p class="accent">
+PROJECT 01 • SOC INVESTIGATION
+</p>
 
-            </div>
+<h2>
+Network Reconnaissance Investigation
+</h2>
 
+<p class="accent">
+Suspicious Web Reconnaissance Detection & Investigation
+</p>
 
-            <!-- NETWORKING -->
-            <div class="skill-category">
+<p class="status">
+<strong>
+Severity: Medium • Status: Investigated
+</strong>
+</p>
 
-                <div class="category-header">
 
-                    <span class="category-number">02</span>
+<p>
+A controlled SOC laboratory investigation of suspicious
+automated web reconnaissance originating from
+<strong>192.168.56.103</strong> against the laboratory
+web server at <strong>192.168.56.102:8000</strong>.
+</p>
 
-                    <h3>Networking & Analysis</h3>
 
-                </div>
+<!-- PROJECT INFORMATION -->
 
-                <div class="skill-list">
+<div class="grid">
 
-                    <span>TCP/IP</span>
-                    <span>DNS</span>
-                    <span>HTTP / HTTPS</span>
-                    <span>Network Security</span>
-                    <span>Packet Analysis</span>
-                    <span>Traffic Investigation</span>
+<div class="box">
+<strong>Source</strong>
+<br>
+192.168.56.103
+</div>
 
-                </div>
+<div class="box">
+<strong>Target</strong>
+<br>
+192.168.56.102:8000
+</div>
 
-            </div>
+<div class="box">
+<strong>Detection Indicator</strong>
+<br>
+SQLMap User-Agent
+</div>
 
+<div class="box">
+<strong>Access Result</strong>
+<br>
+HTTP 404 on /admin
+</div>
 
-            <!-- SECURITY TOOLS -->
-            <div class="skill-category">
+</div>
 
-                <div class="category-header">
 
-                    <span class="category-number">03</span>
+<!-- INVESTIGATION -->
 
-                    <h3>Security Tools</h3>
+<h3>
+Investigation Performed
+</h3>
 
-                </div>
+<ul>
 
-                <div class="skill-list">
+<li>
+Analyzed network traffic using Wireshark.
+</li>
 
-                    <span>Wireshark</span>
-                    <span>Linux</span>
-                    <span>SIEM</span>
-                    <span>MITRE ATT&CK</span>
-                    <span>Metasploit</span>
-                    <span>Security Analysis Tools</span>
+<li>
+Reviewed TCP SYN, SYN/ACK and RST traffic.
+</li>
 
-                </div>
+<li>
+Inspected HTTP requests and responses.
+</li>
 
-            </div>
+<li>
+Identified the SQLMap User-Agent as a suspicious detection indicator.
+</li>
 
+<li>
+Investigated the <code>/admin</code> request.
+</li>
 
-            <!-- PROGRAMMING -->
-            <div class="skill-category">
+<li>
+Confirmed the server returned HTTP 404.
+</li>
 
-                <div class="category-header">
+<li>
+Found no evidence of successful administrative access.
+</li>
 
-                    <span class="category-number">04</span>
+<li>
+Created IOCs and incident documentation.
+</li>
 
-                    <h3>Programming & Systems</h3>
+<li>
+Created a Sigma-style detection rule.
+</li>
 
-                </div>
+<li>
+Produced a complete SOC investigation report.
+</li>
 
-                <div class="skill-list">
+</ul>
 
-                    <span>Python</span>
-                    <span>Linux Administration</span>
-                    <span>Command Line</span>
-                    <span>Shell Scripting</span>
 
-                </div>
+<!-- SKILLS -->
 
-            </div>
+<h3>
+Skills Demonstrated
+</h3>
 
-        </div>
+<div>
 
-    </section>
+<span class="tag">Wireshark</span>
 
+<span class="tag">PCAP Analysis</span>
 
-    <!-- PROJECTS -->
-    <section id="projects">
+<span class="tag">TCP Analysis</span>
 
-        <div class="section-heading">
-            <p class="section-label">03 — WORK</p>
-            <h2>Cybersecurity Projects</h2>
-        </div>
+<span class="tag">HTTP Analysis</span>
 
-        <p class="section-intro">
-            Hands-on projects designed to demonstrate practical
-            cybersecurity, SOC investigation and defensive security skills.
-        </p>
+<span class="tag">Nmap</span>
 
+<span class="tag">tcpdump</span>
 
-        <!-- PROJECT 01 -->
-        <article class="project-card">
+<span class="tag">Threat Detection</span>
 
-            <div class="project-number">
-                01
-            </div>
+<span class="tag">IOC Identification</span>
 
-            <div class="project-content">
+<span class="tag">Detection Engineering</span>
 
-                <div class="project-top">
+<span class="tag">Incident Response</span>
 
-                    <div>
-                        <p class="project-type">
-                            SOC INVESTIGATION
-                        </p>
+<span class="tag">SOC Reporting</span>
 
-                        <h3>SOC Incident Investigation</h3>
-                    </div>
+</div>
 
-                    <span class="status active">
-                        In Progress
-                    </span>
 
-                </div>
+<!-- PROJECT BUTTON -->
 
-                <p>
-                    Hands-on SOC investigation involving security alert
-                    analysis, evidence collection, IOC identification,
-                    incident timeline creation and incident reporting.
-                </p>
+<div class="buttons">
 
-                <div class="project-tags">
-                    <span>Log Analysis</span>
-                    <span>Incident Response</span>
-                    <span>IOC Analysis</span>
-                    <span>MITRE ATT&CK</span>
-                </div>
+<a
+class="btn btn-primary"
+href="https://github.com/shaikjaffersadeq/portfolio/tree/main/projects/soc-incident-investigation"
+target="_blank"
+rel="noopener noreferrer">
 
-                <a href="#" class="project-link">
-                    Project Details →
-                </a>
+View Full Investigation →
 
-            </div>
+</a>
 
-        </article>
+</div>
 
 
-        <!-- PROJECT 02 -->
-        <article class="project-card">
+<p class="muted">
 
-            <div class="project-number">
-                02
-            </div>
+<small>
+The investigation was performed in an isolated laboratory
+environment for educational and defensive cybersecurity purposes.
+</small>
 
-            <div class="project-content">
+</p>
 
-                <div class="project-top">
+</div>
 
-                    <div>
-                        <p class="project-type">
-                            THREAT ANALYSIS
-                        </p>
 
-                        <h3>Malware & URL Analysis Scanner</h3>
-                    </div>
 
-                    <span class="status">
-                        Planned
-                    </span>
+<!-- FUTURE PROJECTS -->
 
-                </div>
+<section>
 
-                <p>
-                    A Python-based security project designed to analyze
-                    suspicious URLs and identify potentially malicious
-                    indicators using automated analysis techniques.
-                </p>
+<h2>
+Projects 02+
+</h2>
 
-                <div class="project-tags">
-                    <span>Python</span>
-                    <span>URL Analysis</span>
-                    <span>Threat Intelligence</span>
-                </div>
+<div class="card">
 
-            </div>
+<p class="muted">
+Additional SOC projects will be added here as they are completed.
+</p>
 
-        </article>
+<p>
+<strong>Next Project:</strong>
+Brute-Force Login Detection & Investigation
+</p>
 
+</div>
 
-        <!-- PROJECT 03 -->
-        <article class="project-card">
+</section>
 
-            <div class="project-number">
-                03
-            </div>
 
-            <div class="project-content">
 
-                <div class="project-top">
+<!-- CONTACT -->
 
-                    <div>
-                        <p class="project-type">
-                            SECURITY MONITORING
-                        </p>
+<section id="contact">
 
-                        <h3>SIEM Detection & Monitoring Lab</h3>
-                    </div>
+<h2>
+Contact
+</h2>
 
-                    <span class="status">
-                        Planned
-                    </span>
+<div class="card">
 
-                </div>
+<p>
+Interested in cybersecurity, SOC operations and defensive security.
+</p>
 
-                <p>
-                    Security monitoring laboratory focused on collecting
-                    logs, creating detections and investigating simulated
-                    security alerts.
-                </p>
+<p class="muted">
+You can connect with me through my professional profiles.
+</p>
 
-                <div class="project-tags">
-                    <span>SIEM</span>
-                    <span>Log Monitoring</span>
-                    <span>Detection Engineering</span>
-                </div>
+<div class="buttons">
 
-            </div>
+<a
+class="btn"
+href="https://github.com/shaikjaffersadeq"
+target="_blank"
+rel="noopener noreferrer">
 
-        </article>
+GitHub
 
+</a>
 
-        <!-- PROJECT 04 -->
-        <article class="project-card">
+</div>
 
-            <div class="project-number">
-                04
-            </div>
+</div>
 
-            <div class="project-content">
+</section>
 
-                <div class="project-top">
 
-                    <div>
-                        <p class="project-type">
-                            NETWORK SECURITY
-                        </p>
 
-                        <h3>Network Traffic Investigation</h3>
-                    </div>
+<!-- FOOTER -->
 
-                    <span class="status">
-                        Planned
-                    </span>
+<footer>
 
-                </div>
+<p>
+<strong>Shaik Jaffer Sadeq</strong>
+</p>
 
-                <p>
-                    Network investigation project focused on packet
-                    analysis, suspicious communication and identifying
-                    potential indicators of compromise.
-                </p>
+<p>
+SOC Analyst Portfolio • Cybersecurity • Defensive Security
+</p>
 
-                <div class="project-tags">
-                    <span>Wireshark</span>
-                    <span>PCAP</span>
-                    <span>Network Analysis</span>
-                </div>
+</footer>
 
-            </div>
 
-        </article>
-
-
-        <!-- PROJECT 05 -->
-        <article class="project-card">
-
-            <div class="project-number">
-                05
-            </div>
-
-            <div class="project-content">
-
-                <div class="project-top">
-
-                    <div>
-                        <p class="project-type">
-                            THREAT INVESTIGATION
-                        </p>
-
-                        <h3>Phishing Investigation Lab</h3>
-                    </div>
-
-                    <span class="status">
-                        Planned
-                    </span>
-
-                </div>
-
-                <p>
-                    Investigation laboratory focused on analyzing
-                    suspicious emails, URLs, domains and indicators
-                    associated with phishing attacks.
-                </p>
-
-                <div class="project-tags">
-                    <span>Phishing</span>
-                    <span>IOC Analysis</span>
-                    <span>Threat Intelligence</span>
-                </div>
-
-            </div>
-
-        </article>
-
-
-        <!-- PROJECT 06 -->
-        <article class="project-card">
-
-            <div class="project-number">
-                06
-            </div>
-
-            <div class="project-content">
-
-                <div class="project-top">
-
-                    <div>
-                        <p class="project-type">
-                            INCIDENT RESPONSE
-                        </p>
-
-                        <h3>Incident Response Simulation</h3>
-                    </div>
-
-                    <span class="status">
-                        Planned
-                    </span>
-
-                </div>
-
-                <p>
-                    Simulated security incident covering detection,
-                    investigation, containment, eradication and recovery.
-                </p>
-
-                <div class="project-tags">
-                    <span>Incident Response</span>
-                    <span>Investigation</span>
-                    <span>Containment</span>
-                </div>
-
-            </div>
-
-        </article>
-
-    </section>
-
-
-    <!-- RESUME -->
-    <section id="resume">
-
-        <div class="section-heading">
-            <p class="section-label">04 — RESUME</p>
-            <h2>Professional Profile</h2>
-        </div>
-
-        <div class="resume-card">
-
-            <div>
-
-                <p class="resume-label">
-                    DOCUMENT
-                </p>
-
-                <h3>Shaik Jaffer Sadeq — Resume</h3>
-
-                <p>
-                    My resume will contain my education, technical
-                    skills, cybersecurity projects and relevant
-                    professional experience.
-                </p>
-
-            </div>
-
-            <a href="#" class="button">
-                Resume Coming Soon
-            </a>
-
-        </div>
-
-    </section>
-
-
-    <!-- CONTACT -->
-    <section id="contact">
-
-        <div class="section-heading">
-            <p class="section-label">05 — CONTACT</p>
-            <h2>Let's Connect</h2>
-        </div>
-
-        <p class="section-intro">
-            Open to cybersecurity opportunities, internships,
-            projects and professional connections.
-        </p>
-
-        <div class="contact-grid">
-
-            <div class="contact-card">
-
-                <span class="contact-label">
-                    EMAIL
-                </span>
-
-                <h3>Coming Soon</h3>
-
-            </div>
-
-
-            <div class="contact-card">
-
-                <span class="contact-label">
-                    LINKEDIN
-                </span>
-
-                <h3>Coming Soon</h3>
-
-            </div>
-
-
-            <div class="contact-card">
-
-                <span class="contact-label">
-                    GITHUB
-                </span>
-
-                <h3>Coming Soon</h3>
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- FOOTER -->
-    <footer>
-
-        <p>
-            © 2026 Shaik Jaffer Sadeq
-        </p>
-
-        <p class="footer-subtitle">
-            Aspiring SOC Analyst • Cybersecurity
-        </p>
-
-    </footer>
+</main>
 
 </body>
 
