@@ -1,639 +1,501 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Shaik Jaffer Sadeq | SOC Analyst Portfolio</title>
+    <title>Shaik Jaffer Sadeq | Cybersecurity Portfolio</title>
 
-<style>
+    <meta name="description"
+          content="Cybersecurity portfolio of Shaik Jaffer Sadeq, focused on Security Operations, SOC investigations, network analysis, threat detection and incident response.">
 
-*{
-box-sizing:border-box;
-scroll-behavior:smooth;
-}
-
-body{
-margin:0;
-background:#0b1020;
-color:#e8eefc;
-font:16px/1.6 Arial,sans-serif;
-}
-
-main{
-max-width:1100px;
-margin:auto;
-padding:40px 24px 80px;
-}
-
-/* NAVIGATION */
-
-nav{
-position:sticky;
-top:0;
-z-index:100;
-background:#0b1020;
-border-bottom:1px solid #293653;
-padding:18px 24px;
-}
-
-.nav-container{
-max-width:1100px;
-margin:auto;
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
-
-.logo{
-color:#62d6ff;
-font-size:22px;
-font-weight:bold;
-}
-
-nav a{
-color:#aab5ca;
-text-decoration:none;
-margin-left:24px;
-font-weight:bold;
-}
-
-nav a:hover{
-color:#62d6ff;
-}
-
-/* HERO */
-
-.hero{
-padding:90px 0 70px;
-border-bottom:1px solid #293653;
-}
-
-.hero h1{
-font-size:58px;
-line-height:1.05;
-margin:15px 0;
-}
-
-.hero-title{
-font-size:25px;
-color:#62d6ff;
-font-weight:bold;
-}
-
-.muted{
-color:#aab5ca;
-}
-
-.accent{
-color:#62d6ff;
-font-weight:bold;
-letter-spacing:1px;
-}
-
-/* SECTIONS */
-
-section{
-padding:70px 0;
-}
-
-h2{
-font-size:34px;
-margin-bottom:25px;
-}
-
-h3{
-font-size:21px;
-margin-top:30px;
-}
-
-/* CARD */
-
-.card{
-background:#121a2d;
-border:1px solid #293653;
-border-radius:18px;
-padding:32px;
-transition:transform .2s ease,border-color .2s ease;
-}
-
-.card:hover{
-transform:translateY(-4px);
-border-color:#62d6ff;
-}
-
-.status{
-color:#65e6a5;
-}
-
-/* GRID */
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
-gap:15px;
-margin:25px 0;
-}
-
-.box{
-padding:18px;
-border:1px solid #293653;
-border-radius:12px;
-background:#0e1628;
-}
-
-/* TAGS */
-
-.tag{
-display:inline-block;
-border:1px solid #293653;
-border-radius:20px;
-padding:6px 12px;
-margin:4px;
-color:#aab5ca;
-font-size:13px;
-}
-
-/* BUTTONS */
-
-.buttons{
-margin-top:30px;
-display:flex;
-gap:12px;
-flex-wrap:wrap;
-}
-
-.btn{
-display:inline-block;
-padding:12px 20px;
-border-radius:8px;
-text-decoration:none;
-font-weight:bold;
-border:1px solid #62d6ff;
-color:#62d6ff;
-transition:.2s;
-}
-
-.btn:hover{
-background:#62d6ff;
-color:#0b1020;
-}
-
-.btn-primary{
-background:#62d6ff;
-color:#0b1020;
-}
-
-/* FOOTER */
-
-footer{
-border-top:1px solid #293653;
-padding-top:30px;
-text-align:center;
-color:#aab5ca;
-}
-
-code{
-color:#bfeaff;
-background:#0e1628;
-padding:2px 5px;
-border-radius:4px;
-}
-
-/* MOBILE */
-
-@media(max-width:700px){
-
-.hero h1{
-font-size:42px;
-}
-
-nav{
-position:relative;
-}
-
-.nav-container{
-flex-direction:column;
-gap:15px;
-}
-
-nav a{
-margin:0 8px;
-font-size:14px;
-}
-
-}
-
-</style>
+    <link rel="stylesheet" href="style.css">
 </head>
-
 
 <body>
 
+    <!-- =========================
+         NAVIGATION
+    ========================== -->
 
-<!-- NAVIGATION -->
+    <header class="navbar">
+        <div class="container nav-container">
 
-<nav>
+            <a href="#home" class="logo">
+                Shaik Jaffer Sadeq
+            </a>
 
-<div class="nav-container">
+            <nav>
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#skills">Skills</a>
+                <a href="#projects">Projects</a>
+                <a href="#contact">Contact</a>
+            </nav>
 
-<div class="logo">
-SJS
-</div>
+        </div>
+    </header>
 
-<div>
 
-<a href="#home">Home</a>
-<a href="#about">About</a>
-<a href="#skills">Skills</a>
-<a href="#projects">Projects</a>
-<a href="#contact">Contact</a>
+    <!-- =========================
+         HERO SECTION
+    ========================== -->
 
-</div>
+    <section id="home" class="hero">
 
-</div>
+        <div class="container hero-content">
 
-</nav>
+            <div class="hero-text">
 
+                <p class="hero-label">
+                    CYBERSECURITY • SOC • BLUE TEAM
+                </p>
 
+                <h1>
+                    Shaik Jaffer Sadeq
+                </h1>
 
-<main>
+                <h2>
+                    Aspiring SOC Analyst
+                </h2>
 
+                <p>
+                    Cybersecurity student focused on Security Operations,
+                    Network Security, Threat Detection, Incident Investigation
+                    and Defensive Security.
+                </p>
 
-<!-- HOME -->
+                <div class="hero-buttons">
 
-<section id="home" class="hero">
+                    <a href="#projects" class="btn">
+                        View Projects
+                    </a>
 
-<p class="accent">
-CYBERSECURITY • SOC • DEFENSIVE SECURITY
-</p>
+                    <a href="#contact" class="btn btn-outline">
+                        Contact Me
+                    </a>
 
-<h1>
-Shaik Jaffer Sadeq.
-</h1>
+                </div>
 
-<p class="hero-title">
-Aspiring SOC Analyst
-</p>
+            </div>
 
-<p class="muted">
-BCA student focused on cybersecurity, security monitoring,
-threat detection, incident investigation and developing
-practical defensive security skills.
-</p>
+        </div>
 
-<div class="buttons">
+    </section>
 
-<a class="btn btn-primary" href="#projects">
-View Projects
-</a>
 
-<a class="btn" href="#contact">
-Contact Me
-</a>
+    <!-- =========================
+         ABOUT SECTION
+    ========================== -->
 
-</div>
+    <section id="about" class="section">
 
-</section>
+        <div class="container">
 
+            <div class="section-heading">
+                <p>ABOUT ME</p>
 
+                <h2>
+                    Building Practical Cybersecurity Skills
+                </h2>
+            </div>
 
-<!-- ABOUT -->
+            <div class="about-content">
 
-<section id="about">
+                <p>
+                    I am a cybersecurity-focused BCA student building
+                    practical skills in Security Operations and defensive
+                    cybersecurity.
+                </p>
 
-<h2>About Me</h2>
+                <p>
+                    My portfolio focuses on hands-on SOC projects where I
+                    simulate security events, collect evidence, analyze
+                    logs and network traffic, identify indicators, develop
+                    detection logic and document investigations.
+                </p>
 
-<div class="card">
+                <p>
+                    My goal is to develop the practical investigation and
+                    analytical skills required for a career as a SOC Analyst.
+                </p>
 
-<p>
-I am a BCA student building practical skills in Security
-Operations Center (SOC) analysis and defensive cybersecurity.
-</p>
+            </div>
 
-<p>
-My portfolio focuses on hands-on investigations involving
-network traffic analysis, threat detection, incident
-investigation, IOC identification and security documentation.
-</p>
+        </div>
 
-<p>
-My goal is to develop the technical and analytical skills
-required for an entry-level SOC Analyst role.
-</p>
+    </section>
 
-</div>
 
-</section>
+    <!-- =========================
+         SKILLS SECTION
+    ========================== -->
 
+    <section id="skills" class="section">
 
+        <div class="container">
 
-<!-- SKILLS -->
+            <div class="section-heading">
+                <p>TECHNICAL SKILLS</p>
 
-<section id="skills">
+                <h2>
+                    Cybersecurity Toolkit
+                </h2>
+            </div>
 
-<h2>Skills</h2>
 
-<div class="grid">
+            <div class="skills-grid">
 
-<div class="box">
-<strong>Network Security</strong>
-<p class="muted">
-TCP/IP, HTTP, network reconnaissance and traffic analysis
-</p>
-</div>
+                <div class="skill-card">
+                    <h3>SOC Operations</h3>
 
-<div class="box">
-<strong>Security Monitoring</strong>
-<p class="muted">
-Detection logic, suspicious activity analysis and investigation
-</p>
-</div>
+                    <p>
+                        Security monitoring, alert investigation,
+                        incident analysis and SOC workflows.
+                    </p>
+                </div>
 
-<div class="box">
-<strong>Incident Response</strong>
-<p class="muted">
-Incident timelines, evidence handling and SOC reporting
-</p>
-</div>
 
-<div class="box">
-<strong>Security Tools</strong>
-<p class="muted">
-Wireshark, tcpdump, Nmap, Kali Linux and curl
-</p>
-</div>
+                <div class="skill-card">
+                    <h3>Network Security</h3>
 
-</div>
+                    <p>
+                        TCP/IP, packet analysis, network reconnaissance,
+                        Nmap and Wireshark.
+                    </p>
+                </div>
 
-</section>
 
+                <div class="skill-card">
+                    <h3>Log Analysis</h3>
 
+                    <p>
+                        Linux authentication logs, event correlation,
+                        timeline analysis and investigation.
+                    </p>
+                </div>
 
-<!-- PROJECTS -->
 
-<section id="projects">
+                <div class="skill-card">
+                    <h3>Threat Detection</h3>
 
-<h2>Projects</h2>
+                    <p>
+                        Detection logic, suspicious activity identification,
+                        IOCs and Sigma-style detection rules.
+                    </p>
+                </div>
 
 
-<!-- PROJECT 01 -->
+                <div class="skill-card">
+                    <h3>Linux</h3>
 
-<div class="card">
+                    <p>
+                        Kali Linux, Ubuntu Linux, SSH, networking,
+                        command-line investigation and system administration.
+                    </p>
+                </div>
 
-<p class="accent">
-PROJECT 01 • SOC INVESTIGATION
-</p>
 
-<h2>
-Network Reconnaissance Investigation
-</h2>
+                <div class="skill-card">
+                    <h3>Security Tools</h3>
 
-<p class="accent">
-Suspicious Web Reconnaissance Detection & Investigation
-</p>
+                    <p>
+                        Wireshark, Nmap, tcpdump and other cybersecurity
+                        tools used for security testing and investigation.
+                    </p>
+                </div>
 
-<p class="status">
-<strong>
-Severity: Medium • Status: Investigated
-</strong>
-</p>
+            </div>
 
+        </div>
 
-<p>
-A controlled SOC laboratory investigation of suspicious
-automated web reconnaissance originating from
-<strong>192.168.56.103</strong> against the laboratory
-web server at <strong>192.168.56.102:8000</strong>.
-</p>
+    </section>
 
 
-<!-- PROJECT INFORMATION -->
+    <!-- =========================
+         PROJECTS SECTION
+    ========================== -->
 
-<div class="grid">
+    <section id="projects" class="section projects-section">
 
-<div class="box">
-<strong>Source</strong>
-<br>
-192.168.56.103
-</div>
+        <div class="container">
 
-<div class="box">
-<strong>Target</strong>
-<br>
-192.168.56.102:8000
-</div>
+            <div class="section-heading">
 
-<div class="box">
-<strong>Detection Indicator</strong>
-<br>
-SQLMap User-Agent
-</div>
+                <p>PROJECTS</p>
 
-<div class="box">
-<strong>Access Result</strong>
-<br>
-HTTP 404 on /admin
-</div>
+                <h2>
+                    Practical SOC Investigations
+                </h2>
 
-</div>
+                <p>
+                    Hands-on cybersecurity projects demonstrating
+                    investigation, detection and incident-response skills.
+                </p>
 
+            </div>
 
-<!-- INVESTIGATION -->
 
-<h3>
-Investigation Performed
-</h3>
+            <div class="projects-grid">
 
-<ul>
 
-<li>
-Analyzed network traffic using Wireshark.
-</li>
+                <!-- =========================
+                     PROJECT 01
+                ========================== -->
 
-<li>
-Reviewed TCP SYN, SYN/ACK and RST traffic.
-</li>
+                <article class="project-card">
 
-<li>
-Inspected HTTP requests and responses.
-</li>
+                    <div class="project-number">
+                        PROJECT 01
+                    </div>
 
-<li>
-Identified the SQLMap User-Agent as a suspicious detection indicator.
-</li>
+                    <h3>
+                        SOC Incident Investigation —
+                        Suspicious Web Reconnaissance
+                    </h3>
 
-<li>
-Investigated the <code>/admin</code> request.
-</li>
+                    <p>
+                        Investigated suspicious web reconnaissance activity
+                        in an isolated SOC laboratory using Kali Linux and
+                        Ubuntu Linux.
+                    </p>
 
-<li>
-Confirmed the server returned HTTP 404.
-</li>
+                    <p>
+                        Network traffic was generated using Nmap and curl,
+                        captured with tcpdump and analyzed in Wireshark.
+                        The investigation identified a suspicious HTTP
+                        request to <strong>/admin</strong> containing a
+                        <strong>SQLMap User-Agent</strong>.
+                    </p>
 
-<li>
-Found no evidence of successful administrative access.
-</li>
+                    <div class="project-tags">
 
-<li>
-Created IOCs and incident documentation.
-</li>
+                        <span>Wireshark</span>
+                        <span>Nmap</span>
+                        <span>tcpdump</span>
+                        <span>HTTP</span>
+                        <span>Network Analysis</span>
 
-<li>
-Created a Sigma-style detection rule.
-</li>
+                    </div>
 
-<li>
-Produced a complete SOC investigation report.
-</li>
+                    <div class="project-result">
 
-</ul>
+                        <strong>Finding:</strong>
 
+                        Potential suspicious web reconnaissance activity.
+                        No successful access was observed.
 
-<!-- SKILLS -->
+                    </div>
 
-<h3>
-Skills Demonstrated
-</h3>
+                    <a
+                        href="https://github.com/shaikjaffersadeq/portfolio/tree/main/projects/soc-incident-investigation"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="project-link"
+                    >
+                        View Full Investigation →
+                    </a>
 
-<div>
+                </article>
 
-<span class="tag">Wireshark</span>
 
-<span class="tag">PCAP Analysis</span>
+                <!-- =========================
+                     PROJECT 02
+                ========================== -->
 
-<span class="tag">TCP Analysis</span>
+                <article class="project-card">
 
-<span class="tag">HTTP Analysis</span>
+                    <div class="project-number">
+                        PROJECT 02
+                    </div>
 
-<span class="tag">Nmap</span>
+                    <h3>
+                        SOC Brute-Force Login Detection
+                        & Investigation
+                    </h3>
 
-<span class="tag">tcpdump</span>
+                    <p>
+                        Investigated repeated failed SSH authentication
+                        attempts in an isolated SOC laboratory environment
+                        using Kali Linux and Ubuntu Linux.
+                    </p>
 
-<span class="tag">Threat Detection</span>
+                    <p>
+                        Authentication logs were analyzed to identify the
+                        source IP, destination system, target account and
+                        authentication timeline. The investigation also
+                        correlated failed attempts with successful-login
+                        events.
+                    </p>
 
-<span class="tag">IOC Identification</span>
+                    <div class="project-tags">
 
-<span class="tag">Detection Engineering</span>
+                        <span>SSH</span>
+                        <span>Linux</span>
+                        <span>Log Analysis</span>
+                        <span>IOC Analysis</span>
+                        <span>Detection</span>
 
-<span class="tag">Incident Response</span>
+                    </div>
 
-<span class="tag">SOC Reporting</span>
+                    <div class="project-result">
 
-</div>
+                        <strong>Finding:</strong>
 
+                        Three failed SSH authentication attempts were
+                        identified from the same source against the
+                        <strong>snowden</strong> account. No successful
+                        authentication was observed immediately after
+                        the controlled failed-login sequence.
 
-<!-- PROJECT BUTTON -->
+                    </div>
 
-<div class="buttons">
+                    <a
+                        href="https://github.com/shaikjaffersadeq/portfolio/tree/main/projects/soc-brute-force-investigation"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="project-link"
+                    >
+                        View Full Investigation →
+                    </a>
 
-<a
-class="btn btn-primary"
-href="https://github.com/shaikjaffersadeq/portfolio/tree/main/projects/soc-incident-investigation"
-target="_blank"
-rel="noopener noreferrer">
+                </article>
 
-View Full Investigation →
 
-</a>
+            </div>
 
-</div>
+        </div>
 
+    </section>
 
-<p class="muted">
 
-<small>
-The investigation was performed in an isolated laboratory
-environment for educational and defensive cybersecurity purposes.
-</small>
+    <!-- =========================
+         SOC WORKFLOW SECTION
+    ========================== -->
 
-</p>
+    <section class="section">
 
-</div>
+        <div class="container">
 
+            <div class="section-heading">
 
+                <p>INVESTIGATION APPROACH</p>
 
-<!-- FUTURE PROJECTS -->
+                <h2>
+                    How I Approach Security Incidents
+                </h2>
 
-<section>
+            </div>
 
-<h2>
-Projects 02+
-</h2>
 
-<div class="card">
+            <div class="workflow-grid">
 
-<p class="muted">
-Additional SOC projects will be added here as they are completed.
-</p>
+                <div class="workflow-card">
+                    <span>01</span>
+                    <h3>Detect</h3>
+                    <p>
+                        Identify suspicious network or authentication
+                        activity.
+                    </p>
+                </div>
 
-<p>
-<strong>Next Project:</strong>
-Brute-Force Login Detection & Investigation
-</p>
 
-</div>
+                <div class="workflow-card">
+                    <span>02</span>
+                    <h3>Collect</h3>
+                    <p>
+                        Gather packets, logs, events and other relevant
+                        evidence.
+                    </p>
+                </div>
 
-</section>
 
+                <div class="workflow-card">
+                    <span>03</span>
+                    <h3>Analyze</h3>
+                    <p>
+                        Investigate the activity and correlate related
+                        events.
+                    </p>
+                </div>
 
 
-<!-- CONTACT -->
+                <div class="workflow-card">
+                    <span>04</span>
+                    <h3>Document</h3>
+                    <p>
+                        Record IOCs, timeline, findings, severity and
+                        recommendations.
+                    </p>
+                </div>
 
-<section id="contact">
+            </div>
 
-<h2>
-Contact
-</h2>
+        </div>
 
-<div class="card">
+    </section>
 
-<p>
-Interested in cybersecurity, SOC operations and defensive security.
-</p>
 
-<p class="muted">
-You can connect with me through my professional profiles.
-</p>
+    <!-- =========================
+         CONTACT SECTION
+    ========================== -->
 
-<div class="buttons">
+    <section id="contact" class="section contact-section">
 
-<a
-class="btn"
-href="https://github.com/shaikjaffersadeq"
-target="_blank"
-rel="noopener noreferrer">
+        <div class="container">
 
-GitHub
+            <div class="section-heading">
 
-</a>
+                <p>CONTACT</p>
 
-</div>
+                <h2>
+                    Let's Connect
+                </h2>
 
-</div>
+                <p>
+                    Interested in cybersecurity, SOC operations and
+                    defensive security.
+                </p>
 
-</section>
+            </div>
 
 
+            <div class="contact-links">
 
-<!-- FOOTER -->
+                <a
+                    href="https://github.com/shaikjaffersadeq"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    GitHub
+                </a>
 
-<footer>
+                <!-- Add your LinkedIn URL here when ready -->
 
-<p>
-<strong>Shaik Jaffer Sadeq</strong>
-</p>
+            </div>
 
-<p>
-SOC Analyst Portfolio • Cybersecurity • Defensive Security
-</p>
+        </div>
 
-</footer>
+    </section>
 
 
-</main>
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer>
+
+        <div class="container">
+
+            <p>
+                © 2026 Shaik Jaffer Sadeq.
+                Cybersecurity Portfolio.
+            </p>
+
+        </div>
+
+    </footer>
+
 
 </body>
-
 </html>
