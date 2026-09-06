@@ -1,0 +1,30 @@
+title: Potential SSH Brute-Force Login Activity
+id: soc-bruteforce-001
+status: experimental
+
+description: >
+  Detects failed SSH authentication attempts that may indicate
+  password guessing or brute-force activity.
+
+author: Shaik Jaffer Sadeq
+
+logsource:
+  product: linux
+  service: sshd
+
+detection:
+  selection:
+    message|contains: 'Failed password'
+
+  condition: selection
+
+falsepositives:
+  - User password mistakes
+  - Authorized penetration testing
+  - Security testing in a laboratory environment
+  - Misconfigured automated systems
+
+level: medium
+
+tags:
+  - attack.credential_access
