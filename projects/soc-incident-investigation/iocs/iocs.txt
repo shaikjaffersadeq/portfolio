@@ -1,0 +1,98 @@
+SOC LAB — INDICATORS OF COMPROMISE
+===================================
+
+Incident Classification:
+Suspicious Web Reconnaissance
+
+Severity:
+Medium
+
+-----------------------------------
+NETWORK INDICATORS
+-----------------------------------
+
+Source IP:
+192.168.56.103
+
+Destination IP:
+192.168.56.102
+
+Destination Port:
+8000
+
+Protocol:
+HTTP over TCP
+
+
+-----------------------------------
+HTTP INDICATORS
+-----------------------------------
+
+Suspicious User-Agent:
+sqlmap
+
+Suspicious URI:
+/admin
+
+HTTP Method:
+GET
+
+Server Response:
+HTTP 404 File Not Found
+
+
+-----------------------------------
+ANALYST ASSESSMENT
+-----------------------------------
+
+The source host generated an HTTP request targeting
+the /admin resource on the internal web server.
+
+The request contained the User-Agent "sqlmap",
+which is associated with automated web application
+security testing and reconnaissance.
+
+The requested resource returned HTTP 404 File Not Found.
+
+No successful access or exploitation was observed
+during this investigation.
+
+
+-----------------------------------
+CLASSIFICATION
+-----------------------------------
+
+Indicator Type:
+Network / HTTP
+
+Activity:
+Web Reconnaissance
+
+Severity:
+Medium
+
+Status:
+Investigated
+
+
+-----------------------------------
+EVIDENCE
+-----------------------------------
+
+Packet Capture:
+soc-lab.pcapng
+
+Analysis Tool:
+Wireshark
+
+Traffic Capture:
+tcpdump
+
+Detection Rule:
+detections/suspicious-web-user-agent.yml
+
+Incident Report:
+SOC-Investigation-Report.md
+
+Timeline:
+incident-timeline.md
