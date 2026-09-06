@@ -1,0 +1,72 @@
+SOC LAB — INDICATORS / OBSERVABLES
+==================================
+
+Incident Classification:
+Potential SSH Brute-Force Activity
+
+Severity:
+Medium
+
+Status:
+Investigated
+
+
+SOURCE IP:
+192.168.56.103
+
+DESTINATION IP:
+192.168.56.102
+
+TARGET ACCOUNT:
+snowden
+
+SERVICE:
+SSH / OpenSSH
+
+EVENT TYPE:
+Failed password
+
+FAILED ATTEMPTS:
+3
+
+
+AUTHENTICATION RESULT:
+No successful authentication was observed immediately after
+the controlled failed-login sequence.
+
+
+SUSPICIOUS ACTIVITY:
+Repeated failed SSH authentication attempts from the same
+source IP against the same user account.
+
+
+ASSESSMENT:
+The observed activity is consistent with potential SSH
+brute-force or password-guessing activity.
+
+The activity was generated in an isolated laboratory environment
+for SOC investigation and detection testing.
+
+No confirmed system compromise was identified.
+
+
+SOC DETECTION CONDITION:
+3 or more failed SSH authentication attempts from the same
+source IP against the same account within a short time window
+should generate a potential brute-force alert.
+
+
+RECOMMENDED CORRELATION:
+- Source IP
+- Destination IP
+- Username
+- Authentication result
+- Number of failed attempts
+- Time window
+- Successful authentication following failures
+
+
+NOTE:
+The IP addresses and account information documented here are
+laboratory observables and should not be treated as evidence
+of malicious activity outside this controlled environment.
