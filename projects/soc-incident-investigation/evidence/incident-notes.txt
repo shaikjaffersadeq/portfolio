@@ -1,0 +1,177 @@
+SOC NETWORK INVESTIGATION LAB
+=============================
+
+INCIDENT NOTES
+
+
+1. INCIDENT OVERVIEW
+--------------------
+
+A simulated suspicious web reconnaissance event was
+investigated in an isolated SOC laboratory environment.
+
+The activity involved HTTP requests from the Kali Linux
+analyst machine to an Ubuntu web server.
+
+
+2. NETWORK INFORMATION
+----------------------
+
+Source IP:
+192.168.56.103
+
+Destination IP:
+192.168.56.102
+
+Destination Port:
+8000
+
+Protocol:
+HTTP over TCP
+
+Network Interface:
+eth1
+
+
+3. WEB SERVER
+-------------
+
+The Ubuntu machine hosted a Python SimpleHTTPServer
+on TCP port 8000.
+
+Service identification:
+
+SimpleHTTPServer 0.6
+Python
+
+
+4. NORMAL TRAFFIC
+-----------------
+
+A normal HTTP request was observed:
+
+GET /
+
+The server responded:
+
+HTTP/1.0 200 OK
+
+
+5. RECONNAISSANCE ACTIVITY
+---------------------------
+
+Nmap SYN scanning was performed against the laboratory
+web server.
+
+Observed TCP behavior for an open port:
+
+SYN → SYN/ACK → RST
+
+Observed behavior for a closed port:
+
+SYN → RST/ACK
+
+
+6. SUSPICIOUS HTTP REQUEST
+--------------------------
+
+The following request was identified:
+
+GET /admin HTTP/1.1
+
+User-Agent:
+sqlmap
+
+
+7. SERVER RESPONSE
+------------------
+
+The server returned:
+
+HTTP/1.0 404 File Not Found
+
+The requested /admin resource was not available.
+
+
+8. ANALYST FINDING
+------------------
+
+The "sqlmap" User-Agent was identified as suspicious.
+
+The activity is consistent with automated web application
+reconnaissance or security testing.
+
+No successful access to the /admin resource was observed.
+
+
+9. DETECTION
+------------
+
+Detection method:
+
+HTTP User-Agent contains "sqlmap"
+
+Detection rule:
+
+detections/suspicious-web-user-agent.yml
+
+
+10. SEVERITY
+------------
+
+Medium
+
+
+11. EVIDENCE
+------------
+
+Primary packet capture:
+soc-lab.pcapng
+
+Network analysis:
+Wireshark
+
+Traffic capture:
+tcpdump
+
+Network discovery:
+Nmap
+
+HTTP testing:
+curl
+
+
+12. RECOMMENDED ACTIONS
+----------------------
+
+1. Validate the source host.
+
+2. Review web-server logs.
+
+3. Search for additional requests from the same source.
+
+4. Investigate repeated requests to administrative
+   or sensitive resources.
+
+5. Review authentication and application logs.
+
+6. Escalate if successful exploitation is discovered.
+
+
+13. FINAL ASSESSMENT
+--------------------
+
+Classification:
+Suspicious Web Reconnaissance
+
+Severity:
+Medium
+
+Status:
+Investigated
+
+Successful Exploitation:
+Not observed
+
+
+END OF INCIDENT NOTES
