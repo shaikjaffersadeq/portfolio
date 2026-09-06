@@ -1,0 +1,32 @@
+title: Suspicious SQLMap User-Agent Detection
+
+id: soc-lab-sqlmap-001
+
+status: experimental
+
+description: >
+  Detects HTTP requests containing a SQLMap User-Agent.
+  SQLMap is commonly associated with automated web application
+  security testing and reconnaissance.
+
+author: SOC Network Investigation Lab
+
+logsource:
+  category: webserver
+
+detection:
+  selection:
+    http_user_agent|contains: 'sqlmap'
+
+  condition: selection
+
+falsepositives:
+  - Authorized security testing
+  - Penetration testing
+  - Vulnerability assessment
+
+level: medium
+
+tags:
+  - attack.discovery
+  - attack.web_application
