@@ -1,0 +1,139 @@
+SOC BRUTE-FORCE INVESTIGATION — INCIDENT NOTES
+================================================
+
+INCIDENT:
+Potential SSH Brute-Force Activity
+
+
+ENVIRONMENT:
+Kali Linux → Ubuntu Linux
+
+SOURCE IP:
+192.168.56.103
+
+DESTINATION IP:
+192.168.56.102
+
+TARGET ACCOUNT:
+snowden
+
+SERVICE:
+SSH / OpenSSH
+
+
+INVESTIGATION OBJECTIVE:
+Identify repeated failed SSH authentication attempts,
+determine the source and target, review the authentication
+timeline, and check whether successful authentication
+occurred after the failed attempts.
+
+
+LOG SOURCE:
+Ubuntu authentication log
+
+Log file:
+/var/log/auth.log
+
+
+OBSERVED ACTIVITY:
+Three failed SSH authentication attempts were observed
+from source IP 192.168.56.103 against the snowden account
+on 192.168.56.102.
+
+
+LOG SEARCH USED:
+
+sudo grep -a "Failed password" /var/log/auth.log
+
+
+ACCOUNT-SPECIFIC SEARCH:
+
+sudo grep -a -c "Failed password for snowden from 192.168.56.103" /var/log/auth.log
+
+
+RESULT:
+3 failed authentication attempts were identified in the
+controlled test sequence.
+
+
+SUCCESSFUL LOGIN CORRELATION:
+
+Search performed for successful authentication:
+
+sudo grep -a "Accepted password for snowden from 192.168.56.103" /var/log/auth.log | tail -10
+
+
+RESULT:
+No successful authentication was observed immediately after
+the controlled failed-login sequence.
+
+
+IMPORTANT OBSERVATION:
+An earlier successful authentication from the same source
+and account occurred before the controlled failed-login test.
+
+This earlier event was treated separately and was not
+considered evidence that the simulated failed-login sequence
+resulted in successful access.
+
+
+ANALYST ASSESSMENT:
+The repeated failed authentication attempts are consistent
+with potential SSH brute-force or password-guessing activity.
+
+Because this was a controlled laboratory simulation and no
+successful authentication was observed after the failed
+sequence, there is no confirmed compromise.
+
+
+DETECTION LOGIC:
+3 or more failed SSH authentication attempts from the same
+source IP against the same account within a short time window
+should generate a potential SSH brute-force alert.
+
+
+SEVERITY:
+Medium
+
+
+STATUS:
+Investigated
+
+
+RECOMMENDED ACTIONS:
+- Review additional authentication logs.
+- Check for successful authentication after failed attempts.
+- Investigate activity from the source IP.
+- Correlate with firewall and endpoint logs.
+- Determine whether the source is authorized testing activity.
+- Block or rate-limit the source if malicious activity is confirmed.
+
+
+EVIDENCE:
+- /var/log/auth.log
+- Failed SSH authentication events
+- Source and destination IP addresses
+- Target username
+- Authentication correlation
+- Detection rule
+- IOC documentation
+- Incident timeline
+- SOC investigation report
+
+
+CONCLUSION:
+The investigation demonstrated the SOC workflow for identifying
+and analyzing repeated SSH authentication failures.
+
+Three failed attempts were identified from 192.168.56.103
+against the snowden account on 192.168.56.102.
+
+No successful authentication was observed immediately after
+the controlled failed-login sequence.
+
+Classification:
+Potential SSH Brute-Force Activity
+
+
+ANALYST:
+Shaik Jaffer Sadeq
