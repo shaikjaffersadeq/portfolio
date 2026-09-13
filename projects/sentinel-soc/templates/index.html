@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Password Security Lab</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+    <!-- =====================================================
+         TOP BAR
+         ===================================================== -->
+
+    <header class="topbar">
+
+        <div class="logo-area">
+
+            <h1>🔐 Password Security Lab</h1>
+
+            <p>
+                Authentication Attack & Defense Simulator
+            </p>
+
+        </div>
+
+
+        <div class="status">
+
+            <span class="status-dot"></span>
+
+            LAB ONLINE
+
+        </div>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN
+         ===================================================== -->
+
+    <main>
+
+
+        <section class="hero">
+
+            <span class="tag">
+                MODULE 01 · PASSWORD ANALYZER
+            </span>
+
+            <h2>
+                Analyze Password Security
+            </h2>
+
+            <p>
+                Evaluate password complexity, entropy,
+                predictable patterns and security risks.
+            </p>
+
+        </section>
+
+    <div style="margin-bottom: 25px;">
+
+    <a
+        href="/login"
+        style="
+            color: #6ea8ff;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: bold;
+        "
+    >
+        → Open Authentication Laboratory
+    </a>
+
+</div>
+
+
+
+        <!-- =================================================
+             PASSWORD ANALYZER
+             ================================================= -->
+
+        <section class="analyzer-container">
+
+
+            <!-- INPUT -->
+
+            <div class="analyzer-input">
+
+                <h3>
+                    Password Analysis
+                </h3>
+
+                <p class="section-description">
+                    Enter a test password for analysis.
+                    Passwords are not stored by this laboratory.
+                </p>
+
+
+                <div class="password-box">
+
+                    <input
+                        type="password"
+                        id="passwordInput"
+                        placeholder="Enter a test password..."
+                        autocomplete="off"
+                    >
+
+                    <button
+                        class="show-button"
+                        onclick="togglePassword()"
+                        type="button"
+                    >
+                        SHOW
+                    </button>
+
+                </div>
+
+
+                <button
+                    class="analyze-button"
+                    onclick="analyzePassword()"
+                    type="button"
+                >
+                    ANALYZE PASSWORD
+                </button>
+
+
+                <div
+                    id="errorMessage"
+                    class="error-message"
+                ></div>
+
+            </div>
+
+
+
+            <!-- RESULT -->
+
+            <div class="result-panel">
+
+                <div class="result-header">
+
+                    <h3>
+                        Security Assessment
+                    </h3>
+
+                    <span id="riskBadge">
+                        WAITING
+                    </span>
+
+                </div>
+
+
+                <div class="score-section">
+
+                    <div class="score-circle">
+
+                        <span id="scoreValue">
+                            --
+                        </span>
+
+                        <small>
+                            / 100
+                        </small>
+
+                    </div>
+
+
+                    <div>
+
+                        <div class="result-label">
+                            SECURITY STRENGTH
+                        </div>
+
+                        <div
+                            id="strengthValue"
+                            class="strength-value"
+                        >
+                            Waiting for analysis
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- METRICS -->
+
+                <div class="metrics">
+
+                    <div class="metric">
+
+                        <span>
+                            Password Length
+                        </span>
+
+                        <strong id="lengthValue">
+                            --
+                        </strong>
+
+                    </div>
+
+
+                    <div class="metric">
+
+                        <span>
+                            Estimated Entropy
+                        </span>
+
+                        <strong id="entropyValue">
+                            --
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- SECURITY CHECKS -->
+
+                <h4 class="subheading">
+                    SECURITY CHECKS
+                </h4>
+
+
+                <div class="checks-grid">
+
+                    <div class="check" id="checkLength">
+                        <span>○</span>
+                        Minimum length
+                    </div>
+
+                    <div class="check" id="checkLowercase">
+                        <span>○</span>
+                        Lowercase
+                    </div>
+
+                    <div class="check" id="checkUppercase">
+                        <span>○</span>
+                        Uppercase
+                    </div>
+
+                    <div class="check" id="checkNumbers">
+                        <span>○</span>
+                        Numbers
+                    </div>
+
+                    <div class="check" id="checkSpecial">
+                        <span>○</span>
+                        Special characters
+                    </div>
+
+                    <div class="check" id="checkCommon">
+                        <span>○</span>
+                        Not common
+                    </div>
+
+                    <div class="check" id="checkSequential">
+                        <span>○</span>
+                        No sequences
+                    </div>
+
+                    <div class="check" id="checkRepeated">
+                        <span>○</span>
+                        No repetition
+                    </div>
+
+                </div>
+
+
+
+                <!-- RECOMMENDATIONS -->
+
+                <h4 class="subheading">
+                    SECURITY RECOMMENDATIONS
+                </h4>
+
+                <ul
+                    id="recommendations"
+                    class="recommendations"
+                >
+                    <li>
+                        Enter a password to begin analysis.
+                    </li>
+                </ul>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <footer>
+
+        Password Security Lab ·
+        Authorized Laboratory Environment
+
+    </footer>
+
+
+</div>
+
+
+
+<script>
+
+function togglePassword() {
+
+    const input =
+        document.getElementById("passwordInput");
+
+    const button =
+        document.querySelector(".show-button");
+
+
+    if (input.type === "password") {
+
+        input.type = "text";
+
+        button.textContent = "HIDE";
+
+    } else {
+
+        input.type = "password";
+
+        button.textContent = "SHOW";
+
+    }
+
+}
+
+
+
+function updateCheck(elementId, passed) {
+
+    const element =
+        document.getElementById(elementId);
+
+    if (passed) {
+
+        element.classList.add("passed");
+
+        element.classList.remove("failed");
+
+        element.querySelector("span").textContent = "✓";
+
+    } else {
+
+        element.classList.add("failed");
+
+        element.classList.remove("passed");
+
+        element.querySelector("span").textContent = "✕";
+
+    }
+
+}
+
+
+
+async function analyzePassword() {
+
+    const passwordInput =
+        document.getElementById("passwordInput");
+
+    const password =
+        passwordInput.value;
+
+
+    const errorMessage =
+        document.getElementById("errorMessage");
+
+
+    errorMessage.textContent = "";
+
+
+    if (!password) {
+
+        errorMessage.textContent =
+            "Please enter a password.";
+
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch("/api/analyze-password", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    password: password
+                })
+
+            });
+
+
+        const data =
+            await response.json();
+
+
+        if (!response.ok) {
+
+            errorMessage.textContent =
+                data.error || "Analysis failed.";
+
+            return;
+        }
+
+
+        document.getElementById("scoreValue")
+            .textContent = data.score;
+
+
+        document.getElementById("strengthValue")
+            .textContent = data.strength;
+
+
+        document.getElementById("lengthValue")
+            .textContent = data.length;
+
+
+        document.getElementById("entropyValue")
+            .textContent = data.entropy + " bits";
+
+
+        const riskBadge =
+            document.getElementById("riskBadge");
+
+
+        riskBadge.textContent =
+            data.risk + " RISK";
+
+
+        riskBadge.className =
+            "risk-badge " +
+            data.risk.toLowerCase();
+
+
+        updateCheck(
+            "checkLength",
+            data.checks.length
+        );
+
+
+        updateCheck(
+            "checkLowercase",
+            data.checks.lowercase
+        );
+
+
+        updateCheck(
+            "checkUppercase",
+            data.checks.uppercase
+        );
+
+
+        updateCheck(
+            "checkNumbers",
+            data.checks.numbers
+        );
+
+
+        updateCheck(
+            "checkSpecial",
+            data.checks.special
+        );
+
+
+        updateCheck(
+            "checkCommon",
+            data.checks.common
+        );
+
+
+        updateCheck(
+            "checkSequential",
+            data.checks.sequential
+        );
+
+
+        updateCheck(
+            "checkRepeated",
+            data.checks.repeated
+        );
+
+
+        const recommendations =
+            document.getElementById(
+                "recommendations"
+            );
+
+
+        recommendations.innerHTML = "";
+
+
+        data.recommendations.forEach(
+            function (recommendation) {
+
+                const li =
+                    document.createElement("li");
+
+                li.textContent =
+                    recommendation;
+
+                recommendations.appendChild(li);
+
+            }
+        );
+
+    }
+
+    catch (error) {
+
+        errorMessage.textContent =
+            "Unable to connect to the analysis server.";
+
+        console.error(error);
+
+    }
+
+}
+
+</script>
+
+
+</body>
+
+</html>
