@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Attack Simulator</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+    <!-- TOP BAR -->
+
+    <header class="topbar">
+
+        <div class="logo-area">
+
+            <h1>⚔️ Password Security Lab</h1>
+
+            <p>
+                Controlled Authentication Attack Simulator
+            </p>
+
+        </div>
+
+
+        <div class="status">
+
+            <span class="status-dot"></span>
+
+            LAB ONLINE
+
+        </div>
+
+    </header>
+
+
+
+    <main>
+
+
+        <!-- HERO -->
+
+        <section class="hero">
+
+            <span class="tag">
+                MODULE 02 · ATTACK SIMULATOR
+            </span>
+
+            <h2>
+                Authentication Attack Lab
+            </h2>
+
+            <p>
+                Generate controlled authentication failures
+                against the local laboratory account to study
+                attack patterns and security detection.
+            </p>
+
+        </section>
+
+
+
+        <!-- SIMULATOR -->
+
+        <section class="auth-container">
+
+
+            <!-- CONFIGURATION -->
+
+            <div class="analyzer-input">
+
+                <h3>
+                    Attack Configuration
+                </h3>
+
+                <p class="section-description">
+
+                    These simulations operate exclusively against
+                    the application's local laboratory account.
+
+                </p>
+
+
+                <label>
+                    Target Username
+                </label>
+
+                <input
+                    id="targetUsername"
+                    class="lab-input"
+                    value="lab_user"
+                    readonly
+                >
+
+
+                <label>
+                    Attack Type
+                </label>
+
+                <select
+                    id="attackType"
+                    class="lab-input"
+                >
+
+                    <option value="common">
+                        Common Password Simulation
+                    </option>
+
+                    <option value="repeated">
+                        Repeated Authentication Failures
+                    </option>
+
+                </select>
+
+
+                <label>
+                    Number of Attempts
+                </label>
+
+                <input
+                    id="attemptCount"
+                    class="lab-input"
+                    type="number"
+                    value="10"
+                    min="1"
+                    max="25"
+                >
+
+
+                <button
+                    id="startButton"
+                    class="analyze-button"
+                    onclick="startSimulation()"
+                    type="button"
+                >
+                    START SIMULATION
+                </button>
+
+
+                <div
+                    id="simulationStatus"
+                    class="login-result"
+                ></div>
+
+            </div>
+
+
+
+            <!-- RESULTS -->
+
+            <div class="result-panel">
+
+
+                <div class="result-header">
+
+                    <h3>
+                        Attack Telemetry
+                    </h3>
+
+                    <span
+                        id="simulationBadge"
+                        class="risk-badge"
+                    >
+                        READY
+                    </span>
+
+                </div>
+
+
+                <div class="metrics">
+
+
+                    <div class="metric">
+
+                        <span>
+                            Attempts Generated
+                        </span>
+
+                        <strong id="attemptsValue">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="metric">
+
+                        <span>
+                            Failed Attempts
+                        </span>
+
+                        <strong id="failedValue">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="metric">
+
+                        <span>
+                            Successful Attempts
+                        </span>
+
+                        <strong id="successValue">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="metric">
+
+                        <span>
+                            Events Generated
+                        </span>
+
+                        <strong id="eventsValue">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+
+                <h4 class="subheading">
+                    ATTACK TIMELINE
+                </h4>
+
+
+                <div
+                    id="timeline"
+                    class="timeline"
+                >
+
+                    <div class="timeline-empty">
+                        No simulation has been executed.
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- SAFETY NOTICE -->
+
+        <section class="notice">
+
+            <strong>
+                ⚠️ CONTROLLED LABORATORY
+            </strong>
+
+            <p>
+                This simulator is intentionally restricted to
+                the application's own laboratory account.
+                It is designed for cybersecurity education,
+                authentication monitoring and defensive testing.
+            </p>
+
+        </section>
+
+
+    </main>
+
+
+
+    <footer>
+
+        Password Security Lab ·
+        Authorized Laboratory Environment
+
+    </footer>
+
+
+</div>
+
+
+
+<script>
+
+const simulationPasswords = [
+    "wrongpassword",
+    "password",
+    "123456",
+    "admin",
+    "qwerty",
+    "welcome",
+    "letmein",
+    "password123",
+    "admin123",
+    "abc123",
+    "football",
+    "dragon",
+    "login",
+    "master",
+    "monkey",
+    "welcome123",
+    "test123",
+    "hello123",
+    "guest",
+    "changeme",
+    "incorrect",
+    "security",
+    "testing",
+    "default",
+    "unknown"
+];
+
+
+async function performAttempt(
+    username,
+    password
+) {
+
+    const response = await fetch(
+        "/api/lab-login",
+        {
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                username: username,
+                password: password
+            })
+        }
+    );
+
+
+    return await response.json();
+
+}
+
+
+function addTimelineEvent(
+    attemptNumber,
+    password,
+    result
+) {
+
+    const timeline =
+        document.getElementById("timeline");
+
+
+    if (attemptNumber === 1) {
+
+        timeline.innerHTML = "";
+
+    }
+
+
+    const event =
+        document.createElement("div");
+
+
+    event.className =
+        "timeline-event";
+
+
+    const resultText =
+        result.success
+            ? "SUCCESS"
+            : "FAILED";
+
+
+    event.innerHTML = `
+        <div class="timeline-number">
+            ${attemptNumber}
+        </div>
+
+        <div class="timeline-content">
+
+            <strong>
+                Authentication ${resultText}
+            </strong>
+
+            <span>
+                Test credential: ${password}
+            </span>
+
+        </div>
+    `;
+
+
+    timeline.appendChild(event);
+
+
+    timeline.scrollTop =
+        timeline.scrollHeight;
+
+}
+
+
+async function startSimulation() {
+
+    const username =
+        document.getElementById(
+            "targetUsername"
+        ).value;
+
+
+    const count =
+        parseInt(
+            document.getElementById(
+                "attemptCount"
+            ).value
+        );
+
+
+    const startButton =
+        document.getElementById(
+            "startButton"
+        );
+
+
+    const status =
+        document.getElementById(
+            "simulationStatus"
+        );
+
+
+    const badge =
+        document.getElementById(
+            "simulationBadge"
+        );
+
+
+    if (
+        !count ||
+        count < 1 ||
+        count > 25
+    ) {
+
+        status.textContent =
+            "Attempt count must be between 1 and 25.";
+
+        return;
+
+    }
+
+
+    startButton.disabled = true;
+
+    startButton.textContent =
+        "SIMULATION RUNNING...";
+
+
+    status.textContent =
+        "Generating controlled authentication events...";
+
+
+    badge.textContent =
+        "RUNNING";
+
+    badge.className =
+        "risk-badge medium";
+
+
+    document.getElementById(
+        "attemptsValue"
+    ).textContent = "0";
+
+
+    document.getElementById(
+        "failedValue"
+    ).textContent = "0";
+
+
+    document.getElementById(
+        "successValue"
+    ).textContent = "0";
+
+
+    document.getElementById(
+        "eventsValue"
+    ).textContent = "0";
+
+
+    document.getElementById(
+        "timeline"
+    ).innerHTML = "";
+
+
+    let failed = 0;
+
+    let successful = 0;
+
+
+    for (
+        let i = 0;
+        i < count;
+        i++
+    ) {
+
+        const password =
+            simulationPasswords[
+                i % simulationPasswords.length
+            ];
+
+
+        const result =
+            await performAttempt(
+                username,
+                password
+            );
+
+
+        if (result.success) {
+
+            successful++;
+
+        } else {
+
+            failed++;
+
+        }
+
+
+        addTimelineEvent(
+            i + 1,
+            password,
+            result
+        );
+
+
+        document.getElementById(
+            "attemptsValue"
+        ).textContent = i + 1;
+
+
+        document.getElementById(
+            "failedValue"
+        ).textContent = failed;
+
+
+        document.getElementById(
+            "successValue"
+        ).textContent = successful;
+
+
+        document.getElementById(
+            "eventsValue"
+        ).textContent = i + 1;
+
+
+        await new Promise(
+            resolve =>
+                setTimeout(resolve, 150)
+        );
+
+    }
+
+
+    badge.textContent =
+        "COMPLETED";
+
+    badge.className =
+        "risk-badge high";
+
+
+    status.textContent =
+        "Simulation completed. Authentication events were recorded.";
+
+
+    startButton.disabled = false;
+
+    startButton.textContent =
+        "START SIMULATION";
+
+}
+
+</script>
+
+
+</body>
+
+</html>
