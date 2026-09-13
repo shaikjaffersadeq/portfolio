@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Defense Center</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+    <header class="topbar">
+
+        <div class="logo-area">
+
+            <h1>🛡️ Password Security Lab</h1>
+
+            <p>
+                Authentication Defense Center
+            </p>
+
+        </div>
+
+
+        <div class="status">
+
+            <span class="status-dot"></span>
+
+            DEFENSE ONLINE
+
+        </div>
+
+    </header>
+
+
+
+    <main>
+
+
+        <section class="hero">
+
+            <span class="tag">
+                MODULE 03 · DEFENSE CENTER
+            </span>
+
+            <h2>
+                Authentication Defense
+            </h2>
+
+            <p>
+                Configure defensive controls and observe
+                how authentication attacks are detected,
+                rate-limited and blocked.
+            </p>
+
+        </section>
+
+
+
+        <section class="defense-grid">
+
+
+            <!-- DEFENSE CONTROLS -->
+
+            <div class="analyzer-input">
+
+                <h3>
+                    Defense Controls
+                </h3>
+
+                <p class="section-description">
+                    Enable or disable laboratory defensive
+                    mechanisms.
+                </p>
+
+
+                <div class="defense-control">
+
+                    <div>
+
+                        <strong>
+                            Rate Limiting
+                        </strong>
+
+                        <p>
+                            Limit authentication attempts
+                            within a short time window.
+                        </p>
+
+                    </div>
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="rateLimiting"
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="defense-control">
+
+                    <div>
+
+                        <strong>
+                            Account Lockout
+                        </strong>
+
+                        <p>
+                            Lock the laboratory account after
+                            repeated authentication failures.
+                        </p>
+
+                    </div>
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="accountLockout"
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <button
+                    class="analyze-button"
+                    onclick="saveSettings()"
+                    type="button"
+                >
+                    APPLY DEFENSE CONFIGURATION
+                </button>
+
+
+                <div
+                    id="settingsStatus"
+                    class="login-result"
+                ></div>
+
+            </div>
+
+
+
+            <!-- SECURITY STATUS -->
+
+            <div class="result-panel">
+
+                <div class="result-header">
+
+                    <h3>
+                        Security Status
+                    </h3>
+
+                    <span
+                        id="accountBadge"
+                        class="risk-badge low"
+                    >
+                        PROTECTED
+                    </span>
+
+                </div>
+
+
+                <div class="metrics">
+
+
+                    <div class="metric">
+
+                        <span>
+                            Target Account
+                        </span>
+
+                        <strong>
+                            lab_user
+                        </strong>
+
+                    </div>
+
+
+                    <div class="metric">
+
+                        <span>
+                            Failed Attempts
+                        </span>
+
+                        <strong
+                            id="failedAttempts"
+                        >
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div class="metric">
+
+                        <span>
+                            Account State
+                        </span>
+
+                        <strong
+                            id="accountState"
+                        >
+                            ACTIVE
+                        </strong>
+
+                    </div>
+
+
+                    <div class="metric">
+
+                        <span>
+                            Lock Duration
+                        </span>
+
+                        <strong>
+                            60 sec
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <h4 class="subheading">
+                    ACTIVE DEFENSES
+                </h4>
+
+
+                <ul
+                    id="activeDefenses"
+                    class="recommendations"
+                >
+
+                    <li>
+                        Loading defense configuration...
+                    </li>
+
+                </ul>
+
+
+                <h4 class="subheading">
+                    DEFENSE EVENTS
+                </h4>
+
+
+                <div
+                    id="defenseEvents"
+                    class="timeline"
+                >
+
+                    <div class="timeline-empty">
+                        No defense events yet.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ATTACK FLOW -->
+
+        <section class="notice">
+
+            <strong>
+                DEFENSIVE WORKFLOW
+            </strong>
+
+            <p>
+                Authentication attempt → Rate limiter →
+                Authentication engine → Detection engine →
+                Account lockout → Defense event → SOC alert.
+            </p>
+
+        </section>
+
+
+    </main>
+
+
+
+    <footer>
+
+        Password Security Lab ·
+        Authorized Laboratory Environment
+
+    </footer>
+
+
+</div>
+
+
+
+<script>
+
+
+async function loadSettings() {
+
+    const response =
+        await fetch(
+            "/api/defense-settings"
+        );
+
+
+    const data =
+        await response.json();
+
+
+    document.getElementById(
+        "rateLimiting"
+    ).checked =
+        data.rate_limiting;
+
+
+    document.getElementById(
+        "accountLockout"
+    ).checked =
+        data.account_lockout;
+
+
+    renderDefenses(data);
+
+}
+
+
+
+function renderDefenses(data) {
+
+    const container =
+        document.getElementById(
+            "activeDefenses"
+        );
+
+
+    container.innerHTML = "";
+
+
+    if (data.rate_limiting) {
+
+        const item =
+            document.createElement("li");
+
+        item.textContent =
+            "✓ Rate limiting enabled — 3 attempts / 10 seconds";
+
+        container.appendChild(item);
+
+    }
+
+
+    if (data.account_lockout) {
+
+        const item =
+            document.createElement("li");
+
+        item.textContent =
+            "✓ Account lockout enabled — 5 failures / 60 seconds";
+
+        container.appendChild(item);
+
+    }
+
+
+    if (
+        !data.rate_limiting &&
+        !data.account_lockout
+    ) {
+
+        const item =
+            document.createElement("li");
+
+        item.textContent =
+            "⚠ No authentication defenses are active.";
+
+        container.appendChild(item);
+
+    }
+
+}
+
+
+
+async function saveSettings() {
+
+    const rateLimiting =
+        document.getElementById(
+            "rateLimiting"
+        ).checked;
+
+
+    const accountLockout =
+        document.getElementById(
+            "accountLockout"
+        ).checked;
+
+
+    const response =
+        await fetch(
+            "/api/defense-settings",
+            {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    rate_limiting:
+                        rateLimiting,
+
+                    account_lockout:
+                        accountLockout
+
+                })
+
+            }
+        );
+
+
+    const data =
+        await response.json();
+
+
+    const status =
+        document.getElementById(
+            "settingsStatus"
+        );
+
+
+    if (data.success) {
+
+        status.className =
+            "login-result success";
+
+        status.textContent =
+            "✓ Defense configuration applied.";
+
+        renderDefenses(data);
+
+    } else {
+
+        status.className =
+            "login-result failure";
+
+        status.textContent =
+            "Unable to update configuration.";
+
+    }
+
+}
+
+
+
+async function loadAccountStatus() {
+
+    const response =
+        await fetch(
+            "/api/account-security/lab_user"
+        );
+
+
+    const data =
+        await response.json();
+
+
+    document.getElementById(
+        "failedAttempts"
+    ).textContent =
+        data.failed_attempts;
+
+
+    const state =
+        document.getElementById(
+            "accountState"
+        );
+
+
+    const badge =
+        document.getElementById(
+            "accountBadge"
+        );
+
+
+    if (data.locked) {
+
+        state.textContent =
+            "LOCKED";
+
+        badge.textContent =
+            "LOCKED";
+
+        badge.className =
+            "risk-badge high";
+
+    } else {
+
+        state.textContent =
+            "ACTIVE";
+
+        badge.textContent =
+            "PROTECTED";
+
+        badge.className =
+            "risk-badge low";
+
+    }
+
+}
+
+
+
+async function loadDefenseEvents() {
+
+    const response =
+        await fetch(
+            "/api/defense-events"
+        );
+
+
+    const data =
+        await response.json();
+
+
+    const container =
+        document.getElementById(
+            "defenseEvents"
+        );
+
+
+    if (data.length === 0) {
+
+        container.innerHTML =
+            `
+            <div class="timeline-empty">
+                No defense events yet.
+            </div>
+            `;
+
+        return;
+
+    }
+
+
+    container.innerHTML = "";
+
+
+    data.forEach(function(event) {
+
+        const element =
+            document.createElement("div");
+
+
+        element.className =
+            "timeline-event";
+
+
+        element.innerHTML = `
+
+            <div class="timeline-number">
+                🛡️
+            </div>
+
+            <div class="timeline-content">
+
+                <strong>
+                    ${event.defense_type}
+                </strong>
+
+                <span>
+                    ${event.action} — ${event.reason}
+                </span>
+
+            </div>
+
+        `;
+
+
+        container.appendChild(
+            element
+        );
+
+    });
+
+}
+
+
+
+async function refreshDashboard() {
+
+    await loadAccountStatus();
+
+    await loadDefenseEvents();
+
+}
+
+
+loadSettings();
+
+refreshDashboard();
+
+
+setInterval(
+    refreshDashboard,
+    2000
+);
+
+
+</script>
+
+
+</body>
+
+</html>

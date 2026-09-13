@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>SENTINEL SOC Dashboard</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+    <!-- =====================================================
+         TOP BAR
+         ===================================================== -->
+
+    <header class="topbar">
+
+        <div class="logo-area">
+
+            <h1>🛡️ SENTINEL SOC</h1>
+
+            <p>
+                Password Security Lab · Security Operations Center
+            </p>
+
+        </div>
+
+
+        <div class="status">
+
+            <span class="status-dot"></span>
+
+            MONITORING ACTIVE
+
+        </div>
+
+    </header>
+
+
+
+    <main>
+
+
+        <!-- =================================================
+             HERO
+             ================================================= -->
+
+        <section class="hero">
+
+            <span class="tag">
+                SOC · LIVE SECURITY MONITORING
+            </span>
+
+            <h2>
+                Security Operations Dashboard
+            </h2>
+
+            <p>
+                Centralized monitoring of authentication
+                activity, attack detection, security alerts
+                and defensive responses.
+            </p>
+
+        </section>
+
+
+
+        <!-- =================================================
+             STATISTICS
+             ================================================= -->
+
+        <section class="soc-stats">
+
+
+            <div class="soc-stat">
+
+                <span>
+                    TOTAL EVENTS
+                </span>
+
+                <strong id="totalEvents">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="soc-stat">
+
+                <span>
+                    FAILED LOGINS
+                </span>
+
+                <strong id="failedEvents">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="soc-stat">
+
+                <span>
+                    SECURITY ALERTS
+                </span>
+
+                <strong id="totalAlerts">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="soc-stat">
+
+                <span>
+                    OPEN INCIDENTS
+                </span>
+
+                <strong
+                    id="openAlerts"
+                    class="danger-number"
+                >
+                    0
+                </strong>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             ACCOUNT STATUS
+             ================================================= -->
+
+        <section class="soc-account-panel">
+
+
+            <div>
+
+                <span class="panel-label">
+                    PROTECTED ACCOUNT
+                </span>
+
+                <h3>
+                    lab_user
+                </h3>
+
+            </div>
+
+
+            <div class="account-status-block">
+
+                <span>
+                    ACCOUNT STATUS
+                </span>
+
+                <strong
+                    id="socAccountState"
+                    class="protected-text"
+                >
+                    ACTIVE
+                </strong>
+
+            </div>
+
+
+            <div class="account-status-block">
+
+                <span>
+                    FAILED ATTEMPTS
+                </span>
+
+                <strong id="socFailedAttempts">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="account-status-block">
+
+                <span>
+                    DEFENSE
+                </span>
+
+                <strong class="protected-text">
+                    ENABLED
+                </strong>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             MAIN SOC GRID
+             ================================================= -->
+
+        <section class="soc-grid">
+
+
+            <!-- =============================================
+                 SECURITY ALERTS
+                 ============================================= -->
+
+            <div class="soc-panel">
+
+                <div class="soc-panel-header">
+
+                    <div>
+
+                        <span class="panel-label">
+                            THREAT DETECTION
+                        </span>
+
+                        <h3>
+                            Security Alerts
+                        </h3>
+
+                    </div>
+
+
+                    <span
+                        id="alertIndicator"
+                        class="risk-badge low"
+                    >
+                        NO ACTIVE THREATS
+                    </span>
+
+                </div>
+
+
+                <div
+                    id="alertsContainer"
+                    class="soc-list"
+                >
+
+                    <div class="soc-empty">
+
+                        No security alerts detected.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =============================================
+                 DEFENSE EVENTS
+                 ============================================= -->
+
+            <div class="soc-panel">
+
+                <div class="soc-panel-header">
+
+                    <div>
+
+                        <span class="panel-label">
+                            BLUE TEAM
+                        </span>
+
+                        <h3>
+                            Defense Activity
+                        </h3>
+
+                    </div>
+
+                    <span class="risk-badge low">
+                        ACTIVE
+                    </span>
+
+                </div>
+
+
+                <div
+                    id="defenseContainer"
+                    class="soc-list"
+                >
+
+                    <div class="soc-empty">
+
+                        No defense events recorded.
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             AUTHENTICATION EVENTS
+             ================================================= -->
+
+        <section class="soc-panel full-panel">
+
+            <div class="soc-panel-header">
+
+                <div>
+
+                    <span class="panel-label">
+                        AUTHENTICATION TELEMETRY
+                    </span>
+
+                    <h3>
+                        Recent Authentication Events
+                    </h3>
+
+                </div>
+
+
+                <span class="risk-badge low">
+                    LIVE
+                </span>
+
+            </div>
+
+
+            <div
+                id="eventsContainer"
+                class="events-table"
+            >
+
+                <div class="soc-empty">
+
+                    Waiting for authentication telemetry...
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             SOC ANALYSIS
+             ================================================= -->
+
+        <section class="soc-analysis">
+
+
+            <div class="analysis-card">
+
+                <span>
+                    DETECTION RULE
+                </span>
+
+                <strong>
+                    Brute Force
+                </strong>
+
+                <p>
+                    5 or more failed authentication attempts
+                    within 60 seconds.
+                </p>
+
+            </div>
+
+
+            <div class="analysis-card">
+
+                <span>
+                    RATE LIMIT
+                </span>
+
+                <strong>
+                    3 / 10 sec
+                </strong>
+
+                <p>
+                    Authentication requests exceeding the
+                    threshold are blocked.
+                </p>
+
+            </div>
+
+
+            <div class="analysis-card">
+
+                <span>
+                    LOCKOUT
+                </span>
+
+                <strong>
+                    60 seconds
+                </strong>
+
+                <p>
+                    Repeated authentication failures trigger
+                    temporary account protection.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             NAVIGATION
+             ================================================= -->
+
+        <section class="soc-navigation">
+
+            <a href="/">
+                PASSWORD ANALYZER
+            </a>
+
+            <a href="/login">
+                AUTHENTICATION LAB
+            </a>
+
+            <a href="/attack">
+                ATTACK SIMULATOR
+            </a>
+
+            <a href="/defense">
+                DEFENSE CENTER
+            </a>
+
+        </section>
+
+
+    </main>
+
+
+
+    <footer>
+
+        SENTINEL SOC ·
+        Authorized Cybersecurity Laboratory
+
+    </footer>
+
+
+</div>
+
+
+
+<script>
+
+
+/* ==========================================================
+   DETECTION STATUS
+   ========================================================== */
+
+async function loadStatistics() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/detection-status"
+            );
+
+
+        const data =
+            await response.json();
+
+
+        document.getElementById(
+            "totalEvents"
+        ).textContent =
+            data.total_events;
+
+
+        document.getElementById(
+            "failedEvents"
+        ).textContent =
+            data.failed_events;
+
+
+        document.getElementById(
+            "totalAlerts"
+        ).textContent =
+            data.total_alerts;
+
+
+        document.getElementById(
+            "openAlerts"
+        ).textContent =
+            data.open_alerts;
+
+
+        const indicator =
+            document.getElementById(
+                "alertIndicator"
+            );
+
+
+        if (data.open_alerts > 0) {
+
+            indicator.textContent =
+                "THREATS DETECTED";
+
+            indicator.className =
+                "risk-badge high";
+
+        } else {
+
+            indicator.textContent =
+                "NO ACTIVE THREATS";
+
+            indicator.className =
+                "risk-badge low";
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Statistics error:",
+            error
+        );
+
+    }
+
+}
+
+
+
+/* ==========================================================
+   ACCOUNT STATUS
+   ========================================================== */
+
+async function loadAccountStatus() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/account-security/lab_user"
+            );
+
+
+        const data =
+            await response.json();
+
+
+        document.getElementById(
+            "socFailedAttempts"
+        ).textContent =
+            data.failed_attempts;
+
+
+        const state =
+            document.getElementById(
+                "socAccountState"
+            );
+
+
+        if (data.locked) {
+
+            state.textContent =
+                "LOCKED";
+
+            state.className =
+                "danger-text";
+
+        } else {
+
+            state.textContent =
+                "ACTIVE";
+
+            state.className =
+                "protected-text";
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Account status error:",
+            error
+        );
+
+    }
+
+}
+
+
+
+/* ==========================================================
+   SECURITY ALERTS
+   ========================================================== */
+
+async function loadAlerts() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/security-alerts"
+            );
+
+
+        const alerts =
+            await response.json();
+
+
+        const container =
+            document.getElementById(
+                "alertsContainer"
+            );
+
+
+        if (alerts.length === 0) {
+
+            container.innerHTML = `
+                <div class="soc-empty">
+                    ✓ No security alerts detected.
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        container.innerHTML = "";
+
+
+        alerts.forEach(function(alert) {
+
+            const element =
+                document.createElement(
+                    "div"
+                );
+
+
+            element.className =
+                "soc-alert";
+
+
+            element.innerHTML = `
+
+                <div class="alert-icon">
+                    🚨
+                </div>
+
+                <div class="alert-content">
+
+                    <div class="alert-title">
+
+                        <strong>
+                            ${alert.alert_type}
+                        </strong>
+
+                        <span class="severity-high">
+                            ${alert.severity}
+                        </span>
+
+                    </div>
+
+                    <p>
+                        ${alert.description}
+                    </p>
+
+                    <small>
+                        Target: ${alert.username}
+                        · Events: ${alert.event_count}
+                        · ${alert.timestamp}
+                    </small>
+
+                </div>
+
+            `;
+
+
+            container.appendChild(
+                element
+            );
+
+        });
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Alert error:",
+            error
+        );
+
+    }
+
+}
+
+
+
+/* ==========================================================
+   DEFENSE EVENTS
+   ========================================================== */
+
+async function loadDefenseEvents() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/defense-events"
+            );
+
+
+        const events =
+            await response.json();
+
+
+        const container =
+            document.getElementById(
+                "defenseContainer"
+            );
+
+
+        if (events.length === 0) {
+
+            container.innerHTML = `
+                <div class="soc-empty">
+                    No defense activity recorded.
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        container.innerHTML = "";
+
+
+        events.slice(0, 8).forEach(
+            function(event) {
+
+                const element =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                element.className =
+                    "soc-defense";
+
+
+                element.innerHTML = `
+
+                    <div class="defense-icon">
+                        🛡️
+                    </div>
+
+                    <div class="defense-content">
+
+                        <strong>
+                            ${event.defense_type}
+                        </strong>
+
+                        <p>
+                            ${event.action}
+                        </p>
+
+                        <small>
+                            ${event.reason}
+                        </small>
+
+                    </div>
+
+                `;
+
+
+                container.appendChild(
+                    element
+                );
+
+            }
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Defense error:",
+            error
+        );
+
+    }
+
+}
+
+
+
+/* ==========================================================
+   AUTHENTICATION EVENTS
+   ========================================================== */
+
+async function loadAuthenticationEvents() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/auth-events"
+            );
+
+
+        const events =
+            await response.json();
+
+
+        const container =
+            document.getElementById(
+                "eventsContainer"
+            );
+
+
+        if (events.length === 0) {
+
+            container.innerHTML = `
+                <div class="soc-empty">
+                    Waiting for authentication telemetry...
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        let html = `
+
+            <div class="event-row event-header">
+
+                <span>ID</span>
+
+                <span>USERNAME</span>
+
+                <span>EVENT</span>
+
+                <span>RESULT</span>
+
+                <span>TIMESTAMP</span>
+
+            </div>
+
+        `;
+
+
+        events.slice(0, 15).forEach(
+            function(event) {
+
+                const result =
+                    event.success
+                        ? "SUCCESS"
+                        : "FAILED";
+
+
+                const resultClass =
+                    event.success
+                        ? "event-success"
+                        : "event-failure";
+
+
+                html += `
+
+                    <div class="event-row">
+
+                        <span>
+                            #${event.id}
+                        </span>
+
+                        <span>
+                            ${event.username}
+                        </span>
+
+                        <span>
+                            ${event.event_type}
+                        </span>
+
+                        <span class="${resultClass}">
+                            ${result}
+                        </span>
+
+                        <span>
+                            ${event.timestamp}
+                        </span>
+
+                    </div>
+
+                `;
+
+            }
+        );
+
+
+        container.innerHTML =
+            html;
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Events error:",
+            error
+        );
+
+    }
+
+}
+
+
+
+/* ==========================================================
+   REFRESH
+   ========================================================== */
+
+async function refreshSOC() {
+
+    await loadStatistics();
+
+    await loadAccountStatus();
+
+    await loadAlerts();
+
+    await loadDefenseEvents();
+
+    await loadAuthenticationEvents();
+
+}
+
+
+refreshSOC();
+
+
+setInterval(
+    refreshSOC,
+    2000
+);
+
+
+</script>
+
+
+</body>
+
+</html>
