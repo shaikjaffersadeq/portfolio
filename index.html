@@ -1,898 +1,334 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="description" content="Shaik Jaffer Sadeq — Cybersecurity and SOC Analyst Portfolio">
+  <title>Shaik Jaffer Sadeq — Cybersecurity Portfolio</title>
 
-    <title>Shaik Jaffer Sadeq | Cybersecurity Portfolio</title>
+  <!-- Typography used to reproduce the reference's cinematic condensed/display + technical label look. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
-    <meta name="description"
-          content="Shaik Jaffer Sadeq - Cybersecurity and SOC Analyst portfolio featuring hands-on security investigations, network analysis, log analysis and threat detection projects.">
-
-    <link rel="stylesheet" href="./style.css">
-
-
-<style>
-/* =========================================================
-   PORTFOLIO PROJECT 03 + CERTIFICATE ADDITIONS
-   ========================================================= */
-
-.project-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 4px;
-}
-
-.certificate-card {
-    margin-top: 28px;
-    padding: 28px;
-    border-radius: 18px;
-    background: linear-gradient(135deg, rgba(30, 49, 76, 0.94), rgba(69, 96, 132, 0.82));
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.14);
-}
-
-.certificate-content {
-    display: grid;
-    grid-template-columns: auto 1fr minmax(300px, 480px);
-    align-items: center;
-    gap: 28px;
-}
-
-.certificate-badge {
-    width: 72px;
-    height: 72px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 18px;
-    background: #43a5ff;
-    color: #071525;
-    font-size: 22px;
-    font-weight: 800;
-    box-shadow: 0 12px 30px rgba(67, 165, 255, 0.28);
-}
-
-.certificate-label {
-    margin-bottom: 8px;
-    font-size: 11px;
-    font-weight: 800;
-    letter-spacing: 1.5px;
-    color: #8fd0ff;
-}
-
-.certificate-details h3 {
-    margin: 0 0 8px;
-}
-
-.certificate-details h4 {
-    margin: 0 0 12px;
-}
-
-.certificate-details p {
-    margin-bottom: 16px;
-}
-
-.certificate-preview-link {
-    display: block;
-    overflow: hidden;
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    background: rgba(0, 0, 0, 0.22);
-}
-
-.certificate-preview {
-    display: block;
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    object-fit: contain;
-    background: #ffffff;
-    transition: transform 0.25s ease;
-}
-
-.certificate-preview-link:hover .certificate-preview {
-    transform: scale(1.02);
-}
-
-@media (max-width: 900px) {
-    .certificate-content {
-        grid-template-columns: 1fr;
+  <style>
+    :root{
+      --black:#050505;
+      --black2:#0a0a0a;
+      --panel:#141414;
+      --red:#E50914;
+      --red2:#b20710;
+      --white:#fff;
+      --muted:rgba(255,255,255,.68);
+      --line:rgba(255,255,255,.12);
+      --mono:'Space Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+      --display:'Bebas Neue',Impact,'Arial Narrow',sans-serif;
     }
 
-    .certificate-badge {
-        width: 64px;
-        height: 64px;
-    }
-}
-</style>
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--black);color:#fff;font-family:var(--mono);overflow-x:hidden}
+    body.loading{overflow:hidden}
+    a{color:inherit;text-decoration:none}
+    button{font:inherit}
+    ::selection{background:var(--red);color:#fff}
+    ::-webkit-scrollbar{width:7px}
+    ::-webkit-scrollbar-track{background:#050505}
+    ::-webkit-scrollbar-thumb{background:#333}
+    ::-webkit-scrollbar-thumb:hover{background:var(--red)}
 
+    /* Cinematic grain from the same design language as the reference. */
+    body:before{
+      content:"";position:fixed;inset:0;z-index:9990;pointer-events:none;opacity:.035;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* Preloader */
+    #preloader{position:fixed;inset:0;background:var(--black);z-index:10000;display:grid;place-items:center;transition:opacity .55s ease,visibility .55s ease}
+    #preloader.hide{opacity:0;visibility:hidden}
+    .loader-content{text-align:center;transform:scale(.96);animation:loaderIn .8s ease forwards}
+    .loader-dot{width:10px;height:10px;background:var(--red);border-radius:50%;margin:0 auto 18px;box-shadow:0 0 20px rgba(229,9,20,.8);animation:ping 1s infinite}
+    .loader-title{font-family:var(--display);font-size:clamp(34px,5vw,56px);letter-spacing:.3em;margin-left:.3em}
+    @keyframes loaderIn{to{opacity:1;transform:scale(1)}}
+    @keyframes ping{50%{transform:scale(1.7);opacity:.45}}
+
+    /* Cursor */
+    #cursor-dot,#cursor-ring,#spotlight{position:fixed;pointer-events:none;z-index:9998}
+    #cursor-dot{width:11px;height:11px;border-radius:50%;background:var(--red);box-shadow:0 0 15px var(--red);transform:translate(-50%,-50%)}
+    #cursor-ring{width:46px;height:46px;border:1px solid rgba(229,9,20,.65);border-radius:50%;transform:translate(-50%,-50%);transition:width .2s,height .2s,border-color .2s}
+    #spotlight{width:650px;height:650px;border-radius:50%;background:radial-gradient(circle,rgba(229,9,20,.20),rgba(229,9,20,.055) 43%,transparent 72%);filter:blur(80px);transform:translate(-50%,-50%);opacity:.7}
+    @media(max-width:800px){#cursor-dot,#cursor-ring,#spotlight{display:none}}
+
+    /* Shared */
+    .wrap{width:min(1220px,calc(100% - 48px));margin:auto}
+    .section{position:relative;padding:110px 0;border-top:1px solid rgba(255,255,255,.05)}
+    .eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--red);font-weight:700}
+    .section-title{font-family:var(--display);font-size:clamp(48px,7vw,92px);line-height:.9;letter-spacing:-.01em;margin:14px 0 24px;text-transform:uppercase}
+    .section-lead{max-width:720px;color:var(--muted);line-height:1.8;font-size:14px}
+    .red{color:var(--red)}
+
+    /* Nav */
+    .nav{position:absolute;top:0;left:0;width:100%;z-index:50;padding:25px 0}
+    .nav-inner{display:flex;align-items:center;justify-content:space-between}
+    .brand{font-family:var(--display);font-size:31px;letter-spacing:.03em;color:var(--red);text-shadow:0 2px 18px rgba(229,9,20,.55)}
+    .brand span{display:inline-block;width:6px;height:6px;border-radius:50%;background:#fff;margin-left:8px;vertical-align:middle}
+    .nav-links{display:flex;gap:31px;font-size:11px;text-transform:uppercase;letter-spacing:.16em;color:rgba(255,255,255,.82)}
+    .nav-links a{transition:.25s}
+    .nav-links a:hover{color:var(--red)}
+    .nav-cta{padding:10px 17px;background:var(--red);border-radius:4px;font-size:10px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;box-shadow:0 0 20px rgba(229,9,20,.45);transition:.25s}
+    .nav-cta:hover{background:#b20710;transform:translateY(-2px)}
+    @media(max-width:800px){.nav-links{display:none}.nav{padding:18px 0}.brand{font-size:27px}}
+
+    /* Hero */
+    #home{height:100vh;min-height:720px;background:linear-gradient(to top,#050505 0%,rgba(5,5,5,.92) 55%,#050505 100%);position:relative;overflow:hidden}
+    .hero-marquee{position:absolute;inset:0;display:flex;align-items:center;overflow:hidden;opacity:.075;pointer-events:none}
+    .marquee-track{display:flex;width:max-content;animation:marquee 36s linear infinite;white-space:nowrap}
+    .marquee-track span{font-family:var(--display);font-size:14vw;line-height:.8;color:var(--red);margin-right:55px}
+    @keyframes marquee{to{transform:translateX(-50%)}}
+    .hero-inner{height:100%;display:grid;grid-template-columns:1.15fr .9fr .72fr;gap:36px;align-items:center;padding-top:70px;padding-bottom:35px;position:relative;z-index:10}
+    .hero-left{align-self:center}
+    .status-line{display:flex;align-items:center;gap:10px;font-size:10px;text-transform:uppercase;letter-spacing:.16em;margin-bottom:22px}
+    .badge{background:var(--red);padding:5px 9px;border-radius:3px;font-weight:700;box-shadow:0 0 20px rgba(229,9,20,.55)}
+    .hero-name{font-family:var(--display);font-size:clamp(72px,8.2vw,132px);line-height:.79;letter-spacing:-.01em;margin:0;text-transform:uppercase}
+    .hero-name .accent{color:var(--red);text-shadow:0 0 35px rgba(229,9,20,.25)}
+    .hero-meta{display:flex;gap:12px;align-items:center;flex-wrap:wrap;color:rgba(255,255,255,.55);font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin:25px 0 16px}
+    .hero-meta b{color:#fff}
+    .hero-copy{max-width:520px;color:rgba(255,255,255,.73);font-size:13px;line-height:1.75;margin:0}
+    .hero-buttons{display:flex;gap:12px;margin-top:28px;flex-wrap:wrap}
+    .btn{display:inline-flex;align-items:center;gap:9px;padding:14px 22px;border-radius:4px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.15em;transition:.25s}
+    .btn-primary{background:#fff;color:#000;box-shadow:0 10px 35px rgba(255,255,255,.15)}
+    .btn-primary:hover{background:var(--red);color:#fff;transform:scale(1.03)}
+    .btn-dark{background:rgba(20,20,20,.9);border:1px solid rgba(255,255,255,.17)}
+    .btn-dark:hover{background:#222}
+
+    .portrait-stage{display:flex;justify-content:center;perspective:1200px}
+    .portrait-card{width:min(340px,100%);padding:14px;background:rgba(20,20,20,.9);border:1px solid rgba(229,9,20,.42);border-radius:16px;position:relative;overflow:hidden;transform-style:preserve-3d;box-shadow:0 40px 80px rgba(0,0,0,.95);transition:transform .18s ease}
+    .portrait-card:before{content:"";position:absolute;inset:-30%;background:linear-gradient(120deg,transparent 35%,rgba(255,255,255,.12) 50%,transparent 65%);transform:translateX(-35%);transition:transform .5s;z-index:3;pointer-events:none}
+    .portrait-card:hover:before{transform:translateX(35%)}
+    .portrait-glow{position:absolute;inset:-18px;border-radius:28px;background:linear-gradient(90deg,rgba(229,9,20,.72),rgba(190,20,40,.25),rgba(100,30,80,.1));filter:blur(32px);z-index:-1;animation:pulseGlow 2.6s ease-in-out infinite}
+    @keyframes pulseGlow{50%{opacity:.72;transform:scale(1.03)}}
+    .portrait-tag{position:absolute;top:26px;left:26px;z-index:5;background:var(--red);padding:7px 11px;border-radius:3px;font-size:9px;font-weight:700;letter-spacing:.12em}
+    .portrait-card img{display:block;width:100%;height:390px;object-fit:cover;object-position:center top;border-radius:10px;background:#000;filter:none}
+
+    .specs{display:flex;flex-direction:column;gap:14px}
+    .spec{padding:18px;background:rgba(0,0,0,.78);border:1px solid rgba(255,255,255,.14);border-radius:10px;backdrop-filter:blur(18px)}
+    .spec h3{font-size:10px;color:var(--red);text-transform:uppercase;letter-spacing:.15em;margin:0 0 8px}
+    .spec p{font-size:11px;color:rgba(255,255,255,.76);line-height:1.65;margin:0}
+    .ticker{position:absolute;left:0;right:0;bottom:25px;z-index:15;display:flex;justify-content:space-between;color:rgba(255,255,255,.38);font-size:9px;letter-spacing:.17em;text-transform:uppercase}
+    @media(max-width:1050px){.hero-inner{grid-template-columns:1fr .8fr}.specs{display:none}.hero-name{font-size:clamp(68px,11vw,112px)}}
+    @media(max-width:700px){#home{height:auto;min-height:100vh}.hero-inner{grid-template-columns:1fr;padding-top:105px;padding-bottom:75px;gap:42px}.hero-left{text-align:center}.status-line,.hero-meta,.hero-buttons{justify-content:center}.hero-copy{margin:auto}.portrait-stage{order:2}.portrait-card{width:270px}.portrait-card img{height:350px}.ticker{display:none}}
+
+    /* About */
+    .about-grid{display:grid;grid-template-columns:.7fr 1.3fr;gap:70px;align-items:start}
+    .about-stamp{font-family:var(--display);font-size:150px;line-height:.7;color:rgba(229,9,20,.12);user-select:none}
+    .about-copy{font-size:14px;color:var(--muted);line-height:1.9}
+    .about-copy p{margin:0 0 18px}
+    .mindset{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:35px}
+    .mind-card{background:#101010;border:1px solid var(--line);border-radius:8px;padding:20px;transition:.25s}
+    .mind-card:hover{border-color:rgba(229,9,20,.6);transform:translateY(-4px)}
+    .mind-num{font-family:var(--display);font-size:43px;color:var(--red);line-height:1}
+    .mind-card h3{font-size:11px;text-transform:uppercase;letter-spacing:.14em;margin:13px 0 8px}
+    .mind-card p{font-size:10px;line-height:1.6;color:var(--muted);margin:0}
+    @media(max-width:800px){.about-grid{grid-template-columns:1fr}.about-stamp{display:none}.mindset{grid-template-columns:1fr 1fr}}
+
+    /* Expertise / skills */
+    .expertise-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:38px}
+    .expertise-card{padding:28px;background:#0d0d0d;border:1px solid var(--line);border-radius:10px;min-height:190px;transition:.25s}
+    .expertise-card:hover{border-color:rgba(229,9,20,.5);transform:translateY(-5px)}
+    .icon{font-size:26px;color:var(--red);margin-bottom:18px}
+    .expertise-card h3{font-family:var(--display);font-size:28px;letter-spacing:.03em;margin:0 0 10px}
+    .expertise-card p{font-size:11px;color:var(--muted);line-height:1.7;margin:0}
+    .tool-strip{display:flex;flex-wrap:wrap;gap:8px;margin-top:35px}
+    .chip{padding:8px 11px;border:1px solid rgba(229,9,20,.28);background:rgba(229,9,20,.06);border-radius:4px;font-size:9px;color:#f2a1a5;letter-spacing:.08em;text-transform:uppercase}
+    @media(max-width:800px){.expertise-grid{grid-template-columns:1fr}}
+
+    /* Projects */
+    .project-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px}
+    .project{background:#0e0e0e;border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;min-height:440px;transition:.3s;position:relative}
+    .project:hover{transform:translateY(-7px);border-color:rgba(229,9,20,.65);box-shadow:0 22px 55px rgba(0,0,0,.5)}
+    .project-top{height:115px;background:linear-gradient(135deg,#1a080a,#0a0a0a);display:flex;align-items:flex-end;padding:20px;position:relative;overflow:hidden}
+    .project-top:after{content:"";position:absolute;right:-35px;top:-55px;width:180px;height:180px;border-radius:50%;background:rgba(229,9,20,.16);filter:blur(10px)}
+    .project-index{font-family:var(--display);font-size:74px;line-height:.7;color:rgba(229,9,20,.24);position:absolute;right:14px;bottom:4px}
+    .project-status{position:relative;z-index:2;font-size:9px;letter-spacing:.16em;color:var(--red);font-weight:700}
+    .project-body{padding:24px;display:flex;flex-direction:column;flex:1}
+    .project h3{font-family:var(--display);font-size:34px;line-height:.95;margin:0 0 7px;letter-spacing:.02em}
+    .project h4{font-size:10px;color:var(--red);text-transform:uppercase;letter-spacing:.14em;margin:0 0 15px}
+    .project p{font-size:10.5px;color:var(--muted);line-height:1.75;margin:0 0 15px}
+    .finding{border-left:2px solid var(--red);padding-left:11px;color:rgba(255,255,255,.8);font-size:10px;line-height:1.65;margin-bottom:15px}
+    .finding b{display:block;color:var(--red);font-size:9px;text-transform:uppercase;letter-spacing:.12em;margin-bottom:5px}
+    .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:auto;padding-top:8px}
+    .tag{font-size:8px;padding:5px 7px;background:#171717;border:1px solid #262626;color:rgba(255,255,255,.6);border-radius:3px}
+    .project-actions{display:flex;gap:8px;margin-top:16px}
+    .small-btn{font-size:9px;letter-spacing:.1em;text-transform:uppercase;padding:9px 11px;border:1px solid rgba(255,255,255,.14);border-radius:4px}
+    .small-btn.primary{background:var(--red);border-color:var(--red);font-weight:700}
+    .small-btn:hover{border-color:var(--red)}
+    @media(max-width:950px){.project-grid{grid-template-columns:1fr}.project{min-height:0}}
+
+    /* Workflow */
+    .workflow{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.1);margin-top:40px}
+    .step{background:#080808;padding:30px 25px;position:relative}
+    .step-num{font-family:var(--display);font-size:60px;color:rgba(229,9,20,.28);line-height:.7}
+    .step h3{font-family:var(--display);font-size:30px;margin:22px 0 8px}
+    .step p{font-size:10px;color:var(--muted);line-height:1.7;margin:0}
+    @media(max-width:800px){.workflow{grid-template-columns:1fr 1fr}}
+    @media(max-width:500px){.workflow{grid-template-columns:1fr}}
+
+    /* Contact */
+    .contact-box{margin-top:40px;padding:50px;background:linear-gradient(135deg,#120506,#080808);border:1px solid rgba(229,9,20,.35);border-radius:14px;display:flex;align-items:center;justify-content:space-between;gap:30px}
+    .contact-box h3{font-family:var(--display);font-size:58px;line-height:.85;margin:0 0 12px}
+    .contact-box p{font-size:11px;color:var(--muted);margin:0;line-height:1.7}
+    @media(max-width:700px){.contact-box{flex-direction:column;align-items:flex-start}.contact-box h3{font-size:48px}}
+
+    footer{padding:35px 0 50px;border-top:1px solid rgba(255,255,255,.06);color:rgba(255,255,255,.35);font-size:9px;letter-spacing:.14em;text-transform:uppercase}
+    .footer-inner{display:flex;justify-content:space-between;gap:20px}
+    @media(max-width:600px){.footer-inner{flex-direction:column}}
+
+    .reveal{opacity:0;transform:translateY(30px);filter:blur(5px);transition:opacity .8s ease,transform .8s ease,filter .8s ease}
+    .reveal.show{opacity:1;transform:none;filter:none}
+  </style>
 </head>
+<body class="loading">
+  <div id="preloader"><div class="loader-content"><div class="loader-dot"></div><div class="loader-title">SHAIK</div></div></div>
+  <div id="spotlight"></div><div id="cursor-dot"></div><div id="cursor-ring"></div>
 
-<body>
+  <section id="home">
+    <nav class="nav"><div class="wrap nav-inner">
+      <a class="brand" href="#home">SHAIK<span></span></a>
+      <div class="nav-links">
+        <a href="#home">Home</a><a href="#about">About</a><a href="#expertise">Expertise</a><a href="#skills">Skills</a><a href="#projects">Projects</a><a href="#contact">Contact</a>
+      </div>
+      <a class="nav-cta" href="#contact">Hire Me</a>
+    </div></nav>
 
-<!-- ================= NAVBAR ================= -->
+    <div class="hero-marquee"><div class="marquee-track">
+      <span>CYBERSECURITY • SOC • BLUE TEAM • </span><span>CYBERSECURITY • SOC • BLUE TEAM • </span>
+    </div></div>
 
-<header class="navbar">
+    <div class="wrap hero-inner">
+      <div class="hero-left">
+        <div class="status-line"><span class="badge">SOC / BLUE TEAM</span><span>CYBERSECURITY • BCA STUDENT</span></div>
+        <h1 class="hero-name">SHAIK<br><span class="accent">JAFFER<br>SADEQ</span></h1>
+        <div class="hero-meta"><b>03 SOC PROJECTS</b><span>•</span><span>SOC CAREER FOCUS</span><span>•</span><span>BLUE TEAM</span></div>
+        <p class="hero-copy">Cybersecurity-focused BCA student developing practical skills in security operations, threat detection, network analysis and incident investigation.</p>
+        <div class="hero-buttons"><a class="btn btn-primary" href="#projects">▶ View Projects</a><a class="btn btn-dark" href="#contact">◎ Contact Me</a></div>
+      </div>
 
-    <div class="container nav-inner">
+      <div class="portrait-stage">
+        <div class="portrait-card" id="portraitCard">
+          <div class="portrait-glow"></div><div class="portrait-tag">FEATURED ANALYST</div>
+          <img src="assets/profile.png" alt="Shaik Jaffer Sadeq">
+        </div>
+      </div>
 
-        <a href="#home" class="brand">
-            <span class="brand-icon">◆</span>
-            Shaik Jaffer Sadeq
-        </a>
-
-        <nav class="nav-links">
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#skills">Skills</a>
-            <a href="#projects">Projects</a>
-            <a href="#certifications">Certifications</a>
-            <a href="#contact">Contact</a>
-        </nav>
-
+      <div class="specs">
+        <div class="spec"><h3>Career Focus</h3><p>Security Operations<br>Practical SOC Investigation • Blue Team</p></div>
+        <div class="spec"><h3>Current Toolkit</h3><p>Wireshark • Nmap • tcpdump • Linux<br>Metasploit • Splunk • QRadar</p></div>
+        <div class="spec"><h3>Investigation Mindset</h3><p>Detect → Investigate → Document → Improve</p></div>
+      </div>
     </div>
+    <div class="wrap ticker"><span>SECURITY OPERATIONS ACTIVE</span><span>[ PORTFOLIO RELEASE • 2026 ]</span></div>
+  </section>
 
-</header>
-
-
-<!-- ================= HERO ================= -->
-
-<main>
-
-<section id="home" class="hero">
-
-    <div class="hero-grid container">
-
-        <div class="hero-content">
-
-            <div class="status">
-                <span class="status-dot"></span>
-                CYBERSECURITY • SOC • BLUE TEAM
-            </div>
-
-            <h1>
-                Building Skills to
-                <span>Defend Digital Systems.</span>
-            </h1>
-
-            <p class="hero-description">
-                I'm Shaik Jaffer Sadeq, a cybersecurity-focused BCA student
-                developing practical skills in Security Operations,
-                threat detection, network analysis and incident investigation.
-            </p>
-
-            <div class="hero-actions">
-
-                <a href="#projects" class="primary-button">
-                    Explore My Projects
-                    <span>→</span>
-                </a>
-
-                <a href="#contact" class="secondary-button">
-                    Get In Touch
-                </a>
-
-            </div>
-
-            <div class="hero-stats">
-
-                <div>
-                    <strong>03</strong>
-                    <span>SOC Projects</span>
-                </div>
-
-                <div>
-                    <strong>SOC</strong>
-                    <span>Career Focus</span>
-                </div>
-
-                <div>
-                    <strong>Blue</strong>
-                    <span>Team Focus</span>
-                </div>
-
-            </div>
-
+  <section class="section" id="about"><div class="wrap">
+    <div class="about-grid reveal">
+      <div><div class="eyebrow">About Me</div><div class="about-stamp">SOC</div></div>
+      <div class="about-copy">
+        <div class="section-title">Learning Cybersecurity<br><span class="red">Through Practical Investigation</span></div>
+        <p>I am a BCA student focused on developing practical cybersecurity and Security Operations Center skills.</p>
+        <p>Rather than focusing only on theory, I build isolated security laboratories and investigate simulated security events from the perspective of a SOC analyst.</p>
+        <p>My projects involve collecting evidence, analyzing network traffic and authentication logs, identifying suspicious activity, extracting observables, developing detection logic and documenting findings.</p>
+        <div class="mindset">
+          <div class="mind-card"><div class="mind-num">01</div><h3>Detect</h3><p>Identify suspicious security activity.</p></div>
+          <div class="mind-card"><div class="mind-num">02</div><h3>Investigate</h3><p>Analyze logs, packets and evidence.</p></div>
+          <div class="mind-card"><div class="mind-num">03</div><h3>Document</h3><p>Create professional investigation reports.</p></div>
+          <div class="mind-card"><div class="mind-num">04</div><h3>Improve</h3><p>Develop detection and response logic.</p></div>
         </div>
-
-
-        <div class="hero-panel">
-
-            <div class="panel-header">
-                <span class="panel-dot"></span>
-                <span>SECURITY OPERATIONS</span>
-                <span class="panel-live">ACTIVE</span>
-            </div>
-
-            <div class="terminal">
-
-                <div class="terminal-line">
-                    <span class="terminal-green">●</span>
-                    Monitoring security events...
-                </div>
-
-                <div class="terminal-line">
-                    <span class="terminal-blue">→</span>
-                    Analyzing network traffic
-                </div>
-
-                <div class="terminal-line">
-                    <span class="terminal-blue">→</span>
-                    Correlating authentication logs
-                </div>
-
-                <div class="terminal-line">
-                    <span class="terminal-yellow">!</span>
-                    Investigating suspicious activity
-                </div>
-
-                <div class="terminal-line">
-                    <span class="terminal-green">✓</span>
-                    Evidence documented
-                </div>
-
-                <div class="terminal-cursor">
-                    analyst@SOC:~$
-                    <span>_</span>
-                </div>
-
-            </div>
-
-        </div>
-
+      </div>
     </div>
+  </div></section>
 
-</section>
-
-
-<!-- ================= ABOUT ================= -->
-
-<section id="about" class="section">
-
-    <div class="container">
-
-        <div class="section-label">
-            ABOUT ME
-        </div>
-
-        <h2>
-            Learning Cybersecurity Through
-            <span>Practical Investigation</span>
-        </h2>
-
-        <div class="about-grid">
-
-            <div class="about-text">
-
-                <p>
-                    I am a BCA student focused on developing practical
-                    cybersecurity and Security Operations Center skills.
-                </p>
-
-                <p>
-                    Rather than focusing only on theory, I build isolated
-                    security laboratories and investigate simulated
-                    security events from the perspective of a SOC analyst.
-                </p>
-
-                <p>
-                    My projects involve collecting evidence, analyzing
-                    network traffic and authentication logs, identifying
-                    suspicious activity, extracting observables,
-                    developing detection logic and documenting findings.
-                </p>
-
-            </div>
-
-
-            <div class="about-focus">
-
-                <div class="focus-item">
-                    <span>01</span>
-                    <div>
-                        <strong>Detect</strong>
-                        <p>Identify suspicious security activity.</p>
-                    </div>
-                </div>
-
-                <div class="focus-item">
-                    <span>02</span>
-                    <div>
-                        <strong>Investigate</strong>
-                        <p>Analyze logs, packets and evidence.</p>
-                    </div>
-                </div>
-
-                <div class="focus-item">
-                    <span>03</span>
-                    <div>
-                        <strong>Document</strong>
-                        <p>Create professional investigation reports.</p>
-                    </div>
-                </div>
-
-                <div class="focus-item">
-                    <span>04</span>
-                    <div>
-                        <strong>Improve</strong>
-                        <p>Develop detection and response logic.</p>
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-
+  <section class="section" id="expertise"><div class="wrap">
+    <div class="reveal"><div class="eyebrow">Technical Skills</div><div class="section-title">Cybersecurity <span class="red">Toolkit</span></div><p class="section-lead">Technologies and security concepts I am developing through hands-on laboratory projects.</p></div>
+    <div class="expertise-grid reveal">
+      <div class="expertise-card"><div class="icon">⌁</div><h3>SOC Operations</h3><p>Security monitoring, alert investigation, incident analysis and SOC workflows.</p></div>
+      <div class="expertise-card"><div class="icon">◈</div><h3>Network Security</h3><p>TCP/IP, network reconnaissance, packet analysis and network investigation.</p></div>
+      <div class="expertise-card"><div class="icon">▤</div><h3>Log Analysis</h3><p>Linux authentication logs, event correlation, timelines and investigation.</p></div>
+      <div class="expertise-card"><div class="icon">△</div><h3>Threat Detection</h3><p>Detection logic, suspicious activity identification, IOCs and Sigma-style rules.</p></div>
+      <div class="expertise-card"><div class="icon">⌘</div><h3>Linux</h3><p>Kali Linux, Ubuntu Linux, SSH, networking and command-line investigation.</p></div>
+      <div class="expertise-card" id="skills"><div class="icon">◎</div><h3>Security Tools</h3><p>Wireshark, Nmap, tcpdump, Metasploit, Metasploitable, Parrot OS, Splunk and IBM QRadar.</p></div>
     </div>
-
-</section>
-
-
-<!-- ================= SKILLS ================= -->
-
-<section id="skills" class="section skills-section">
-
-    <div class="container">
-
-        <div class="section-label">
-            TECHNICAL SKILLS
-        </div>
-
-        <h2>
-            Cybersecurity <span>Toolkit</span>
-        </h2>
-
-        <p class="section-intro">
-            Technologies and security concepts I am developing through
-            hands-on laboratory projects.
-        </p>
-
-
-        <div class="skills-grid">
-
-            <div class="skill-card">
-                <div class="skill-icon">⌁</div>
-                <h3>SOC Operations</h3>
-                <p>
-                    Security monitoring, alert investigation,
-                    incident analysis and SOC workflows.
-                </p>
-                <div class="skill-level">SOC FUNDAMENTALS</div>
-            </div>
-
-
-            <div class="skill-card">
-                <div class="skill-icon">◈</div>
-                <h3>Network Security</h3>
-                <p>
-                    TCP/IP, network reconnaissance, packet analysis
-                    and network investigation.
-                </p>
-                <div class="skill-level">NETWORK ANALYSIS</div>
-            </div>
-
-
-            <div class="skill-card">
-                <div class="skill-icon">▤</div>
-                <h3>Log Analysis</h3>
-                <p>
-                    Linux authentication logs, event correlation,
-                    timelines and investigation.
-                </p>
-                <div class="skill-level">LOG INVESTIGATION</div>
-            </div>
-
-
-            <div class="skill-card">
-                <div class="skill-icon">△</div>
-                <h3>Threat Detection</h3>
-                <p>
-                    Detection logic, suspicious activity identification,
-                    IOCs and Sigma-style rules.
-                </p>
-                <div class="skill-level">THREAT DETECTION</div>
-            </div>
-
-
-            <div class="skill-card">
-                <div class="skill-icon">⌘</div>
-                <h3>Linux</h3>
-                <p>
-                    Kali Linux, Ubuntu Linux, SSH, networking and
-                    command-line investigation.
-                </p>
-                <div class="skill-level">LINUX SECURITY</div>
-            </div>
-
-
-            <div class="skill-card">
-                <div class="skill-icon">◎</div>
-                <h3>Security Tools</h3>
-                <p>
-                    Wireshark, Nmap, tcpdump, Metasploit, Metasploitable,
-                    Parrot OS, Splunk and IBM QRadar used in laboratory
-                    security investigations.
-                </p>
-                <div class="skill-level">SECURITY TOOLING</div>
-            </div>
-
-        </div>
-
+    <div class="tool-strip reveal">
+      <span class="chip">Wireshark</span><span class="chip">Nmap</span><span class="chip">tcpdump</span><span class="chip">Metasploit</span><span class="chip">Metasploitable</span><span class="chip">Kali Linux</span><span class="chip">Parrot OS</span><span class="chip">Ubuntu</span><span class="chip">Splunk</span><span class="chip">IBM QRadar</span>
     </div>
-
-</section>
-
-
-<!-- ================= PROJECTS ================= -->
-
-<section id="projects" class="section projects-section">
-
-    <div class="container">
-
-        <div class="section-label">
-            FEATURED PROJECTS
-        </div>
-
-        <h2>
-            Hands-On <span>SOC Investigations</span>
-        </h2>
-
-        <p class="section-intro">
-            Practical cybersecurity projects demonstrating investigation,
-            detection, analysis and documentation skills.
-        </p>
-
-
-        <div class="projects-grid">
-
-
-            <!-- PROJECT 01 -->
-
-            <article class="project-card">
-
-                <div class="project-top">
-
-                    <span class="project-number">
-                        PROJECT 01
-                    </span>
-
-                    <span class="project-status">
-                        COMPLETED
-                    </span>
-
-                </div>
-
-                <div class="project-icon">
-                    ◉
-                </div>
-
-                <h3>
-                    SOC Incident Investigation
-                </h3>
-
-                <h4>
-                    Suspicious Web Reconnaissance
-                </h4>
-
-                <p>
-                    Built an isolated Kali Linux and Ubuntu environment
-                    to investigate suspicious HTTP reconnaissance activity.
-                    Network traffic was generated, captured and analyzed
-                    using Nmap, tcpdump and Wireshark.
-                </p>
-
-                <div class="finding">
-
-                    <strong>Investigation Finding</strong>
-
-                    <p>
-                        A suspicious HTTP request to
-                        <code>/admin</code> containing a
-                        <code>sqlmap</code> User-Agent was identified.
-                        The server returned HTTP 404 and no successful
-                        access was observed.
-                    </p>
-
-                </div>
-
-                <div class="tags">
-                    <span>Wireshark</span>
-                    <span>Nmap</span>
-                    <span>tcpdump</span>
-                    <span>HTTP</span>
-                    <span>IOC Analysis</span>
-                </div>
-
-                <a
-                    href="https://github.com/shaikjaffersadeq/portfolio/tree/main/projects/soc-incident-investigation"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="project-button"
-                >
-                    View Investigation
-                    <span>→</span>
-                </a>
-
-            </article>
-
-
-            <!-- PROJECT 02 -->
-
-            <article class="project-card">
-
-                <div class="project-top">
-
-                    <span class="project-number">
-                        PROJECT 02
-                    </span>
-
-                    <span class="project-status">
-                        COMPLETED
-                    </span>
-
-                </div>
-
-                <div class="project-icon">
-                    ◈
-                </div>
-
-                <h3>
-                    SSH Brute-Force Login
-                </h3>
-
-                <h4>
-                    Detection & Investigation
-                </h4>
-
-                <p>
-                    Investigated repeated SSH authentication failures
-                    in an isolated SOC laboratory using Kali Linux and
-                    Ubuntu Linux. Authentication logs were analyzed to
-                    identify the source, target account and event timeline.
-                </p>
-
-                <div class="finding">
-
-                    <strong>Investigation Finding</strong>
-
-                    <p>
-                        Three failed SSH authentication attempts were
-                        identified from <code>192.168.56.103</code>
-                        against the <code>snowden</code> account.
-                        No successful authentication was observed
-                        immediately after the test sequence.
-                    </p>
-
-                </div>
-
-                <div class="tags">
-                    <span>SSH</span>
-                    <span>Linux</span>
-                    <span>Log Analysis</span>
-                    <span>IOC Analysis</span>
-                    <span>Detection</span>
-                </div>
-
-                <a
-                    href="https://github.com/shaikjaffersadeq/portfolio/tree/main/projects/soc-brute-force-investigation"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="project-button"
-                >
-                    View Investigation
-                    <span>→</span>
-                </a>
-
-            </article>
-
-
-            <!-- PROJECT 03 -->
-
-            <article class="project-card">
-
-                <div class="project-top">
-
-                    <span class="project-number">
-                        PROJECT 03
-                    </span>
-
-                    <span class="project-status">
-                        COMPLETED
-                    </span>
-
-                </div>
-
-                <div class="project-icon">
-                    🛡️
-                </div>
-
-                <h3>
-                    SENTINEL SOC
-                </h3>
-
-                <h4>
-                    Security Operations Center & Incident Response Platform
-                </h4>
-
-                <p>
-                    Built a web-based SOC and incident response platform
-                    using Flask, SQLite, HTML, CSS and JavaScript. The
-                    application brings authentication monitoring, attack
-                    simulation, security alerts, defensive controls and
-                    incident management into one workflow.
-                </p>
-
-                <div class="finding">
-
-                    <strong>Key Capability</strong>
-
-                    <p>
-                        Security activity can move from detection to a
-                        <code>BRUTE_FORCE_PATTERN</code> alert, incident
-                        investigation, response, resolution and final closure
-                        with an auditable incident timeline.
-                    </p>
-
-                </div>
-
-                <div class="tags">
-                    <span>Flask</span>
-                    <span>Python</span>
-                    <span>SQLite</span>
-                    <span>Incident Response</span>
-                    <span>Brute-Force Detection</span>
-                    <span>SOC</span>
-                </div>
-
-                <div class="project-buttons">
-
-                    <a
-                        href="https://github.com/shaikjaffersadeq/portfolio/tree/main/projects/sentinel-soc"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="project-button"
-                    >
-                        GitHub Source
-                        <span>↗</span>
-                    </a>
-
-                    <a
-                      href="https://sentinel-soc-0nkn.onrender.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="project-button"
-                   >
-                      Live Demo
-                      <span>↗</span>
-                      </a>
-                 
-
-                </div>
-
-            </article>
-
-
-        </div>
-
+  </div></section>
+
+  <section class="section" id="projects"><div class="wrap">
+    <div class="reveal"><div class="eyebrow">Featured Projects</div><div class="section-title">Hands-On SOC <span class="red">Investigations</span></div><p class="section-lead">Practical cybersecurity projects demonstrating investigation, detection, analysis and documentation skills.</p></div>
+    <div class="project-grid">
+      <article class="project reveal">
+        <div class="project-top"><div class="project-status">PROJECT 01 • COMPLETED</div><div class="project-index">01</div></div>
+        <div class="project-body"><h3>SOC Incident Investigation</h3><h4>Suspicious Web Reconnaissance</h4><p>Built an isolated Kali Linux and Ubuntu environment to investigate suspicious HTTP reconnaissance activity. Network traffic was generated, captured and analyzed using Nmap, tcpdump and Wireshark.</p><div class="finding"><b>Investigation Finding</b>A suspicious HTTP request to <code>/admin</code> containing a <code>sqlmap</code> User-Agent was identified. The server returned HTTP 404 and no successful access was observed.</div><div class="tags"><span class="tag">Wireshark</span><span class="tag">Nmap</span><span class="tag">tcpdump</span><span class="tag">HTTP</span><span class="tag">IOC Analysis</span></div><div class="project-actions"><a class="small-btn primary" href="https://github.com/shaikjaffersadeq/portfolio/tree/main/projects/soc-incident-investigation" target="_blank" rel="noopener">View Investigation ↗</a></div></div>
+      </article>
+
+      <article class="project reveal">
+        <div class="project-top"><div class="project-status">PROJECT 02 • COMPLETED</div><div class="project-index">02</div></div>
+        <div class="project-body"><h3>SSH Brute-Force Login</h3><h4>Detection & Investigation</h4><p>Investigated repeated SSH authentication failures in an isolated SOC laboratory using Kali Linux and Ubuntu Linux. Authentication logs were analyzed to identify the source, target account and event timeline.</p><div class="finding"><b>Investigation Finding</b>Three failed SSH authentication attempts were identified from <code>192.168.56.103</code> against the <code>snowden</code> account. No successful authentication was observed immediately after the test sequence.</div><div class="tags"><span class="tag">SSH</span><span class="tag">Linux</span><span class="tag">Log Analysis</span><span class="tag">IOC Analysis</span><span class="tag">Detection</span></div><div class="project-actions"><a class="small-btn primary" href="https://github.com/shaikjaffersadeq/portfolio/tree/main/projects/soc-brute-force-investigation" target="_blank" rel="noopener">View Investigation ↗</a></div></div>
+      </article>
+
+      <article class="project reveal">
+        <div class="project-top"><div class="project-status">PROJECT 03 • COMPLETED</div><div class="project-index">03</div></div>
+        <div class="project-body"><h3>🛡️ SENTINEL SOC</h3><h4>Security Operations Center & Incident Response Platform</h4><p>Built a web-based SOC and incident response platform using Flask, SQLite, HTML, CSS and JavaScript. The application brings authentication monitoring, attack simulation, security alerts, defensive controls and incident management into one workflow.</p><div class="finding"><b>Key Capability</b>Security activity can move from detection to a <code>BRUTE_FORCE_PATTERN</code> alert, incident investigation, response, resolution and final closure with an auditable incident timeline.</div><div class="tags"><span class="tag">Flask</span><span class="tag">Python</span><span class="tag">SQLite</span><span class="tag">Incident Response</span><span class="tag">Brute-Force Detection</span></div><div class="project-actions"><a class="small-btn primary" href="https://github.com/shaikjaffersadeq/portfolio/tree/main/projects/sentinel-soc" target="_blank" rel="noopener">GitHub Source ↗</a><a class="small-btn" href="https://sentinel-soc-0nkn.onrender.com/" target="_blank" rel="noopener">Live Demo ↗</a></div></div>
+      </article>
     </div>
+  </div></section>
 
-</section>
-
-
-<!-- ================= CERTIFICATIONS ================= -->
-
-<section id="certifications" class="section certifications-section">
-
-    <div class="container">
-
-        <div class="section-label">
-            CERTIFICATIONS
-        </div>
-
-        <h2>
-            Training & <span>Certifications</span>
-        </h2>
-
-        <p class="section-intro">
-            Additional technical training completed alongside my cybersecurity studies.
-        </p>
-
-        <div class="certificate-card">
-
-            <div class="certificate-content">
-
-                <div class="certificate-badge">
-                    FS
-                </div>
-
-                <div class="certificate-details">
-
-                    <div class="certificate-label">
-                        COMPLETED TRAINING
-                    </div>
-
-                    <h3>
-                        Full Stack Development
-                    </h3>
-
-                    <h4>
-                        MHJCCS Software Solution Institute & Abid Ali Khan Educational Trust
-                    </h4>
-
-                    <p>
-                        Successfully completed a two-month Full Stack Development
-                        course in Hyderabad.
-                    </p>
-
-                    <div class="tags">
-                        <span>Full Stack</span>
-                        <span>Web Development</span>
-                        <span>Software Development</span>
-                    </div>
-
-                    <a
-                        href="./FULLSTACK_CERTIFICATE_HORIZONTAL.jpg"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="project-button"
-                    >
-                        View Certificate
-                        <span>↗</span>
-                    </a>
-
-                </div>
-
-                <a
-                    href="./FULLSTACK_CERTIFICATE_HORIZONTAL.jpg"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="certificate-preview-link"
-                    aria-label="Open Full Stack Development certificate"
-                >
-                    <img
-                        src="./FULLSTACK_CERTIFICATE_HORIZONTAL.jpg"
-                        alt="Full Stack Development certificate"
-                        class="certificate-preview"
-                    >
-                </a>
-
-            </div>
-
-        </div>
-
+  <section class="section" id="workflow"><div class="wrap">
+    <div class="reveal"><div class="eyebrow">SOC Workflow</div><div class="section-title">From Alert <span class="red">to Investigation</span></div><p class="section-lead">My practical approach to investigating security events.</p></div>
+    <div class="workflow reveal">
+      <div class="step"><div class="step-num">01</div><h3>Detect</h3><p>Identify an unusual network, authentication or security event.</p></div>
+      <div class="step"><div class="step-num">02</div><h3>Collect</h3><p>Gather relevant packets, logs and investigation evidence.</p></div>
+      <div class="step"><div class="step-num">03</div><h3>Analyze</h3><p>Correlate events and determine what happened.</p></div>
+      <div class="step"><div class="step-num">04</div><h3>Document</h3><p>Record IOCs, timeline, severity, findings and recommendations.</p></div>
     </div>
+  </div></section>
 
-</section>
+  <section class="section" id="contact"><div class="wrap">
+    <div class="reveal"><div class="eyebrow">Contact</div><div class="section-title">Let's <span class="red">Connect</span></div><p class="section-lead">Interested in cybersecurity, Security Operations and defensive security.</p></div>
+    <div class="contact-box reveal"><div><h3>READY FOR<br><span class="red">THE NEXT CASE.</span></h3><p>Explore my work, investigation write-ups and SOC projects on GitHub.</p></div><a class="btn btn-primary" href="https://github.com/shaikjaffersadeq" target="_blank" rel="noopener">GitHub ↗</a></div>
+  </div></section>
 
+  <footer><div class="wrap footer-inner"><span>Shaik Jaffer Sadeq • Cybersecurity Portfolio</span><span>© 2026 • Built for Cybersecurity</span></div></footer>
 
-<!-- ================= WORKFLOW ================= -->
+  <script>
+    // Preloader
+    window.addEventListener('load',()=>{
+      setTimeout(()=>{document.getElementById('preloader').classList.add('hide');document.body.classList.remove('loading')},1100);
+    });
 
-<section class="section workflow-section">
+    // Cursor + spotlight + hero 3D card
+    const dot=document.getElementById('cursor-dot'), ring=document.getElementById('cursor-ring'), spot=document.getElementById('spotlight');
+    const card=document.getElementById('portraitCard');
+    let mx=innerWidth/2,my=innerHeight/2,rx=mx,ry=my;
+    window.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;spot.style.left=mx+'px';spot.style.top=my+'px';dot.style.left=mx+'px';dot.style.top=my+'px'});
+    function cursorLoop(){rx+=(mx-rx)*.16;ry+=(my-ry)*.16;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(cursorLoop)}cursorLoop();
+    document.querySelectorAll('a,button,.project,.mind-card,.expertise-card').forEach(el=>{
+      el.addEventListener('mouseenter',()=>{ring.style.width='62px';ring.style.height='62px';ring.style.borderColor='rgba(229,9,20,.95)'});
+      el.addEventListener('mouseleave',()=>{ring.style.width='46px';ring.style.height='46px';ring.style.borderColor='rgba(229,9,20,.65)'});
+    });
+    document.getElementById('home').addEventListener('mousemove',e=>{
+      if(innerWidth<900)return;
+      const r=card.getBoundingClientRect();
+      const x=(e.clientX-(r.left+r.width/2))/(r.width/2), y=(e.clientY-(r.top+r.height/2))/(r.height/2);
+      card.style.transform=`rotateY(${x*10}deg) rotateX(${-y*10}deg)`;
+    });
+    document.getElementById('home').addEventListener('mouseleave',()=>card.style.transform='rotateY(0deg) rotateX(0deg)');
 
-    <div class="container">
+    // Scroll reveal
+    const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('show')}),{threshold:.12});
+    document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
 
-        <div class="section-label">
-            SOC WORKFLOW
-        </div>
-
-        <h2>
-            From Alert to <span>Investigation</span>
-        </h2>
-
-        <p class="section-intro">
-            My practical approach to investigating security events.
-        </p>
-
-
-        <div class="workflow">
-
-            <div class="workflow-step">
-                <span>01</span>
-                <h3>Detect</h3>
-                <p>
-                    Identify an unusual network, authentication or
-                    security event.
-                </p>
-            </div>
-
-            <div class="workflow-line"></div>
-
-            <div class="workflow-step">
-                <span>02</span>
-                <h3>Collect</h3>
-                <p>
-                    Gather relevant packets, logs and investigation
-                    evidence.
-                </p>
-            </div>
-
-            <div class="workflow-line"></div>
-
-            <div class="workflow-step">
-                <span>03</span>
-                <h3>Analyze</h3>
-                <p>
-                    Correlate events and determine what happened.
-                </p>
-            </div>
-
-            <div class="workflow-line"></div>
-
-            <div class="workflow-step">
-                <span>04</span>
-                <h3>Document</h3>
-                <p>
-                    Record IOCs, timeline, severity, findings and
-                    recommendations.
-                </p>
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- ================= CONTACT ================= -->
-
-<section id="contact" class="section contact-section">
-
-    <div class="container contact-container">
-
-        <div class="section-label">
-            CONTACT
-        </div>
-
-        <h2>
-            Let's <span>Connect</span>
-        </h2>
-
-        <p>
-            Interested in cybersecurity, Security Operations and
-            defensive security.
-        </p>
-
-        <div class="contact-buttons">
-
-            <a
-                href="https://github.com/shaikjaffersadeq"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-                GitHub
-                <span>↗</span>
-            </a>
-
-        </div>
-
-    </div>
-
-</section>
-
-</main>
-
-
-<!-- ================= FOOTER ================= -->
-
-<footer>
-
-    <div class="container footer-inner">
-
-        <div>
-            <strong>Shaik Jaffer Sadeq</strong>
-            <span>Cybersecurity Portfolio</span>
-        </div>
-
-        <p>
-            © 2026 Shaik Jaffer Sadeq. Built for cybersecurity.
-        </p>
-
-    </div>
-
-</footer>
-
-
+    // Close menu-like focus when navigation links are clicked on mobile.
+    document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>window.scrollBy(0,0)));
+  </script>
 </body>
 </html>
