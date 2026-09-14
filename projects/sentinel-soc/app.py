@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 import sqlite3
+import os
 import math
 import re
 from datetime import datetime, timedelta
@@ -7,7 +8,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 
-DATABASE = "database/security_lab.db"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATABASE = os.path.join(BASE_DIR, "database", "security_lab.db")
 
 
 # ============================================================
@@ -2931,6 +2933,13 @@ initialize_database()
 # ============================================================
 
 if __name__ == "__main__":
+
+    print("=" * 60)
+    print("SENTINEL SOC - SERVER STARTING")
+    print("Database:", DATABASE)
+    print("Incident Details API: GET /api/incidents/<id>")
+    print("Closed Incidents API: GET /api/incidents/closed")
+    print("=" * 60)
 
     app.run(
         debug=True
