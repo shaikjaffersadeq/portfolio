@@ -24,8 +24,7 @@ RUN pip install --no-cache-dir imageio-ffmpeg streamlit fastapi uvicorn python-m
 COPY . .
 
 # Expose Streamlit (8501) and FastAPI (8000)
-EXPOSE 8501
-EXPOSE 8000
+EXPOSE 10000
 
 # Default entry starts Streamlit dashboard
-CMD ["streamlit", "run", "app/dashboard.py", "--server.port=8501", "--server.address=0.0.0.0"]
+CMD ["sh", "-c", "streamlit run app/dashboard.py --server.port=$ {PORT:-10000} --server.address=0.0.0.0"]
