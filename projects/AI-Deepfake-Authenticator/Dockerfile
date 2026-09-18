@@ -27,4 +27,4 @@ COPY . .
 EXPOSE 10000
 
 # Default entry starts Streamlit dashboard
-CMD ["sh", "-c", "streamlit run app/dashboard.py --server.port=$ {PORT:-10000} --server.address=0.0.0.0"]
+CMD ["streamlit", "run", "app/dashboard.py", "--server.port=10000", "--server.address=0.0.0.0"]
