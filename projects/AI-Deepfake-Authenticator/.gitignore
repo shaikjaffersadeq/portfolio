@@ -1,1 +1,54 @@
+# Python virtual environment
+venv/
+.venv/
+env/
+ENV/
 
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Pytest
+.pytest_cache/
+
+# IDE
+.vscode/
+.idea/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Generated files
+reports/
+outputs/
+tmp/
+temp/
+
+# Uploaded media
+uploads/
+
+# Model/cache files
+*.tmp
+*.cache
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Project datasets and generated processing data
+data/*
+!data/.gitkeep

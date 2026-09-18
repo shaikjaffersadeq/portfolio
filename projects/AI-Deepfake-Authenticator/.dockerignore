@@ -1,1 +1,9 @@
-
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.git/
+.vscode/
+data/processed/*
+!data/processed/.gitkeep
