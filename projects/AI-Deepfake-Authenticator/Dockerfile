@@ -1,6 +1,6 @@
 FROM python:3.10-slim
 
-# Prevent Python from writing .pyc and buffering stdout
+# Prevent Python from writing .pyc files and buffer stdout
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
@@ -15,16 +15,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 
-# Copy dependency specifications first to leverage Docker layer caching
+# Install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install --no-cache-dir imageio-ffmpeg streamlit fastapi uvicorn python-multipart
+RUN pip install --no-cache-dir imagedio-ffmpeg streamlit fastapi uvicorn python-multipart
 
 # Copy project source code
 COPY . .
 
-# Expose Streamlit (8501) and FastAPI (8000)
-EXPOSE 10000
+# Streamlit port
+EXPOSE 8501
 
-# Default entry starts Streamlit dashboard
-CMD ["streamlit", "run", "app/dashboard.py", "--server.port=10000", "--server.address=0.0.0.0"]
+# Start Streamlit dashboard
+CMD ["streamlit", "run", "app/dashboard.py", "--server.port=8501", "--server.address=0.0.0.0"]
