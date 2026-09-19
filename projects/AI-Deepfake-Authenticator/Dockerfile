@@ -18,7 +18,7 @@ WORKDIR /app
 # Install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-RUN pip install --no-cache-dir imagedio-ffmpeg streamlit fastapi uvicorn python-multipart
+RUN pip install --no-cache-dir imageio-ffmpeg streamlit fastapi uvicorn python-multipart
 
 # Copy project source code
 COPY . .
