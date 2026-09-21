@@ -299,6 +299,7 @@
             domActive.innerText = STATE.activeThreats;
             let newDefcon = 5;
             
+            // Raised threshold to require manual spamming to trigger alarms
             if(STATE.activeThreats <= 3) newDefcon = 5;
             else if(STATE.activeThreats > 3 && STATE.activeThreats <= 6) newDefcon = 4;
             else if(STATE.activeThreats > 6 && STATE.activeThreats <= 9) newDefcon = 3;
@@ -414,7 +415,8 @@
             aiStatus.className = "text-[10px] bg-blue-900/80 text-blue-200 px-2 py-1 rounded-full border border-blue-500 animate-pulse";
             btnDownload.classList.add('hidden'); 
 
-            const isBreach = Math.random() > 0.8; 
+            // BREACH LOGIC: 20% chance the AI fails to stop the manual attack
+            const isBreach = Math.random() < 0.20; 
 
             let aiResponseAction = "";
             let accessResult = "";
@@ -504,15 +506,12 @@ Final Status    : ${finalStatus}
 
         setInterval(processAiQueue, 500);
 
-        // --- SMART WEBSOCKET CONNECTION ---
-        // Automatically switches to 'wss://' (secure) if hosted on Render, or 'ws://' if on localhost
-        const wsProtocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const ws = new WebSocket(`${wsProtocol}//${window.location.host}/ws/threats`);
+        const ws = new WebSocket(`ws://${window.location.host}/ws/threats`);
         
         ws.onopen = () => {
-            console.log("Connected to Python backend via " + wsProtocol);
+            console.log("Connected to Python backend");
             setTimeout(() => {
-                typeTerminalLine(`>> ${wsProtocol.toUpperCase()} Secure WebSocket link to Python backend established.`, "text-green-400 font-bold");
+                typeTerminalLine(">> WSS:// Secure WebSocket link to Python backend established.", "text-green-400 font-bold");
                 typeTerminalLine(">> Listening for live backend threat streams...", "text-green-400");
             }, 2500);
         };
