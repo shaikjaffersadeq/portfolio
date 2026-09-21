@@ -1,781 +1,480 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Shaik Jaffer Sadeq — Cybersecurity and SOC Analyst Portfolio">
-  <title>Shaik Jaffer Sadeq — Cybersecurity Portfolio</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Driven SOC Engine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/three"></script>
+    <script src="https://unpkg.com/globe.gl"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { margin: 0; padding: 0; background-color: #050505; color: #00ff80; font-family: 'Space Mono', monospace; overflow: hidden; }
+        #globeViz { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; }
+        
+        .glass-panel {
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 128, 0.2);
+            border-radius: 8px;
+            z-index: 10;
+            position: relative;
+        }
+
+        .panel-red { border-color: rgba(255, 51, 102, 0.4); }
+        .panel-purple { border-color: rgba(183, 0, 255, 0.4); }
+        .panel-orange { border-color: rgba(255, 153, 0, 0.4); }
+
+        .terminal-text { font-size: 0.85rem; line-height: 1.5; color: #a3a3a3; }
+        .log-entry { border-bottom: 1px solid rgba(255,255,255,0.05); padding: 8px 0; font-size: 0.75rem; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(0, 255, 128, 0.3); border-radius: 10px; }
+
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(255, 51, 102, 0.7); }
+            70% { box-shadow: 0 0 20px 10px rgba(255, 51, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 51, 102, 0); }
+        }
+        .defcon-1 { animation: pulse-red 1.5s infinite; border-color: #ff3366 !important; }
+        
+        #overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 50; display: flex; justify-content: center; align-items: center; flex-direction: column;
+        }
+    </style>
 </head>
+<body>
 
-<body class="loading">
-
-<div id="preloader">
-  <div class="loader-content">
-    <div class="loader-dot"></div>
-    <div class="loader-title">SHAIK</div>
-  </div>
-</div>
-
-<div id="spotlight"></div>
-<div id="cursor-dot"></div>
-<div id="cursor-ring"></div>
-
-<section id="home">
-
-  <nav class="nav">
-    <div class="wrap nav-inner">
-      <a class="brand" href="#home">SHAIK<span></span></a>
-
-      <div class="nav-links">
-        <a href="#home">Home</a>
-        <a href="#about">About</a>
-        <a href="#expertise">Expertise</a>
-        <a href="#skills">Skills</a>
-        <a href="#projects">Projects</a>
-        <a href="#certificates">Certificates</a>
-        <a href="#contact">Contact</a>
-      </div>
-
-      <a class="nav-cta" href="#contact">Hire Me</a>
-    </div>
-  </nav>
-
-  <div class="hero-marquee">
-    <div class="marquee-track">
-      <span>CYBERSECURITY • SOC • BLUE TEAM • </span>
-      <span>CYBERSECURITY • SOC • BLUE TEAM • </span>
-    </div>
-  </div>
-
-  <div class="wrap hero-inner">
-
-    <div class="hero-left">
-      <div class="status-line">
-        <span class="badge">SOC / BLUE TEAM</span>
-        <span>CYBERSECURITY • BCA STUDENT</span>
-      </div>
-
-      <h1 class="hero-name">
-        SHAIK<br>
-        <span class="accent">JAFFER<br>SADEQ</span>
-      </h1>
-
-      <div class="hero-meta">
-        <b>05 CYBERSECURITY PROJECTS</b>
-        <span>•</span>
-        <span>SOC CAREER FOCUS</span>
-        <span>•</span>
-        <span>BLUE TEAM</span>
-      </div>
-
-      <p class="hero-copy">
-        Cybersecurity-focused BCA student developing practical skills in security operations,
-        threat detection, network analysis and incident investigation.
-      </p>
-
-      <div class="hero-buttons">
-        <a class="btn btn-primary" href="#projects">▶ View Projects</a>
-        <a class="btn btn-dark" href="#contact">◎ Contact Me</a>
-      </div>
+    <!-- Boot Sequence Overlay -->
+    <div id="overlay">
+        <h1 class="text-4xl font-bold mb-4 text-[#00ff80]">SOC ENGINE OFFLINE</h1>
+        <p class="text-gray-400 mb-8">Awaiting initialization sequence...</p>
+        <button onclick="startEngine()" class="px-8 py-3 bg-[#00ff80] text-black font-bold rounded hover:bg-white transition-colors">
+            INITIALIZE SYSTEM
+        </button>
     </div>
 
-    <div class="portrait-stage">
-      <div class="portrait-card" id="portraitCard">
-        <div class="portrait-glow"></div>
-        <div class="portrait-tag">FEATURED ANALYST</div>
-        <img src="assets/profile.png" alt="Shaik Jaffer Sadeq">
-      </div>
-    </div>
+    <!-- 3D Globe Background -->
+    <div id="globeViz"></div>
 
-    <div class="specs">
-      <div class="spec">
-        <h3>Career Focus</h3>
-        <p>Security Operations<br>Practical SOC Investigation • Blue Team</p>
-      </div>
+    <!-- UI Overlay (Grid) -->
+    <div class="absolute inset-0 p-6 pointer-events-none flex justify-between">
+        
+        <!-- LEFT COLUMN -->
+        <div class="w-1/3 flex flex-col gap-4 pointer-events-auto max-w-sm">
+            
+            <!-- System Status -->
+            <div class="glass-panel p-5 flex flex-col gap-4" id="statusPanel">
+                <div class="flex justify-between items-center border-b border-gray-800 pb-2">
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 rounded-full bg-[#00ff80]" id="sysStatusIndicator"></div>
+                        <span class="text-xs text-gray-400 tracking-widest">SYS: <span id="defconLevel" class="text-[#00ff80] font-bold">DEFCON 5</span></span>
+                    </div>
+                    <div class="flex gap-2">
+                        <!-- NEW: EXPORT DB BUTTON -->
+                        <a href="/export" target="_blank" class="text-[10px] border border-blue-500 text-blue-500 px-2 py-1 rounded hover:bg-blue-500 hover:text-white transition-colors cursor-pointer text-center leading-tight flex items-center">
+                            📥 EXPORT DB<br>(CSV)
+                        </a>
+                        <span class="text-[10px] border border-gray-600 px-2 py-1 rounded text-gray-400">ZERO-TRUST</span>
+                    </div>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-[#00ff80] tracking-wider" id="radarTitle">THREAT RADAR</h2>
+                
+                <div class="flex gap-4">
+                    <div class="bg-black/50 p-3 rounded flex-1">
+                        <div class="text-[10px] text-gray-500 mb-1">TOTAL EVENTS</div>
+                        <div class="text-2xl font-bold text-white" id="totalEvents">0</div>
+                    </div>
+                    <div class="bg-black/50 p-3 rounded flex-1">
+                        <div class="text-[10px] text-gray-500 mb-1">ACTIVE THREATS</div>
+                        <div class="text-2xl font-bold text-[#00ff80]" id="activeThreats">0</div>
+                    </div>
+                </div>
 
-      <div class="spec">
-        <h3>Current Toolkit</h3>
-        <p>Wireshark • Nmap • tcpdump • Linux<br>Metasploit • Splunk • QRadar</p>
-      </div>
+                <div class="bg-purple-900/20 border border-purple-500/30 p-3 rounded">
+                    <div class="text-[10px] text-purple-400 mb-1 flex items-center gap-2">
+                        <span>⚗</span> THREATS NEUTRALIZED BY AI
+                    </div>
+                    <div class="text-xl font-bold text-purple-500" id="neutralized">0</div>
+                </div>
+            </div>
 
-      <div class="spec">
-        <h3>Investigation Mindset</h3>
-        <p>Detect → Investigate → Document → Improve</p>
-      </div>
-    </div>
+            <!-- Red Team Injector -->
+            <div class="glass-panel panel-red p-5">
+                <div class="flex justify-between items-center mb-2">
+                    <h3 class="text-sm font-bold text-[#ff3366] flex items-center gap-2">
+                        <span>⚡</span> RED TEAM INJECTOR
+                    </h3>
+                    <span class="text-[9px] text-gray-500 tracking-widest">MANUAL OVERRIDE</span>
+                </div>
+                <p class="text-xs text-gray-400 mb-4">Launch targeted attacks to observe AI investigation.</p>
+                
+                <div class="flex gap-2">
+                    <select id="attackType" class="bg-black border border-gray-700 text-white text-xs p-2 rounded flex-1 outline-none focus:border-[#ff3366]">
+                        <option value="SSH Brute-Force">SSH Brute-Force (T1110)</option>
+                        <option value="SQL Injection">SQL Injection (T1190)</option>
+                        <option value="DDoS SYN Flood">DDoS SYN Flood (T1498)</option>
+                        <option value="Log4Shell Exploit">Log4Shell Exploit (T1190.005)</option>
+                        <option value="Zero-Day Payload">Zero-Day Payload</option>
+                    </select>
+                    <button onclick="launchManualAttack()" class="bg-[#ff3366]/20 border border-[#ff3366] text-[#ff3366] hover:bg-[#ff3366] hover:text-white text-xs font-bold px-4 rounded transition-colors">
+                        LAUNCH
+                    </button>
+                </div>
+            </div>
 
-  </div>
+            <!-- MITRE Signatures Chart -->
+            <div class="glass-panel panel-orange p-5 flex flex-col flex-1 min-h-[220px]">
+                <h3 class="text-sm font-bold text-white mb-4 tracking-widest">ACTIVE SIGNATURES</h3>
+                <div class="relative flex-1 w-full h-full">
+                    <!-- FIX: Absolute inset-0 locks the chart perfectly in the box -->
+                    <canvas id="mitreChart" class="absolute inset-0"></canvas>
+                </div>
+            </div>
 
-  <div class="wrap ticker">
-    <span>SECURITY OPERATIONS ACTIVE</span>
-    <span>[ PORTFOLIO RELEASE • 2026 ]</span>
-  </div>
-
-</section>
-
-
-<section class="section" id="about">
-  <div class="wrap">
-    <div class="about-grid reveal">
-
-      <div>
-        <div class="eyebrow">About Me</div>
-        <div class="about-stamp">SOC</div>
-      </div>
-
-      <div class="about-copy">
-        <div class="section-title">
-          Learning Cybersecurity<br>
-          <span class="red">Through Practical Investigation</span>
         </div>
 
-        <p>I am a BCA student focused on developing practical cybersecurity and Security Operations Center skills.</p>
+        <!-- RIGHT COLUMN -->
+        <div class="w-1/3 flex flex-col gap-4 pointer-events-auto max-w-md">
+            
+            <!-- AI Terminal -->
+            <div class="glass-panel panel-purple p-5 flex-1 max-h-[40vh] flex flex-col">
+                <div class="flex justify-between items-center border-b border-purple-900/50 pb-2 mb-4">
+                    <h3 class="text-sm font-bold text-purple-400 flex items-center gap-2">
+                        <span>🤖</span> AI SECOPS CO-PILOT
+                    </h3>
+                    <div class="text-[9px] border border-purple-500/50 text-purple-400 px-2 py-1 rounded-full animate-pulse" id="aiStatusBtn">
+                        MONITORING
+                    </div>
+                </div>
+                <div id="aiTerminal" class="terminal-text flex-1 overflow-y-auto pr-2 flex flex-col gap-2 font-mono">
+                    <p class="text-gray-500">>> Model: Neural_Guardian_v3.1 initialized.</p>
+                    <p class="text-gray-500">>> System standing by. Awaiting Red Team injection...</p>
+                </div>
+            </div>
 
-        <p>Rather than focusing only on theory, I build isolated security laboratories and investigate simulated security events from the perspective of a SOC analyst.</p>
+            <!-- Event Vector Log -->
+            <div class="glass-panel p-5 flex-1 max-h-[50vh] flex flex-col">
+                <div class="flex text-[10px] text-gray-500 tracking-widest border-b border-gray-800 pb-2 mb-2">
+                    <div class="w-1/5">TIME</div>
+                    <div class="w-1/5">ML%</div>
+                    <div class="w-1/4">ORIGIN</div>
+                    <div class="w-auto">EVENT VECTOR</div>
+                </div>
+                <div id="eventLog" class="flex-1 overflow-y-auto pr-2">
+                    <!-- Logs go here -->
+                </div>
+            </div>
 
-        <p>My projects involve collecting evidence, analyzing network traffic and authentication logs, identifying suspicious activity, extracting observables, developing detection logic and documenting findings.</p>
-
-        <div class="mindset">
-          <div class="mind-card">
-            <div class="mind-num">01</div>
-            <h3>Detect</h3>
-            <p>Identify suspicious security activity.</p>
-          </div>
-
-          <div class="mind-card">
-            <div class="mind-num">02</div>
-            <h3>Investigate</h3>
-            <p>Analyze logs, packets and evidence.</p>
-          </div>
-
-          <div class="mind-card">
-            <div class="mind-num">03</div>
-            <h3>Document</h3>
-            <p>Create professional investigation reports.</p>
-          </div>
-
-          <div class="mind-card">
-            <div class="mind-num">04</div>
-            <h3>Improve</h3>
-            <p>Develop detection and response logic.</p>
-          </div>
         </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<section class="section" id="expertise">
-  <div class="wrap">
-
-    <div class="reveal">
-      <div class="eyebrow">Technical Skills</div>
-      <div class="section-title">Cybersecurity <span class="red">Toolkit</span></div>
-      <p class="section-lead">
-        Technologies and security concepts I am developing through hands-on laboratory projects.
-      </p>
     </div>
 
-    <div class="expertise-grid reveal">
-
-      <div class="expertise-card">
-        <div class="icon">⌁</div>
-        <h3>SOC Operations</h3>
-        <p>Security monitoring, alert investigation, incident analysis and SOC workflows.</p>
-      </div>
-
-      <div class="expertise-card">
-        <div class="icon">◈</div>
-        <h3>Network Security</h3>
-        <p>TCP/IP, network reconnaissance, packet analysis and network investigation.</p>
-      </div>
-
-      <div class="expertise-card">
-        <div class="icon">▤</div>
-        <h3>Log Analysis</h3>
-        <p>Linux authentication logs, event correlation, timelines and investigation.</p>
-      </div>
-
-      <div class="expertise-card">
-        <div class="icon">△</div>
-        <h3>Threat Detection</h3>
-        <p>Detection logic, suspicious activity identification, IOCs and Sigma-style rules.</p>
-      </div>
-
-      <div class="expertise-card">
-        <div class="icon">⌘</div>
-        <h3>Linux</h3>
-        <p>Kali Linux, Ubuntu Linux, SSH, networking and command-line investigation.</p>
-      </div>
-
-      <div class="expertise-card" id="skills">
-        <div class="icon">◎</div>
-        <h3>Security Tools</h3>
-        <p>Wireshark, Nmap, tcpdump, Metasploit, Metasploitable, Parrot OS, Splunk and IBM QRadar.</p>
-      </div>
-
-    </div>
-
-    <div class="tool-strip reveal">
-      <span class="chip">Wireshark</span>
-      <span class="chip">Nmap</span>
-      <span class="chip">tcpdump</span>
-      <span class="chip">Metasploit</span>
-      <span class="chip">Metasploitable</span>
-      <span class="chip">Kali Linux</span>
-      <span class="chip">Parrot OS</span>
-      <span class="chip">Ubuntu</span>
-      <span class="chip">Splunk</span>
-      <span class="chip">IBM QRadar</span>
-    </div>
-
-  </div>
-</section>
-
-
-<section class="section" id="projects">
-  <div class="wrap">
-
-    <div class="reveal">
-      <div class="eyebrow">Featured Projects</div>
-      <div class="section-title">Hands-On Cybersecurity <span class="red">Projects</span></div>
-      <p class="section-lead">
-        Practical cybersecurity projects demonstrating investigation, detection, analysis and documentation skills.
-      </p>
-    </div>
-
-    <div class="project-grid">
-
-      <article class="project reveal">
-        <div class="project-top">
-          <div class="project-status">PROJECT 01 • COMPLETED</div>
-          <div class="project-index">01</div>
-        </div>
-
-        <div class="project-body">
-          <h3>SOC Incident Investigation</h3>
-          <h4>Suspicious Web Reconnaissance</h4>
-
-          <p>
-            Built an isolated Kali Linux and Ubuntu environment to investigate suspicious HTTP reconnaissance activity.
-            Network traffic was generated, captured and analyzed using Nmap, tcpdump and Wireshark.
-          </p>
-
-          <div class="finding">
-            <b>Investigation Finding</b>
-            A suspicious HTTP request to <code>/admin</code> containing a <code>sqlmap</code> User-Agent was identified.
-            The server returned HTTP 404 and no successful access was observed.
-          </div>
-
-          <div class="tags">
-            <span class="tag">Wireshark</span>
-            <span class="tag">Nmap</span>
-            <span class="tag">tcpdump</span>
-            <span class="tag">HTTP</span>
-            <span class="tag">IOC Analysis</span>
-          </div>
-
-          <div class="project-actions">
-            <a class="small-btn primary"
-               href="https://github.com/shaikjaffersadeq/portfolio/tree/main/projects/soc-incident-investigation"
-               target="_blank" rel="noopener">
-              View Investigation ↗
-            </a>
-          </div>
-        </div>
-      </article>
-
-
-      <article class="project reveal">
-        <div class="project-top">
-          <div class="project-status">PROJECT 02 • COMPLETED</div>
-          <div class="project-index">02</div>
-        </div>
-
-        <div class="project-body">
-          <h3>SSH Brute-Force Login</h3>
-          <h4>Detection &amp; Investigation</h4>
-
-          <p>
-            Investigated repeated SSH authentication failures in an isolated SOC laboratory using Kali Linux and Ubuntu Linux.
-            Authentication logs were analyzed to identify the source, target account and event timeline.
-          </p>
-
-          <div class="finding">
-            <b>Investigation Finding</b>
-            Three failed SSH authentication attempts were identified from
-            <code>192.168.56.103</code> against the <code>snowden</code> account.
-            No successful authentication was observed immediately after the test sequence.
-          </div>
-
-          <div class="tags">
-            <span class="tag">SSH</span>
-            <span class="tag">Linux</span>
-            <span class="tag">Log Analysis</span>
-            <span class="tag">IOC Analysis</span>
-            <span class="tag">Detection</span>
-          </div>
-
-          <div class="project-actions">
-            <a class="small-btn primary"
-               href="https://github.com/shaikjaffersadeq/portfolio/tree/main/projects/soc-brute-force-investigation"
-               target="_blank" rel="noopener">
-              View Investigation ↗
-            </a>
-          </div>
-        </div>
-      </article>
-
-
-      <article class="project reveal">
-        <div class="project-top">
-          <div class="project-status">PROJECT 03 • COMPLETED</div>
-          <div class="project-index">03</div>
-        </div>
-
-        <div class="project-body">
-          <h3>🛡️ SENTINEL SOC</h3>
-          <h4>Security Operations Center &amp; Incident Response Platform</h4>
-
-          <p>
-            Built a web-based SOC and incident response platform using Flask, SQLite, HTML, CSS and JavaScript.
-            The application brings authentication monitoring, attack simulation, security alerts, defensive controls
-            and incident management into one workflow.
-          </p>
-
-          <div class="finding">
-            <b>Key Capability</b>
-            Security activity can move from detection to a <code>BRUTE_FORCE_PATTERN</code> alert,
-            incident investigation, response, resolution and final closure with an auditable incident timeline.
-          </div>
-
-          <div class="tags">
-            <span class="tag">Flask</span>
-            <span class="tag">Python</span>
-            <span class="tag">SQLite</span>
-            <span class="tag">Incident Response</span>
-            <span class="tag">Brute-Force Detection</span>
-          </div>
-
-          <div class="project-actions">
-            <a class="small-btn primary"
-               href="https://github.com/shaikjaffersadeq/portfolio/tree/main/projects/sentinel-soc"
-               target="_blank" rel="noopener">
-              GitHub Source ↗
-            </a>
-
-            <a class="small-btn"
-               href="https://sentinel-soc-0nkn.onrender.com/"
-               target="_blank" rel="noopener">
-              Live Demo ↗
-            </a>
-          </div>
-        </div>
-      </article>
-
-
-      <article class="project reveal">
-        <div class="project-top">
-          <div class="project-status">PROJECT 04 • COMPLETED</div>
-          <div class="project-index">04</div>
-        </div>
-
-        <div class="project-body">
-          <h3>Multimodal AI Deepfake &amp; Synthetic Media Authenticator</h3>
-          <h4>AI-Powered Media Forensics &amp; Authenticity Analysis</h4>
-
-          <p>
-            Built a web-based multimodal AI forensic application that analyzes digital media for potential
-            synthetic or manipulated content. The system combines spatial, temporal and acoustic analysis
-            into a unified authenticity assessment through an interactive web interface.
-          </p>
-
-          <div class="finding">
-            <b>Key Capability</b>
-            A tri-modal forensic pipeline analyzes spatial manipulation, inter-frame flow continuity and
-            acoustic characteristics to support synthetic-media authenticity analysis.
-          </div>
-
-          <div class="tags">
-            <span class="tag">AI / ML</span>
-            <span class="tag">Deepfake Detection</span>
-            <span class="tag">Computer Vision</span>
-            <span class="tag">Audio Forensics</span>
-            <span class="tag">Temporal Analysis</span>
-            <span class="tag">Multimodal AI</span>
-          </div>
-
-          <div class="project-actions">
-            <a class="small-btn primary"
-               href="https://github.com/shaikjaffersadeq/portfolio/tree/main/projects/AI-Deepfake-Authenticator"
-               target="_blank" rel="noopener">
-              GitHub Source ↗
-            </a>
-
-            <a class="small-btn"
-               href="https://portfolio-11xs.onrender.com"
-               target="_blank" rel="noopener">
-              Live Demo ↗
-            </a>
-          </div>
-        </div>
-      </article>
-
-      <!-- NEW PROJECT 05 ADDED HERE -->
-      <article class="project reveal">
-        <div class="project-top">
-          <div class="project-status">PROJECT 05 • COMPLETED</div>
-          <div class="project-index">05</div>
-        </div>
-
-        <div class="project-body">
-          <h3>AI-Driven SOC Simulation Engine</h3>
-          <h4>Autonomous Threat Detection & Mitigation</h4>
-
-          <p>
-            Developed a full-stack Security Operations Center dashboard using FastAPI, WebSockets, and WebGL. 
-            Integrated an unsupervised Machine Learning model (Isolation Forest) to autonomously analyze network traffic and mitigate zero-day anomalies in real-time.
-          </p>
-
-          <div class="finding">
-            <b>Key Capability</b>
-            Real-time telemetry streaming via secure WebSockets, AI-driven autonomous incident response, and persistent SQLite database forensic logging.
-          </div>
-
-          <div class="tags">
-            <span class="tag">Python (FastAPI)</span>
-            <span class="tag">Machine Learning</span>
-            <span class="tag">WebSockets</span>
-            <span class="tag">Three.js</span>
-            <span class="tag">SQLite</span>
-          </div>
-
-          <div class="project-actions">
-            <a class="small-btn primary"
-               href="https://github.com/shaikjaffersadeq/portfolio/tree/main/projects/AI-Driven-Red-Blue-Team-Simulation-Engine"
-               target="_blank" rel="noopener">
-              GitHub Source ↗
-            </a>
-
-            <a class="small-btn"
-               href="PASTE_YOUR_REAL_RENDER_URL_HERE"
-               target="_blank" rel="noopener">
-              Live Demo ↗
-            </a>
-          </div>
-        </div>
-      </article>
-
-    </div>
-  </div>
-</section>
-
-
-<section class="section certificates-section" id="certificates">
-  <div class="wrap">
-
-    <div class="reveal">
-      <div class="eyebrow">Certifications</div>
-      <div class="section-title">Professional <span class="red">Certificates</span></div>
-      <p class="section-lead">
-        Certificates and learning achievements supporting my technical development and cybersecurity career path.
-      </p>
-    </div>
-
-    <div class="certificate-grid reveal">
-
-      <article class="certificate-card">
-        <div class="certificate-image-wrap">
-          <img
-            src="assets/ai-masterclass-certificate.jpg"
-            alt="AI Masterclass Certificate"
-            class="certificate-image">
-          <div class="certificate-overlay">
-            <span>VIEW CERTIFICATE ↗</span>
-          </div>
-        </div>
-
-        <div class="certificate-content">
-          <div class="certificate-number">CERTIFICATE 01</div>
-          <h3>AI Masterclass</h3>
-          <p>Certificate of completion for AI Masterclass training.</p>
-
-          <a
-            href="assets/ai-masterclass-certificate.jpg"
-            target="_blank"
-            rel="noopener"
-            class="certificate-button">
-            Open Certificate ↗
-          </a>
-        </div>
-      </article>
-
-
-      <article class="certificate-card">
-        <div class="certificate-image-wrap">
-          <img
-            src="assets/fullstack-development-certificate.jpg"
-            alt="Full Stack Development Certificate"
-            class="certificate-image">
-          <div class="certificate-overlay">
-            <span>VIEW CERTIFICATE ↗</span>
-          </div>
-        </div>
-
-        <div class="certificate-content">
-          <div class="certificate-number">CERTIFICATE 02</div>
-          <h3>Full Stack Development</h3>
-          <p>Certificate of completion for Full Stack Development training.</p>
-
-          <a
-            href="assets/fullstack-development-certificate.jpg"
-            target="_blank"
-            rel="noopener"
-            class="certificate-button">
-            Open Certificate ↗
-          </a>
-        </div>
-      </article>
-
-    </div>
-
-  </div>
-</section>
-
-
-<section class="section" id="workflow">
-  <div class="wrap">
-
-    <div class="reveal">
-      <div class="eyebrow">SOC Workflow</div>
-      <div class="section-title">From Alert <span class="red">to Investigation</span></div>
-      <p class="section-lead">My practical approach to investigating security events.</p>
-    </div>
-
-    <div class="workflow reveal">
-
-      <div class="step">
-        <div class="step-num">01</div>
-        <h3>Detect</h3>
-        <p>Identify an unusual network, authentication or security event.</p>
-      </div>
-
-      <div class="step">
-        <div class="step-num">02</div>
-        <h3>Collect</h3>
-        <p>Gather relevant packets, logs and investigation evidence.</p>
-      </div>
-
-      <div class="step">
-        <div class="step-num">03</div>
-        <h3>Analyze</h3>
-        <p>Correlate events and determine what happened.</p>
-      </div>
-
-      <div class="step">
-        <div class="step-num">04</div>
-        <h3>Document</h3>
-        <p>Record IOCs, timeline, severity, findings and recommendations.</p>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<section class="section" id="contact">
-  <div class="wrap">
-
-    <div class="reveal">
-      <div class="eyebrow">Contact</div>
-      <div class="section-title">Let's <span class="red">Connect</span></div>
-      <p class="section-lead">
-        Interested in cybersecurity, Security Operations and defensive security.
-      </p>
-    </div>
-
-    <div class="contact-box reveal">
-
-      <div>
-        <h3>READY FOR<br><span class="red">THE NEXT CASE.</span></h3>
-        <p>
-          Explore my work, investigation write-ups and SOC projects on GitHub.
-        </p>
-      </div>
-
-      <a
-        class="btn btn-primary"
-        href="https://github.com/shaikjaffersadeq"
-        target="_blank"
-        rel="noopener">
-        GitHub ↗
-      </a>
-
-    </div>
-  </div>
-</section>
-
-
-<footer>
-  <div class="wrap footer-inner">
-    <span>Shaik Jaffer Sadeq • Cybersecurity Portfolio</span>
-    <span>© 2026 • Built for Cybersecurity</span>
-  </div>
-</footer>
-
-
-<script>
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    const preloader = document.getElementById("preloader");
-
-    if (preloader) {
-      preloader.classList.add("hide");
-    }
-
-    document.body.classList.remove("loading");
-  }, 1100);
-});
-
-
-const dot = document.getElementById("cursor-dot");
-const ring = document.getElementById("cursor-ring");
-const spot = document.getElementById("spotlight");
-const card = document.getElementById("portraitCard");
-
-let mx = window.innerWidth / 2;
-let my = window.innerHeight / 2;
-let rx = mx;
-let ry = my;
-
-window.addEventListener("mousemove", (e) => {
-  mx = e.clientX;
-  my = e.clientY;
-
-  if (spot) {
-    spot.style.left = mx + "px";
-    spot.style.top = my + "px";
-  }
-
-  if (dot) {
-    dot.style.left = mx + "px";
-    dot.style.top = my + "px";
-  }
-});
-
-
-function cursorLoop() {
-  rx += (mx - rx) * 0.16;
-  ry += (my - ry) * 0.16;
-
-  if (ring) {
-    ring.style.left = rx + "px";
-    ring.style.top = ry + "px";
-  }
-
-  requestAnimationFrame(cursorLoop);
-}
-
-cursorLoop();
-
-
-document
-  .querySelectorAll("a,button,.project,.mind-card,.expertise-card,.certificate-card")
-  .forEach((el) => {
-
-    el.addEventListener("mouseenter", () => {
-      if (ring) {
-        ring.style.width = "62px";
-        ring.style.height = "62px";
-        ring.style.borderColor = "rgba(229,9,20,.95)";
-      }
-    });
-
-    el.addEventListener("mouseleave", () => {
-      if (ring) {
-        ring.style.width = "46px";
-        ring.style.height = "46px";
-        ring.style.borderColor = "rgba(229,9,20,.65)";
-      }
-    });
-
-  });
-
-
-const home = document.getElementById("home");
-
-if (home && card) {
-
-  home.addEventListener("mousemove", (e) => {
-
-    if (window.innerWidth < 900) {
-      return;
-    }
-
-    const rect = card.getBoundingClientRect();
-
-    const x =
-      (e.clientX - (rect.left + rect.width / 2)) /
-      (rect.width / 2);
-
-    const y =
-      (e.clientY - (rect.top + rect.height / 2)) /
-      (rect.height / 2);
-
-    card.style.transform =
-      `rotateY(${x * 10}deg) rotateX(${-y * 10}deg)`;
-
-  });
-
-
-  home.addEventListener("mouseleave", () => {
-    card.style.transform =
-      "rotateY(0deg) rotateX(0deg)";
-  });
-
-}
-
-
-const observer = new IntersectionObserver(
-  (entries) => {
-
-    entries.forEach((entry) => {
-
-      if (entry.isIntersecting) {
-        entry.target.classList.add("show");
-      }
-
-    });
-
-  },
-  {
-    threshold: 0.12
-  }
-);
-
-
-document
-  .querySelectorAll(".reveal")
-  .forEach((el) => observer.observe(el));
-
-
-document
-  .querySelectorAll(".nav-links a")
-  .forEach((a) => {
-
-    a.addEventListener("click", () => {
-      window.scrollBy(0, 0);
-    });
-
-  });
-
-</script>
-
+    <script>
+        // State Variables
+        let activeThreatsCount = 0;
+        let totalEventsCount = 0;
+        let neutralizedCount = 0;
+        let chartInstance = null;
+        const chartData = {};
+        
+        let ws; 
+        let world;
+
+        // Sound System
+        const synths = {
+            blip: new Tone.Synth({ oscillator: { type: "sine" }, envelope: { attack: 0.01, decay: 0.1, sustain: 0 } }).toDestination(),
+            alarm: new Tone.FMSynth({ modulationIndex: 12.22, envelope: { attack: 0.01, decay: 0.2 } }).toDestination(),
+            typewriter: new Tone.NoiseSynth({ noise: { type: 'white' }, envelope: { attack: 0.005, decay: 0.05, sustain: 0 } }).toDestination(),
+            error: new Tone.MembraneSynth({ pitchDecay: 0.05, octaves: 2, oscillator: { type: "square" } }).toDestination()
+        };
+        // Lower volumes
+        synths.blip.volume.value = -15;
+        synths.alarm.volume.value = -10;
+        synths.typewriter.volume.value = -20;
+        synths.error.volume.value = -5;
+
+        function playSound(type) {
+            if (Tone.context.state !== 'running') return;
+            if (type === 'blip') synths.blip.triggerAttackRelease("C5", "32n");
+            if (type === 'alarm') synths.alarm.triggerAttackRelease("C3", "8n");
+            if (type === 'typewriter') synths.typewriter.triggerAttackRelease("64n");
+            if (type === 'error') synths.error.triggerAttackRelease("C2", "8n");
+        }
+
+        async function startEngine() {
+            await Tone.start();
+            document.getElementById('overlay').style.display = 'none';
+            
+            initGlobe();
+            initChart();
+            connectWebSocket();
+        }
+
+        function initGlobe() {
+            world = Globe()
+                (document.getElementById('globeViz'))
+                .globeImageUrl('https://unpkg.com/three-globe/example/img/earth-dark.jpg')
+                .bumpImageUrl('https://unpkg.com/three-globe/example/img/earth-topology.png')
+                .backgroundColor('#050505')
+                .arcColor('color')
+                .arcDashLength(0.4)
+                .arcDashGap(0.2)
+                .arcDashAnimateTime(1500)
+                .arcsTransitionDuration(0)
+                .pointColor('color')
+                .pointAltitude(0.1)
+                .pointRadius(0.5);
+
+            // Auto-rotate
+            world.controls().autoRotate = true;
+            world.controls().autoRotateSpeed = 1.2;
+            world.controls().enableZoom = false;
+
+            // Set camera starting position
+            world.pointOfView({ lat: 20, lng: -40, altitude: 2.2 });
+        }
+
+        function initChart() {
+            const ctx = document.getElementById('mitreChart').getContext('2d');
+            Chart.defaults.color = '#71717a';
+            Chart.defaults.font.family = "'Space Mono', monospace";
+
+            chartInstance = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        data: [],
+                        backgroundColor: [],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '75%',
+                    plugins: {
+                        legend: { 
+                            position: 'right',
+                            labels: { 
+                                boxWidth: 12,
+                                padding: 10,
+                                font: { size: 9 }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function connectWebSocket() {
+            const terminal = document.getElementById('aiTerminal');
+            // DYNAMIC PROTOCOL: Uses wss:// if hosted on HTTPS (Render), ws:// if local
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${window.location.host}/ws/threats`;
+            
+            typeWriter(terminal, `>> WSS:// Secure WebSocket link to Python backend established.`, "#00ff80");
+            typeWriter(terminal, `>> Listening for live backend threat streams...`, "#a3a3a3");
+
+            ws = new WebSocket(wsUrl);
+
+            ws.onmessage = (event) => {
+                const threat = JSON.parse(event.data);
+                processThreat(threat);
+            };
+
+            ws.onclose = () => {
+                typeWriter(terminal, `>> [ERROR] Connection to Python backend lost.`, "#ff3366");
+            };
+        }
+
+        function processThreat(threat) {
+            totalEventsCount++;
+            document.getElementById("totalEvents").innerText = totalEventsCount;
+
+            // 1. Draw on Globe
+            const arc = {
+                startLat: threat.startLat, startLng: threat.startLng,
+                endLat: threat.endLat, endLng: threat.endLng,
+                color: threat.color
+            };
+            world.arcsData([...world.arcsData(), arc]);
+            
+            // Remove arc after animation
+            setTimeout(() => {
+                world.arcsData(world.arcsData().filter(a => a !== arc));
+            }, 1500);
+
+            // 2. Add to Log
+            addLogEntry(threat);
+
+            // 3. Update Chart
+            updateChart(threat);
+
+            // 4. Handle AI AI logic for Manual (High Severity) Attacks
+            if (threat.isManual) {
+                activeThreatsCount++;
+                updateDefconState();
+                playSound('alarm');
+                
+                const terminal = document.getElementById('aiTerminal');
+                const btn = document.getElementById('aiStatusBtn');
+                
+                btn.innerText = "INVESTIGATING";
+                btn.className = "text-[9px] border border-[#ff3366] text-[#ff3366] px-2 py-1 rounded-full animate-pulse";
+
+                typeWriter(terminal, `>> [ALERT] Anomaly ${threat.aiScore}% detected from ${threat.ip}`, "#b700ff");
+                
+                // Simulate AI processing delay
+                setTimeout(() => {
+                    typeWriter(terminal, `>> [INSPECT] Analyzing payload signature for ${threat.threatName}...`, "white");
+                    
+                    setTimeout(() => {
+                        // 20% FAILURE RATE SIMULATION
+                        const isBreach = Math.random() > 0.8;
+                        
+                        if(isBreach) {
+                            typeWriter(terminal, `>> [CRITICAL FAILURE] Payload executed. Escalating to Human IR Team!`, "#ff3366");
+                            playSound('error');
+                            generateReport(threat, true);
+                        } else {
+                            typeWriter(terminal, `>> [RESOLVED] ${threat.threatName} automatically isolated. WAF rules updated.`, "#00ff80");
+                            playSound('typewriter');
+                            neutralizedCount++;
+                            document.getElementById("neutralized").innerText = neutralizedCount;
+                            generateReport(threat, false);
+                        }
+                        
+                        activeThreatsCount--;
+                        updateDefconState();
+                        btn.innerText = "MONITORING";
+                        btn.className = "text-[9px] border border-purple-500/50 text-purple-400 px-2 py-1 rounded-full animate-pulse";
+                    }, 1500);
+                }, 1000);
+            } else {
+                // Background noise
+                playSound('blip');
+            }
+        }
+
+        function addLogEntry(threat) {
+            const log = document.getElementById('eventLog');
+            const entry = document.createElement('div');
+            entry.className = "log-entry flex items-center";
+            
+            const time = new Date().toLocaleTimeString('en-US', { hour12: false });
+            
+            entry.innerHTML = `
+                <div class="w-1/5 text-gray-500">${time}</div>
+                <div class="w-1/5 font-bold" style="color: ${threat.color}">${threat.aiScore}%</div>
+                <div class="w-1/4 truncate text-gray-400">${threat.originCountry}</div>
+                <div class="w-auto truncate" style="color: ${threat.color}">${threat.threatName}</div>
+            `;
+            
+            log.prepend(entry);
+            if (log.children.length > 50) log.removeChild(log.lastChild);
+        }
+
+        function updateChart(threat) {
+            if (chartData[threat.threatName]) {
+                chartData[threat.threatName].count++;
+            } else {
+                chartData[threat.threatName] = { count: 1, color: threat.color };
+            }
+
+            chartInstance.data.labels = Object.keys(chartData);
+            chartInstance.data.datasets[0].data = Object.values(chartData).map(d => d.count);
+            chartInstance.data.datasets[0].backgroundColor = Object.values(chartData).map(d => d.color);
+            chartInstance.update();
+        }
+
+        function updateDefconState() {
+            document.getElementById("activeThreats").innerText = activeThreatsCount;
+            const panel = document.getElementById('statusPanel');
+            const indicator = document.getElementById('sysStatusIndicator');
+            const text = document.getElementById('defconLevel');
+            const radar = document.getElementById('radarTitle');
+
+            // DEFCON ALARM FIX: Only trigger > 12
+            if (activeThreatsCount > 12) {
+                panel.classList.add('defcon-1');
+                indicator.className = "w-3 h-3 rounded-full bg-[#ff3366] animate-ping";
+                text.innerText = "DEFCON 1";
+                text.className = "text-[#ff3366] font-bold";
+                radar.className = "text-2xl font-bold text-[#ff3366] tracking-wider";
+            } else {
+                panel.classList.remove('defcon-1');
+                indicator.className = "w-3 h-3 rounded-full bg-[#00ff80]";
+                text.innerText = "DEFCON 5";
+                text.className = "text-[#00ff80] font-bold";
+                radar.className = "text-2xl font-bold text-[#00ff80] tracking-wider";
+            }
+        }
+
+        function typeWriter(element, text, color) {
+            const p = document.createElement('p');
+            p.style.color = color;
+            element.appendChild(p);
+            
+            let i = 0;
+            function type() {
+                if (i < text.length) {
+                    p.textContent += text.charAt(i); // FIX: textContent respects spaces
+                    i++;
+                    setTimeout(type, 20);
+                } else {
+                    element.scrollTop = element.scrollHeight;
+                }
+            }
+            type();
+        }
+
+        // Send manual attack command to Python Backend
+        function launchManualAttack() {
+            const type = document.getElementById('attackType').value;
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(JSON.stringify({ threatName: type }));
+            }
+        }
+
+        // Simulated PDF Report Generation
+        function generateReport(threat, isBreach) {
+            const terminal = document.getElementById('aiTerminal');
+            const reportId = "REP-" + Math.floor(Math.random() * 10000);
+            
+            const accessStatus = isBreach ? "COMPROMISED (Root Access)" : "DENIED";
+            const finalStatus = isBreach ? "BREACH DETECTED - HUMAN INTERVENTION REQUIRED" : "NEUTRALIZED - WAF RULES APPLIED";
+
+            const a = document.createElement('a');
+            a.href = "data:text/plain;charset=utf-8," + encodeURIComponent(
+                `====== INCIDENT RESPONSE REPORT ======\n` +
+                `ID: ${reportId}\n` +
+                `Timestamp: ${new Date().toISOString()}\n` +
+                `Threat Actor IP: ${threat.ip}\n` +
+                `Origin: ${threat.originCountry}\n` +
+                `Vector: ${threat.threatName} (${threat.threatMitre})\n` +
+                `ML Confidence Score: ${threat.aiScore}%\n` +
+                `-------------------------------------\n` +
+                `Access Achieved: ${accessStatus}\n` +
+                `Final Status: ${finalStatus}\n` +
+                `======================================`
+            );
+            a.download = `${reportId}_Forensic_Log.txt`;
+            a.className = "text-[10px] text-blue-400 hover:text-blue-300 underline block mt-1 cursor-pointer";
+            a.innerText = `>> [REPORT] Incident forensic log ${reportId} generated. Click to download.`;
+            
+            terminal.appendChild(a);
+            terminal.scrollTop = terminal.scrollHeight;
+        }
+
+    </script>
 </body>
 </html>
