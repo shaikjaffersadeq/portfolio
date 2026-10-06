@@ -13,11 +13,13 @@
     
     <style>
         body { margin: 0; padding: 0; background-color: #050505; color: #00ff80; font-family: 'Space Mono', monospace; overflow: hidden; }
-        #globeViz { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; }
+        
+        /* FIX: Changed globe to fixed so it stays put while mobile panels scroll */
+        #globeViz { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; }
         
         .glass-panel {
-            background: rgba(10, 10, 15, 0.8);
-            backdrop-filter: blur(10px);
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(12px);
             border: 1px solid rgba(0, 255, 128, 0.2);
             border-radius: 8px;
             z-index: 10;
@@ -52,10 +54,10 @@
 <body>
 
     <!-- Boot Sequence Overlay -->
-    <div id="overlay">
-        <h1 class="text-4xl font-bold mb-4 text-[#00ff80]">SOC ENGINE OFFLINE</h1>
-        <p class="text-gray-400 mb-8">Awaiting initialization sequence...</p>
-        <button onclick="startEngine()" class="px-8 py-3 bg-[#00ff80] text-black font-bold rounded hover:bg-white transition-colors">
+    <div id="overlay" class="px-4 text-center">
+        <h1 class="text-3xl md:text-4xl font-bold mb-4 text-[#00ff80]">SOC ENGINE OFFLINE</h1>
+        <p class="text-gray-400 mb-8 text-sm md:text-base">Awaiting initialization sequence...</p>
+        <button onclick="startEngine()" class="px-8 py-3 bg-[#00ff80] text-black font-bold rounded hover:bg-white transition-colors text-sm md:text-base">
             INITIALIZE SYSTEM
         </button>
     </div>
@@ -63,11 +65,12 @@
     <!-- 3D Globe Background -->
     <div id="globeViz"></div>
 
-    <!-- UI Overlay (Grid) -->
-    <div class="absolute inset-0 p-6 pointer-events-none flex justify-between">
+    <!-- UI Overlay (MOBILE RESPONSIVE GRID) -->
+    <!-- FIX: Changed from strict flex-row to flex-col on mobile, added overflow-y-auto so you can scroll the panels -->
+    <div class="absolute inset-0 p-4 md:p-6 pointer-events-none flex flex-col md:flex-row md:justify-between overflow-y-auto overflow-x-hidden md:overflow-hidden gap-6 md:gap-0 z-10 pb-20 md:pb-6">
         
         <!-- LEFT COLUMN -->
-        <div class="w-1/3 flex flex-col gap-4 pointer-events-auto max-w-sm">
+        <div class="w-full md:w-1/3 flex flex-col gap-4 pointer-events-auto max-w-full md:max-w-sm shrink-0">
             
             <!-- System Status -->
             <div class="glass-panel p-5 flex flex-col gap-4" id="statusPanel">
@@ -77,54 +80,53 @@
                         <span class="text-xs text-gray-400 tracking-widest">SYS: <span id="defconLevel" class="text-[#00ff80] font-bold">DEFCON 5</span></span>
                     </div>
                     <div class="flex gap-2">
-                        <!-- NEW: EXPORT DB BUTTON -->
-                        <a href="/export" target="_blank" class="text-[10px] border border-blue-500 text-blue-500 px-2 py-1 rounded hover:bg-blue-500 hover:text-white transition-colors cursor-pointer text-center leading-tight flex items-center">
+                        <a href="/export" target="_blank" class="text-[9px] md:text-[10px] border border-blue-500 text-blue-500 px-2 py-1 rounded hover:bg-blue-500 hover:text-white transition-colors cursor-pointer text-center leading-tight flex items-center">
                             📥 EXPORT DB<br>(CSV)
                         </a>
-                        <span class="text-[10px] border border-gray-600 px-2 py-1 rounded text-gray-400">ZERO-TRUST</span>
+                        <span class="text-[9px] md:text-[10px] border border-gray-600 px-2 py-1 rounded text-gray-400 flex items-center">ZERO-TRUST</span>
                     </div>
                 </div>
                 
-                <h2 class="text-2xl font-bold text-[#00ff80] tracking-wider" id="radarTitle">THREAT RADAR</h2>
+                <h2 class="text-xl md:text-2xl font-bold text-[#00ff80] tracking-wider" id="radarTitle">THREAT RADAR</h2>
                 
                 <div class="flex gap-4">
                     <div class="bg-black/50 p-3 rounded flex-1">
-                        <div class="text-[10px] text-gray-500 mb-1">TOTAL EVENTS</div>
-                        <div class="text-2xl font-bold text-white" id="totalEvents">0</div>
+                        <div class="text-[9px] md:text-[10px] text-gray-500 mb-1">TOTAL EVENTS</div>
+                        <div class="text-xl md:text-2xl font-bold text-white" id="totalEvents">0</div>
                     </div>
                     <div class="bg-black/50 p-3 rounded flex-1">
-                        <div class="text-[10px] text-gray-500 mb-1">ACTIVE THREATS</div>
-                        <div class="text-2xl font-bold text-[#00ff80]" id="activeThreats">0</div>
+                        <div class="text-[9px] md:text-[10px] text-gray-500 mb-1">ACTIVE THREATS</div>
+                        <div class="text-xl md:text-2xl font-bold text-[#00ff80]" id="activeThreats">0</div>
                     </div>
                 </div>
 
                 <div class="bg-purple-900/20 border border-purple-500/30 p-3 rounded">
-                    <div class="text-[10px] text-purple-400 mb-1 flex items-center gap-2">
+                    <div class="text-[9px] md:text-[10px] text-purple-400 mb-1 flex items-center gap-2">
                         <span>⚗</span> THREATS NEUTRALIZED BY AI
                     </div>
-                    <div class="text-xl font-bold text-purple-500" id="neutralized">0</div>
+                    <div class="text-lg md:text-xl font-bold text-purple-500" id="neutralized">0</div>
                 </div>
             </div>
 
             <!-- Red Team Injector -->
             <div class="glass-panel panel-red p-5">
                 <div class="flex justify-between items-center mb-2">
-                    <h3 class="text-sm font-bold text-[#ff3366] flex items-center gap-2">
+                    <h3 class="text-xs md:text-sm font-bold text-[#ff3366] flex items-center gap-2">
                         <span>⚡</span> RED TEAM INJECTOR
                     </h3>
-                    <span class="text-[9px] text-gray-500 tracking-widest">MANUAL OVERRIDE</span>
+                    <span class="text-[8px] md:text-[9px] text-gray-500 tracking-widest">MANUAL OVERRIDE</span>
                 </div>
-                <p class="text-xs text-gray-400 mb-4">Launch targeted attacks to observe AI investigation.</p>
+                <p class="text-[10px] md:text-xs text-gray-400 mb-4">Launch targeted attacks to observe AI investigation.</p>
                 
                 <div class="flex gap-2">
-                    <select id="attackType" class="bg-black border border-gray-700 text-white text-xs p-2 rounded flex-1 outline-none focus:border-[#ff3366]">
+                    <select id="attackType" class="bg-black border border-gray-700 text-white text-[10px] md:text-xs p-2 rounded flex-1 outline-none focus:border-[#ff3366]">
                         <option value="SSH Brute-Force">SSH Brute-Force (T1110)</option>
                         <option value="SQL Injection">SQL Injection (T1190)</option>
                         <option value="DDoS SYN Flood">DDoS SYN Flood (T1498)</option>
                         <option value="Log4Shell Exploit">Log4Shell Exploit (T1190.005)</option>
                         <option value="Zero-Day Payload">Zero-Day Payload</option>
                     </select>
-                    <button onclick="launchManualAttack()" class="bg-[#ff3366]/20 border border-[#ff3366] text-[#ff3366] hover:bg-[#ff3366] hover:text-white text-xs font-bold px-4 rounded transition-colors">
+                    <button onclick="launchManualAttack()" class="bg-[#ff3366]/20 border border-[#ff3366] text-[#ff3366] hover:bg-[#ff3366] hover:text-white text-[10px] md:text-xs font-bold px-4 rounded transition-colors">
                         LAUNCH
                     </button>
                 </div>
@@ -132,9 +134,8 @@
 
             <!-- MITRE Signatures Chart -->
             <div class="glass-panel panel-orange p-5 flex flex-col flex-1 min-h-[220px]">
-                <h3 class="text-sm font-bold text-white mb-4 tracking-widest">ACTIVE SIGNATURES</h3>
-                <div class="relative flex-1 w-full h-full">
-                    <!-- FIX: Absolute inset-0 locks the chart perfectly in the box -->
+                <h3 class="text-xs md:text-sm font-bold text-white mb-4 tracking-widest">ACTIVE SIGNATURES</h3>
+                <div class="relative flex-1 w-full h-full min-h-[150px]">
                     <canvas id="mitreChart" class="absolute inset-0"></canvas>
                 </div>
             </div>
@@ -142,31 +143,32 @@
         </div>
 
         <!-- RIGHT COLUMN -->
-        <div class="w-1/3 flex flex-col gap-4 pointer-events-auto max-w-md">
+        <div class="w-full md:w-1/3 flex flex-col gap-4 pointer-events-auto max-w-full md:max-w-md shrink-0 mb-8 md:mb-0">
             
             <!-- AI Terminal -->
-            <div class="glass-panel panel-purple p-5 flex-1 max-h-[40vh] flex flex-col">
-                <div class="flex justify-between items-center border-b border-purple-900/50 pb-2 mb-4">
-                    <h3 class="text-sm font-bold text-purple-400 flex items-center gap-2">
+            <div class="glass-panel panel-purple p-4 md:p-5 flex-1 h-64 md:h-auto md:max-h-[40vh] flex flex-col">
+                <div class="flex justify-between items-center border-b border-purple-900/50 pb-2 mb-4 shrink-0">
+                    <h3 class="text-xs md:text-sm font-bold text-purple-400 flex items-center gap-2">
                         <span>🤖</span> AI SECOPS CO-PILOT
                     </h3>
-                    <div class="text-[9px] border border-purple-500/50 text-purple-400 px-2 py-1 rounded-full animate-pulse" id="aiStatusBtn">
+                    <div class="text-[8px] md:text-[9px] border border-purple-500/50 text-purple-400 px-2 py-1 rounded-full animate-pulse" id="aiStatusBtn">
                         MONITORING
                     </div>
                 </div>
-                <div id="aiTerminal" class="terminal-text flex-1 overflow-y-auto pr-2 flex flex-col gap-2 font-mono">
+                <div id="aiTerminal" class="terminal-text flex-1 overflow-y-auto pr-2 flex flex-col gap-2 font-mono text-[10px] md:text-xs">
                     <p class="text-gray-500">>> Model: Neural_Guardian_v3.1 initialized.</p>
                     <p class="text-gray-500">>> System standing by. Awaiting Red Team injection...</p>
                 </div>
             </div>
 
             <!-- Event Vector Log -->
-            <div class="glass-panel p-5 flex-1 max-h-[50vh] flex flex-col">
-                <div class="flex text-[10px] text-gray-500 tracking-widest border-b border-gray-800 pb-2 mb-2">
-                    <div class="w-1/5">TIME</div>
-                    <div class="w-1/5">ML%</div>
-                    <div class="w-1/4">ORIGIN</div>
-                    <div class="w-auto">EVENT VECTOR</div>
+            <div class="glass-panel p-4 md:p-5 flex-1 h-64 md:h-auto md:max-h-[50vh] flex flex-col">
+                <!-- FIX: Added min-w-0 to headers and cells to ensure flexbox truncates properly on narrow phone screens -->
+                <div class="flex text-[8px] md:text-[10px] text-gray-500 tracking-widest border-b border-gray-800 pb-2 mb-2 shrink-0">
+                    <div class="w-1/5 min-w-0 truncate">TIME</div>
+                    <div class="w-1/5 min-w-0 truncate">ML%</div>
+                    <div class="w-1/4 min-w-0 truncate">ORIGIN</div>
+                    <div class="w-auto min-w-0 flex-1 truncate">EVENT VECTOR</div>
                 </div>
                 <div id="eventLog" class="flex-1 overflow-y-auto pr-2">
                     <!-- Logs go here -->
@@ -232,13 +234,13 @@
                 .pointAltitude(0.1)
                 .pointRadius(0.5);
 
-            // Auto-rotate
             world.controls().autoRotate = true;
             world.controls().autoRotateSpeed = 1.2;
             world.controls().enableZoom = false;
-
-            // Set camera starting position
-            world.pointOfView({ lat: 20, lng: -40, altitude: 2.2 });
+            
+            // Adjust camera distance based on screen size (zoom out on mobile)
+            const altitude = window.innerWidth < 768 ? 3.0 : 2.2;
+            world.pointOfView({ lat: 20, lng: -40, altitude: altitude });
         }
 
         function initChart() {
@@ -263,7 +265,7 @@
                     cutout: '75%',
                     plugins: {
                         legend: { 
-                            position: 'right',
+                            position: window.innerWidth < 768 ? 'bottom' : 'right', // Legend on bottom for mobile
                             labels: { 
                                 boxWidth: 12,
                                 padding: 10,
@@ -277,7 +279,6 @@
 
         function connectWebSocket() {
             const terminal = document.getElementById('aiTerminal');
-            // DYNAMIC PROTOCOL: Uses wss:// if hosted on HTTPS (Render), ws:// if local
             const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
             const wsUrl = `${protocol}//${window.location.host}/ws/threats`;
             
@@ -300,7 +301,6 @@
             totalEventsCount++;
             document.getElementById("totalEvents").innerText = totalEventsCount;
 
-            // 1. Draw on Globe
             const arc = {
                 startLat: threat.startLat, startLng: threat.startLng,
                 endLat: threat.endLat, endLng: threat.endLng,
@@ -308,18 +308,13 @@
             };
             world.arcsData([...world.arcsData(), arc]);
             
-            // Remove arc after animation
             setTimeout(() => {
                 world.arcsData(world.arcsData().filter(a => a !== arc));
             }, 1500);
 
-            // 2. Add to Log
             addLogEntry(threat);
-
-            // 3. Update Chart
             updateChart(threat);
 
-            // 4. Handle AI AI logic for Manual (High Severity) Attacks
             if (threat.isManual) {
                 activeThreatsCount++;
                 updateDefconState();
@@ -329,16 +324,14 @@
                 const btn = document.getElementById('aiStatusBtn');
                 
                 btn.innerText = "INVESTIGATING";
-                btn.className = "text-[9px] border border-[#ff3366] text-[#ff3366] px-2 py-1 rounded-full animate-pulse";
+                btn.className = "text-[8px] md:text-[9px] border border-[#ff3366] text-[#ff3366] px-2 py-1 rounded-full animate-pulse";
 
                 typeWriter(terminal, `>> [ALERT] Anomaly ${threat.aiScore}% detected from ${threat.ip}`, "#b700ff");
                 
-                // Simulate AI processing delay
                 setTimeout(() => {
                     typeWriter(terminal, `>> [INSPECT] Analyzing payload signature for ${threat.threatName}...`, "white");
                     
                     setTimeout(() => {
-                        // 20% FAILURE RATE SIMULATION
                         const isBreach = Math.random() > 0.8;
                         
                         if(isBreach) {
@@ -356,11 +349,10 @@
                         activeThreatsCount--;
                         updateDefconState();
                         btn.innerText = "MONITORING";
-                        btn.className = "text-[9px] border border-purple-500/50 text-purple-400 px-2 py-1 rounded-full animate-pulse";
+                        btn.className = "text-[8px] md:text-[9px] border border-purple-500/50 text-purple-400 px-2 py-1 rounded-full animate-pulse";
                     }, 1500);
                 }, 1000);
             } else {
-                // Background noise
                 playSound('blip');
             }
         }
@@ -368,15 +360,16 @@
         function addLogEntry(threat) {
             const log = document.getElementById('eventLog');
             const entry = document.createElement('div');
+            // Added min-w-0 classes here too for the mobile truncation fix
             entry.className = "log-entry flex items-center";
             
             const time = new Date().toLocaleTimeString('en-US', { hour12: false });
             
             entry.innerHTML = `
-                <div class="w-1/5 text-gray-500">${time}</div>
-                <div class="w-1/5 font-bold" style="color: ${threat.color}">${threat.aiScore}%</div>
-                <div class="w-1/4 truncate text-gray-400">${threat.originCountry}</div>
-                <div class="w-auto truncate" style="color: ${threat.color}">${threat.threatName}</div>
+                <div class="w-1/5 min-w-0 text-gray-500 truncate">${time}</div>
+                <div class="w-1/5 min-w-0 font-bold truncate" style="color: ${threat.color}">${threat.aiScore}%</div>
+                <div class="w-1/4 min-w-0 truncate text-gray-400">${threat.originCountry}</div>
+                <div class="w-auto min-w-0 flex-1 truncate" style="color: ${threat.color}">${threat.threatName}</div>
             `;
             
             log.prepend(entry);
@@ -403,19 +396,18 @@
             const text = document.getElementById('defconLevel');
             const radar = document.getElementById('radarTitle');
 
-            // DEFCON ALARM FIX: Only trigger > 12
             if (activeThreatsCount > 12) {
                 panel.classList.add('defcon-1');
                 indicator.className = "w-3 h-3 rounded-full bg-[#ff3366] animate-ping";
                 text.innerText = "DEFCON 1";
                 text.className = "text-[#ff3366] font-bold";
-                radar.className = "text-2xl font-bold text-[#ff3366] tracking-wider";
+                radar.className = "text-xl md:text-2xl font-bold text-[#ff3366] tracking-wider";
             } else {
                 panel.classList.remove('defcon-1');
                 indicator.className = "w-3 h-3 rounded-full bg-[#00ff80]";
                 text.innerText = "DEFCON 5";
                 text.className = "text-[#00ff80] font-bold";
-                radar.className = "text-2xl font-bold text-[#00ff80] tracking-wider";
+                radar.className = "text-xl md:text-2xl font-bold text-[#00ff80] tracking-wider";
             }
         }
 
@@ -427,7 +419,7 @@
             let i = 0;
             function type() {
                 if (i < text.length) {
-                    p.textContent += text.charAt(i); // FIX: textContent respects spaces
+                    p.textContent += text.charAt(i); 
                     i++;
                     setTimeout(type, 20);
                 } else {
@@ -437,7 +429,6 @@
             type();
         }
 
-        // Send manual attack command to Python Backend
         function launchManualAttack() {
             const type = document.getElementById('attackType').value;
             if (ws && ws.readyState === WebSocket.OPEN) {
@@ -445,7 +436,6 @@
             }
         }
 
-        // Simulated PDF Report Generation
         function generateReport(threat, isBreach) {
             const terminal = document.getElementById('aiTerminal');
             const reportId = "REP-" + Math.floor(Math.random() * 10000);
@@ -469,11 +459,9 @@
             );
             a.download = `${reportId}_Forensic_Log.txt`;
             
-            // UPDATED: Make it look like a real button instead of just text
-            a.className = "inline-block mt-2 mb-1 px-3 py-1 text-[10px] font-bold border border-blue-500/50 bg-blue-900/20 text-blue-400 rounded hover:bg-blue-500 hover:text-white transition-colors cursor-pointer w-max";
+            a.className = "inline-block mt-2 mb-1 px-3 py-1 text-[9px] md:text-[10px] font-bold border border-blue-500/50 bg-blue-900/20 text-blue-400 rounded hover:bg-blue-500 hover:text-white transition-colors cursor-pointer w-max";
             a.innerHTML = `📄 DOWNLOAD FORENSIC LOG (${reportId})`;
             
-            // Add a prefix text before the button
             const prefixMsg = document.createElement('p');
             prefixMsg.className = "text-gray-500 mt-1";
             prefixMsg.innerText = ">> System generated incident report available:";
